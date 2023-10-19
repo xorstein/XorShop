@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+	<div th:fragment="content(reportType)" th:remove="tag">
+		<div th:with="buttonClass = 'button-sales-by' + ${reportType}">
+			<button period="last_7_days" class="btn btn-primary m-1" th:classappend="${buttonClass}">7 derniers
+				jours</button>
+			<button period="last_28_days" class="btn btn-light m-1" th:classappend="${buttonClass}">28 derniers
+				jours</button>
+			<button period="last_6_months" class="btn btn-light m-1" th:classappend="${buttonClass}">6 derniers
+				mois</button>
+			<button period="last_year" class="btn btn-light m-1" th:classappend="${buttonClass}">Année dernière</button>
+			<button class="btn btn-light m-1" th:classappend="${buttonClass}">Plage de dates</button>
+		</div>
+
+		<form>
+			<div th:id="'divCustomDateRange' + ${reportType}" class="d-none mt-4">
+				Du: <input type="date" th:id="'startDate' + ${reportType}" class="form-control" style="width: 218px;display: initial!important;" > &nbsp;
+				Au: <input type="date" th:id="'endDate' + ${reportType}" class="form-control" style="width: 218px;display: initial!important;"  > &nbsp;
+				<button type="button" class="btn btn-secondary"
+					th:id="'buttonViewReportByDateRange' + ${reportType}"><i class="fas fa-filter m-1"></i>Filter</button>
+			</div>
+		</form>
+
+		<div th:id="'chart_sales_by' + ${reportType}" class="row items-push-2x text-center text-sm-start mt-3 chart_sales"></div>
+         <div class="row justify-content-center text-center m-0">
+				<div class="col-md-6 col-xl-3">
+					<div class="block block-rounded block-themed border">
+						<div class="block-header bg-default-light">
+							<h3 class="block-title"><span th:id="'labelTotalItems' + ${reportType}"></h3>
+							<div class="block-options">
+								<button type="button" class="btn-block-option">
+									<i class="fas fa-spinner fa-spin"></i> 
+								</button>
+							</div>
+						</div>
+						<div class="block-content">
+							<p><span class="h3" th:id="'textTotalItems' + ${reportType}"></span></p>
+						</div>
+					</div>
+				</div>
+			</div>
+		<div class="row items-push-2x text-center text-sm-start">
+			<div class="col-md-6 col-xl-3">
+				<div class="block block-rounded block-themed border">
+					<div class="block-header bg-success">
+						<h3 class="block-title">Brute totale</h3>
+						<div class="block-options">
+							<button type="button" class="btn-block-option">
+								<i class="fas fa-dollar-sign"></i>
+							</button>
+						</div>
+					</div>
+					<div class="block-content">
+						<p><b><span  th:id="'textTotalGrossSales' + ${reportType}"></span></b></p>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6 col-xl-3">
+				<div class="block block-rounded block-themed border">
+					<div class="block-header bg-info">
+						<h3 class="block-title">Net totale</h3>
+						<div class="block-options">
+							<button type="button" class="btn-block-option">
+								<i class="fas fa-dollar-sign"></i>
+							</button>
+						</div>
+					</div>
+					<div class="block-content">
+						<p><b><span  th:id="'textTotalNetSales' + ${reportType}"></span></b></p>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6 col-xl-3">
+				<div class="block block-rounded block-themed border">
+					<div class="block-header bg-warning">
+						<h3 class="block-title">Brut moyen</h3>
+						<div class="block-options">
+							<button type="button" class="btn-block-option">
+								<i class="fas fa-dollar-sign"></i>
+							</button>
+						</div>
+					</div>
+					<div class="block-content">
+						<p><b><span  th:id="'textAvgGrossSales' + ${reportType}"></span></b></p>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6 col-xl-3">
+				<div class="block block-rounded block-themed border">
+					<div class="block-header bg-danger">
+						<h3 class="block-title">Net moyen</h3>
+						<div class="block-options">
+							<button type="button" class="btn-block-option">
+								<i class="fas fa-dollar-sign"></i>
+							</button>
+						</div>
+					</div>
+					<div class="block-content">
+						<p><b><span  th:id="'textAvgNetSales' + ${reportType}"></span></b></p>
+					</div>
+				</div>
+			</div>
+			
+	
+
+
+		</div>
+	</div>
+
+	</div>
+</body>
+
+</html>

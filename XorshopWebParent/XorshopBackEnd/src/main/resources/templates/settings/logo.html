@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+  <div th:fragment="content" th:remove="tag">
+    <h4 class="content-heading">Logos</h4>
+    <form th:action="@{/settings/save_logos}" method="post" enctype="multipart/form-data">
+      <div class="row" id="divLogs">
+        <div class="col border m-3 p-2">
+          <div><label>LOGO DU SITE</label></div>
+          <div class="m-2">
+            <img id="thumbnail" alt="Site Logo thumbnail" th:src="@{${S3_BASE_URI + SITE_LOGO}}" width="200" height="70" />
+            <input type="file" class="fileImage" id="fileImage" name="fileImage" accept="image/png, image/jpeg" />
+          </div>
+        </div>
+        <div class="col border m-3 p-2">
+          <div><label>LOGO DU TABLEAU DE BORD</label></div>
+          <div class="m-2">
+            <img id="dashboard_thumbnail" alt="Site Logo thumbnail" th:src="@{${S3_BASE_URI + DASHBOARD_LOGO}}" />
+            <input type="file"  class="logo_dashboard" id="logo_dashboard" name="logo_dashboard" accept="image/png, image/jpeg" />
+          </div>
+        </div>
+        <div class="col border m-3 p-2">
+          <div><label>LOGO DU PIED DE PAGE DE SITE</label></div>
+          <div class="m-2">
+            <img id="footer_thumbnail" alt="Site Logo thumbnail" th:src="@{${S3_BASE_URI + SITE_FOOTER_LOGO}}"  width="200"
+              height="70" />
+            <input type="file" class="logo_footer" id="logo_footer" name="logo_footer" accept="image/png, image/jpeg" />
+          </div>
+        </div>
+        <div class="col border m-3 p-2">
+          <div><label>LOGO DE CONNEXION DU SITE</label></div>
+          <div class="m-2">
+            <img id="login_site_thumbnail" alt="Site Logo thumbnail" th:src="@{${S3_BASE_URI + SITE_LOGIN_LOGO}}" width="200"
+              height="70" />
+            <input type="file" class="logo_login_site" id="logo_login_site" name="logo_login_site" accept="image/png, image/jpeg" />
+          </div>
+        </div>
+        <div class="col border m-3 p-2">
+          <div><label>LOGO DE CONNEXION DU TABLEAU DE BORD</label></div>
+          <div class="m-2">
+            <img id="login_dashboard_thumbnail" alt="Site Logo thumbnail" th:src="@{${S3_BASE_URI + DASHBOARD_LOGIN_LOGO}}" 
+              width="200" height="70" />
+            <input type="file" class="logo_login_dashboard" id="logo_login_dashboard" name="logo_login_dashboard" accept="image/png, image/jpeg" />
+          </div>
+        </div>
+        <div class="col border m-3 p-2">
+
+        </div>
+        <div class="col-lg-12  mb-5">
+          <div class="col-md-6 offset-md-5">
+            <button type="submit" class="btn btn-success me-1 mb-3">
+              <i class="fa fa-fw fa-check me-1"></i> Enregistrer
+            </button>
+            <button type="button" class="btn btn-info me-1 mb-3 buttonCancel">
+              <i class="fa fa-undo me-1"></i> Annuler
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</body>
+
+</html>

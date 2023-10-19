@@ -1,0 +1,274 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<th th:replace="fragments ::page_Head(${pageTitle})" />
+
+<body>
+	<!-- Page Container -->
+	<!--
+      Available classes for #page-container:
+      GENERIC
+        'remember-theme'                            Remembers active color theme and dark mode between pages using localStorage when set through
+                                                    - Theme helper buttons [data-toggle="theme"],
+                                                    - Layout helper buttons [data-toggle="layout" data-action="dark_mode_[on/off/toggle]"]
+                                                    - ..and/or One.layout('dark_mode_[on/off/toggle]')
+         SIDEBAR & SIDE OVERLAY
+        'sidebar-r'                                 Right Sidebar and left Side Overlay (default is left Sidebar and right Side Overlay)
+        'sidebar-mini'                              Mini hoverable Sidebar (screen width > 991px)
+        'sidebar-o'                                 Visible Sidebar by default (screen width > 991px)
+        'sidebar-o-xs'                              Visible Sidebar by default (screen width < 992px)
+        'sidebar-dark'                              Dark themed sidebar
+        'side-overlay-hover'                        Hoverable Side Overlay (screen width > 991px)
+        'side-overlay-o'                            Visible Side Overlay by default
+        'enable-page-overlay'                       Enables a visible clickable Page Overlay (closes Side Overlay on click) when Side Overlay opens
+        'side-scroll'                               Enables custom scrolling on Sidebar and Side Overlay instead of native scrolling (screen width > 991px)
+         HEADER
+        ''                                          Static Header if no class is added
+        'page-header-fixed'                         Fixed Header
+         HEADER STYLE
+        ''                                          Light themed Header
+        'page-header-dark'                          Dark themed Header
+        MAIN CONTENT LAYOUT
+        ''                                          Full width Main Content if no class is added
+        'main-content-boxed'                        Full width Main Content with a specific maximum width (screen width > 1200px)
+        'main-content-narrow'                       Full width Main Content with a percentage width (screen width > 1200px)
+         DARK MODE
+        'sidebar-dark page-header-dark dark-mode'   Enable dark mode (light sidebar/header is not supported with dark mode)
+    -->
+	<div id="page-container"
+		class="sidebar-o sidebar-dark enable-page-overlay side-scroll page-header-fixed main-content-boxed">
+		<!-- Side Overlay-->
+		<aside th:replace="navigation ::Aside" />
+		<!-- END Side Overlay -->
+
+		<!-- Sidebar -->
+		<!--
+          Sidebar Mini Mode - Display Helper classes
+
+          Adding 'smini-hide' class to an element will make it invisible (opacity: 0) when the sidebar is in mini mode
+          Adding 'smini-show' class to an element will make it visible (opacity: 1) when the sidebar is in mini mode
+              If you would like to disable the transition animation, make sure to also add the 'no-transition' class to your element
+
+          Adding 'smini-hidden' to an element will hide it when the sidebar is in mini mode
+          Adding 'smini-visible' to an element will show it (display: inline-block) only when the sidebar is in mini mode
+          Adding 'smini-visible-block' to an element will show it (display: block) only when the sidebar is in mini mode
+      -->
+		<nav th:replace="navigation ::Navigation" />
+		<!-- END Sidebar -->
+
+		<!-- Header -->
+		<header th:replace="navigation ::Header" />
+		<!-- END Header -->
+
+		<!-- Main Container -->
+		<main id="main-container">
+			<!-- Hero -->
+			<!-- Hero -->
+			<div class="bg-body-light">
+				<div class="content content-full">
+					<div class="d-flex flex-column flex-sm-row justify-content-sm-between align-items-sm-center py-2">
+						<div class="flex-grow-1">
+							<h1 class="h3 fw-bold mb-1">
+								Sections
+							</h1>
+							<h2 class="fs-base lh-base fw-medium text-muted mb-0">
+								Gestion des sections
+							</h2>
+						</div>
+						<nav class="flex-shrink-0 mt-3 mt-sm-0 ms-sm-3" aria-label="breadcrumb">
+							<ol class="breadcrumb breadcrumb-alt">
+								<li class="breadcrumb-item">
+									<a class="link-fx" href="javascript:void(0)">Pages</a>
+								</li>
+								<li class="breadcrumb-item" aria-current="page">
+									Sections <th:block sec:authorize="hasAnyAuthority('Admin', 'Editeur')">
+										<a class="font-w600" href="#"> <i
+												class="fas fa-puzzle-piece fa-1x text-primary"></i></a>
+									</th:block>
+								</li>
+							</ol>
+						</nav>
+					</div>
+				</div>
+			</div>
+			<!-- END Hero -->
+
+			<!-- Page Content -->
+			<div class="content">
+
+				<!-- Icon based -->
+				<h2 class="content-heading">Cliquez sur la section pour ajouter un nouvel élément</h2>
+				<div class="row push">
+					<div class="col-6 col-md-4 col-xxl-2">
+						<a class="block block-rounded text-center bg-primary" th:href="@{/sections/new/all_categories}">
+							<div class="block-content block-content-full ratio ratio-16x9">
+								<div class="d-flex justify-content-center align-items-center">
+									<div>
+										<i class="fas fa-2x fa-puzzle-piece text-primary-lighter"></i>
+										<div class="fs-sm fw-semibold mt-3 text-uppercase text-white">Toutes les
+											catégories de la section</div>
+									</div>
+								</div>
+							</div>
+						</a>
+					</div>
+					<div class="col-6 col-md-4 col-xxl-2">
+						<a class="block block-rounded text-center bg-smooth" th:href="@{/sections/new/product}">
+							<div class="block-content block-content-full ratio ratio-16x9">
+								<div class="d-flex justify-content-center align-items-center">
+									<div>
+										<i class="fab fa-2x fa-product-hunt  fa-tags text-smooth-lighter"></i>
+										<div class="fs-sm fw-semibold mt-3 text-uppercase text-white">Section de
+											produits</div>
+									</div>
+								</div>
+							</div>
+						</a>
+					</div>
+					<div class="col-6 col-md-4 col-xxl-2">
+						<a class="block block-rounded text-center bg-modern" th:href="@{/sections/new/category}">
+							<div class="block-content block-content-full ratio ratio-16x9">
+								<div class="d-flex justify-content-center align-items-center">
+									<div>
+										<i class="fa fa-2x fa-tags  text-modern-lighter"></i>
+										<div class="fs-sm fw-semibold mt-3 text-uppercase text-white">Section de
+											cat&eacute;gories</div>
+									</div>
+								</div>
+							</div>
+						</a>
+					</div>
+					<div class="col-6 col-md-4 col-xxl-2">
+						<a class="block block-rounded text-center bg-city" th:href="@{/sections/new/brand}">
+							<div class="block-content block-content-full ratio ratio-16x9">
+								<div class="d-flex justify-content-center align-items-center">
+									<div>
+										<i class="fa fa-2x fa-tasks text-danger-light"></i>
+										<div class="fs-sm fw-semibold mt-3 text-uppercase text-white">Section de marques
+										</div>
+									</div>
+								</div>
+							</div>
+						</a>
+					</div>
+					<div class="col-6 col-md-4 col-xxl-2">
+						<a class="block block-rounded text-center bg-amethyst" th:href="@{/sections/new/article}">
+							<div class="block-content block-content-full ratio ratio-16x9">
+								<div class="d-flex justify-content-center align-items-center">
+									<div>
+										<i class="fa fa-2x fa-file-signature text-white-75"></i>
+										<div class="fs-sm fw-semibold mt-3 text-uppercase text-white">Section des
+											articles</div>
+									</div>
+								</div>
+							</div>
+						</a>
+					</div>
+					<div class="col-6 col-md-4 col-xxl-2">
+						<a class="block block-rounded text-center bg-flat" th:href="@{/sections/new/text}">
+							<div class="block-content block-content-full ratio ratio-16x9">
+								<div class="d-flex justify-content-center align-items-center">
+									<div>
+										<i class="fas fa-2x  fa-file-alt text-white-75"></i>
+										<div class="fs-sm fw-semibold mt-3 text-uppercase text-white">Sections des
+											textes</div>
+									</div>
+								</div>
+							</div>
+						</a>
+					</div>
+
+					<!-- END Icon based -->
+
+					<!-- Dynamic Table Full -->
+					<div class="block block-rounded">
+						<div class="block-header">
+							<h3 class="block-title">Dynamic Table <small>Full</small></h3>
+						</div>
+						<div class="flex-fill ml-3">
+							<div th:if="${message!=null}" class="alert alert-success text-center">[[${message}]]</div>
+							<div th:if="${error!=null}" class="alert alert-danger text-danger">[[${error}]]</div>
+						</div>
+						<div class="block-content block-content-full">
+							<!-- DataTables init on table by adding .js-dataTable-full class, functionality is initialized in js/pages/be_tables_datatables.min.js which was auto compiled from _js/pages/be_tables_datatables.js -->
+							<table class="table table-bordered table-striped table-vcenter js-dataTable-full">
+								<thead>
+									<tr>
+										<th class="text-center" style="width: 80px;">ID</th>
+										<th>Sujet</th>
+										<th class="d-none d-sm-table-cell" style="width: 30%;">Type</th>
+										<th class="d-none d-sm-table-cell" style="width: 15%;">Position</th>
+										<th class="text-center" style="width: 15%;">Status</th>
+										<th style="width: 15%;">Action</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="section : ${listSections}">
+										<td class="text-center fs-sm">[[${section.id}]]</td>
+										<td class="fw-semibold fs-sm">[[${section.heading}]]</td>
+										<td class="d-none d-sm-table-cell fs-sm">
+											<span class="text-muted">[[${section.type}]]</span>
+										</td>
+										<td class="d-none d-sm-table-cell">
+											<a th:href="@{'/sections/moveup/' + ${section.id}}"
+												class="fas fa-chevron-up fa-2x" title="Move this section up"></a>
+											<span class="m-3">[[${section.sectionOrder}]]</span>
+											<a th:href="@{'/sections/movedown/' + ${section.id}}"
+												class="fas fa-chevron-down fa-2x" title="Move this section down"></a>
+										</td>
+										<td class="text-center">
+											<div
+												th:replace="fragments :: status(${section.enabled}, 'section', '/sections/' + ${section.id})" />
+										</td>
+										<td>
+											<div class="btn-group">
+
+												<th:block
+													th:replace="fragments :: ActionEntity('btn btn-sm btn-alt-success','Modifier la section','link-edited',@{'/sections/edit/' + ${section.type} + '/' + ${section.id}},${section.id},${section.heading},'fa fa-fw fa-pencil-alt text-success')" />
+												<th:block
+													th:replace="fragments :: ActionEntity('btn btn-sm btn-alt-danger','Supprimer la section','link-deleted',@{'/sections/delete/' + ${section.id}},${section.id},${section.heading},'fa fa-fw fa-times text-danger')" />
+											</div>
+										</td>
+									</tr>
+
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<!-- END Dynamic Table Full -->
+				</div>
+				<!-- END Dynamic Table with Export Buttons -->
+				<!-- END Page Content -->
+		</main>
+		<!-- END Main Container -->
+		<!-- Modal -->
+		<div th:replace="fragments ::modal" />
+		<!-- END Modal -->
+		<div class="modal fade" id="detailModal">
+			<div class="modal-dialog modal-xl">
+				<div class="modal-content">
+				</div>
+			</div>
+		</div>
+		<!-- Footer -->
+		<footer th:replace="fragments ::footer" />
+		<!-- END Footer -->
+		<!--
+        OneUI JS
+        Core libraries and functionality
+        webpack is putting everything together at assets/_js/main/app.js
+    -->
+		<script type="text/javascript" th:src="@{/assets/js/oneui.app.min.js}"></script>
+		<!-- jQuery (required for DataTables plugin) -->
+		<script type="text/javascript" th:src="@{/assets/js/lib/jquery.min.js}"></script>
+		<script th:src="@{/assets/js/common_list.js}"></script>
+		<script type="text/javascript">
+			moduleURL = "[[@{/sections}]]";
+			EntityName = "la section";
+			EntityName2 = "section";
+			$(document).ready(function () {
+				handleDefaultDetailLinkClick();
+			});
+
+
+		</script>
+</body>

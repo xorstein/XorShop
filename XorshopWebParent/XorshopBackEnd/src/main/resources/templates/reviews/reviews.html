@@ -1,0 +1,289 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<th th:replace="fragments ::page_Head('Gestion des avis des clients')" />
+
+<body>
+	<!-- Page Container -->
+	<!--
+      Available classes for #page-container:
+      GENERIC
+        'remember-theme'                            Remembers active color theme and dark mode between pages using localStorage when set through
+                                                    - Theme helper buttons [data-toggle="theme"],
+                                                    - Layout helper buttons [data-toggle="layout" data-action="dark_mode_[on/off/toggle]"]
+                                                    - ..and/or One.layout('dark_mode_[on/off/toggle]')
+         SIDEBAR & SIDE OVERLAY
+        'sidebar-r'                                 Right Sidebar and left Side Overlay (default is left Sidebar and right Side Overlay)
+        'sidebar-mini'                              Mini hoverable Sidebar (screen width > 991px)
+        'sidebar-o'                                 Visible Sidebar by default (screen width > 991px)
+        'sidebar-o-xs'                              Visible Sidebar by default (screen width < 992px)
+        'sidebar-dark'                              Dark themed sidebar
+        'side-overlay-hover'                        Hoverable Side Overlay (screen width > 991px)
+        'side-overlay-o'                            Visible Side Overlay by default
+        'enable-page-overlay'                       Enables a visible clickable Page Overlay (closes Side Overlay on click) when Side Overlay opens
+        'side-scroll'                               Enables custom scrolling on Sidebar and Side Overlay instead of native scrolling (screen width > 991px)
+         HEADER
+        ''                                          Static Header if no class is added
+        'page-header-fixed'                         Fixed Header
+         HEADER STYLE
+        ''                                          Light themed Header
+        'page-header-dark'                          Dark themed Header
+        MAIN CONTENT LAYOUT
+        ''                                          Full width Main Content if no class is added
+        'main-content-boxed'                        Full width Main Content with a specific maximum width (screen width > 1200px)
+        'main-content-narrow'                       Full width Main Content with a percentage width (screen width > 1200px)
+         DARK MODE
+        'sidebar-dark page-header-dark dark-mode'   Enable dark mode (light sidebar/header is not supported with dark mode)
+    -->
+	<div id="page-container"
+		class="sidebar-o sidebar-dark enable-page-overlay side-scroll page-header-fixed main-content-boxed">
+		<!-- Side Overlay-->
+		<aside th:replace="navigation ::Aside" />
+		<!-- END Side Overlay -->
+
+		<!-- Sidebar -->
+		<!--
+          Sidebar Mini Mode - Display Helper classes
+
+          Adding 'smini-hide' class to an element will make it invisible (opacity: 0) when the sidebar is in mini mode
+          Adding 'smini-show' class to an element will make it visible (opacity: 1) when the sidebar is in mini mode
+              If you would like to disable the transition animation, make sure to also add the 'no-transition' class to your element
+
+          Adding 'smini-hidden' to an element will hide it when the sidebar is in mini mode
+          Adding 'smini-visible' to an element will show it (display: inline-block) only when the sidebar is in mini mode
+          Adding 'smini-visible-block' to an element will show it (display: block) only when the sidebar is in mini mode
+      -->
+		<nav th:replace="navigation ::Navigation" />
+		<!-- END Sidebar -->
+
+		<!-- Header -->
+		<header th:replace="navigation ::Header" />
+		<!-- END Header -->
+
+		<!-- Main Container -->
+		<main id="main-container">
+			<!-- Hero -->
+			<div class="bg-body-light">
+				<div class="content content-full">
+					<div class="d-flex flex-column flex-sm-row justify-content-sm-between align-items-sm-center py-2">
+						<div class="flex-grow-1">
+							<h1 class="h3 fw-bold mb-1">
+								Avis
+							</h1>
+							<h2 class="fs-base lh-base fw-medium text-muted mb-0">
+								Gestion des avis sur produits
+							</h2>
+						</div>
+						<nav class="flex-shrink-0 mt-3 mt-sm-0 ms-sm-3" aria-label="breadcrumb">
+							<ol class="breadcrumb breadcrumb-alt">
+								<li class="breadcrumb-item">
+									<a class="link-fx" href="javascript:void(0)">Pages</a>
+								</li>
+								<li class="breadcrumb-item">
+									<a class="link-fx" href="javascript:void(0)">Avis & Questions</a>
+								</li>
+								<li class="breadcrumb-item" aria-current="page">
+									Avis <a class="font-w600" href="#"> <i
+											class="fa fa-ranking-star fa-1x text-primary"></i></a>
+								</li>
+							</ol>
+						</nav>
+					</div>
+				</div>
+			</div>
+			<!-- END Hero -->
+
+			<!-- Page Content -->
+			<div class="content">
+				<div class="row">
+					<div class="flex-fill ml-3">
+						<div th:if="${message!=null}" class="alert alert-success text-center">[[${message}]]</div>
+					</div>
+					<div class="flex-fill ml-3">
+						<div th:if="${error!=null}" class="alert alert-success text-center">[[${error}]]</div>
+					</div>
+					<div class="col-12">
+						<!-- Dynamic Table with Export Buttons -->
+						<div class="block block-rounded">
+							<div class="block-header block-header-default">
+								<h3 class="block-title">Liste des avis des clients sur les produits </h3>
+							</div>
+							<div class="block-content block-content-full">
+								<div class="row items-push">
+									<form th:action="@{/reviews/page/1}">
+										<input type="hidden" name="sortField" th:value="${sortField}" />
+										<input type="hidden" name="sortDir" th:value="${sortDir}" />
+										<div class="row">
+											<div class="col-lg-4">
+												<p class="fs-sm text-muted">
+
+												</p>
+											</div>
+											<div class="col-lg-8 col-xl-5">
+												<div class="mb-4 text-center">
+
+
+
+												</div>
+												<div class="mb-4">
+													<div class="input-group">
+														<input type="text" class="form-control form-control-alt"
+															id="one-ecom-orders-search" name="keyword"
+															th:value="${keyword}"
+															placeholder="Tapez le mot cl&eacute; et cliquez sur entrer"
+															required>
+														<button type="submit" class="btn btn-alt-primary">
+															<i class="fa fa-search opacity-50"></i>
+														</button>
+														<button type="button" class="btn btn-alt-primary" id="vider"
+															onclick="clearFilter()">
+															<i class="fa fa-eraser opacity-50"></i>
+														</button>
+
+													</div>
+												</div>
+											</div>
+										</div>
+									</form>
+								</div>
+							</div>
+							<!-- DataTables init on table by adding .js-dataTable-buttons class, functionality is initialized in js/pages/be_tables_datatables.min.js which was auto compiled from _js/pages/be_tables_datatables.js -->
+							<table class="table table-bordered table-striped table-vcenter">
+								<thead>
+									<tr>
+										<th class="text-center d-none d-sm-table-cell" style="width: 10%;">
+											<th th:replace="fragments :: column_header_link('id','ID','tag')" />
+										</th>
+										<th class="text-left d-sm-table-cell" style="width: 25%;">
+											<th
+												th:replace="fragments :: column_header_link('product','Produit','tag')" />
+										</th>
+										<th class="text-center d-sm-table-cell">
+											<th
+												th:replace="fragments :: column_header_link('customer','Client','tag')" />
+										</th>
+										<th class="text-center d-sm-table-cell">
+											<th th:replace="fragments :: column_header_link('rating','Note','tag')" />
+										</th>
+										<th class="text-center d-none d-sm-table-cell" style="width: 20%;">
+											<th
+												th:replace="fragments :: column_header_link('reviewTime','Temps','tag')" />
+										</th>
+										<th class="text-center">
+											Action
+										</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="review : ${listReviews}">
+										<td class="text-center d-none d-sm-table-cell" style="width: 10%;">
+											[[${review.id}]]</td>
+										<td class="text-left" style="width: 25%;">
+											<a th:href="@{'/products/detail/' + ${review.product.id}}"
+												class="link-detail-product">
+												[[${review.product.shortName}]]
+											</a>
+										</td>
+										<td class="d-sm-table-cell text-center fs-sm fw-semibold fs-sm">
+											<a th:href="@{'/customers/detail/' + ${review.customer.id}}"
+												class="link-detail-customer">
+												[[${review.customer.fullName}]]
+											</a>
+										</td>
+										<td>
+
+											<div class="js-rating" th:data-score="${review.rating}"></div>
+										</td>
+										<td class="d-none d-sm-table-cell text-center" style="width: 20%;">
+											[[${review.reviewTime}]]</td>
+										<td class="text-center fs-sm">
+											<div class="btn-group">
+												<th:block
+													th:replace="fragments :: ActionEntity('btn btn-sm btn-alt-secondary','Voir les details ','link-detail',@{'/reviews/detail/' + ${review.id}},${review.id},${review.product.shortName},'fa fa-fw fa-eye')" />
+												<th:block
+													th:replace="fragments :: ActionEntity('btn btn-sm btn-alt-success','Modifier','link-edited',@{'/reviews/edit/' + ${review.id}},${review.id},${review.product.shortName},'fa fa-fw fa-pencil-alt text-success')" />
+												<th:block
+													th:replace="fragments :: ActionEntity('btn btn-sm btn-alt-danger','Supprimer','link-deleted',@{'/reviews/delete/' + ${review.id}},${review.id},${review.product.shortName},'fa fa-fw fa-times text-danger')" />
+											</div>
+										</td>
+									</tr>
+
+								</tbody>
+							</table>
+							<div class="row text-center">
+
+								<div class="col-md-5 offset-md-7">
+									<div class="block block-rounded">
+										<div class="block-content">
+											<div th:replace="fragments :: pagination('reviews')" />
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+			<!-- END Dynamic Table with Export Buttons -->
+			<!-- END Page Content -->
+		</main>
+		<!-- END Main Container -->
+		<!-- Modal -->
+		<div th:replace="fragments ::modal" />
+		<!-- END Modal -->
+		<div class="modal fade" id="detailModal">
+			<div class="modal-dialog modal-xl">
+				<div class="modal-content">
+
+				</div>
+			</div>
+		</div>
+		<div class="modal fade" id="xlargeModal">
+			<div class="modal-dialog modal-xl">
+				<div class="modal-content">
+				</div>
+			</div>
+		</div>
+		<!-- Footer -->
+		<footer th:replace="fragments ::footer" />
+		<!-- END Footer -->
+		<!--
+        OneUI JS
+        Core libraries and functionality
+        webpack is putting everything together at assets/_js/main/app.js
+    -->
+		<script type="text/javascript" th:src="@{/assets/js/oneui.app.min.js}"></script>
+		<script th:src="@{/assets/js/lib/jquery.min.js}"></script>
+		<script th:src="@{/assets/js/common_list.js}"></script>
+		<script type="text/javascript">
+			moduleURL = "[[@{/reviews}]]";
+
+			EntityName = "l'avis";
+			EntityName2 = "avis";
+			$(document).ready(function () {
+
+				handleProductDetailLink();
+				handleCustomerDetailLink();
+				handleDefaultDetailLinkClick();
+
+			});
+
+			function handleProductDetailLink() {
+				handleDetailLinkClick(".link-detail-product", "#xlargeModal");
+			}
+
+			function handleCustomerDetailLink() {
+				handleDetailLinkClick(".link-detail-customer", "#detailModal");
+			}
+
+
+		</script>
+
+		<script type="text/javascript" th:src="@{/assets/js/plugins/raty-js/jquery.raty.js}"></script>
+
+		<!-- Page JS Code -->
+		<script type="text/javascript" th:src="@{/assets/js/pages/be_comp_rating.min.js}"></script>
+
+
+
+</body>

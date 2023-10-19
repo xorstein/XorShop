@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+	<div th:fragment="content" th:remove="tag">
+		<div class="col-sm-6 col-xxl-3">
+			<!-- Pending Orders -->
+			<div class="block block-rounded d-flex flex-column h-100 mb-0">
+				<div
+					class="block-content block-content-full flex-grow-1 d-flex justify-content-between align-items-center">
+					<dl class="">
+
+						<h5 class="fw-bold">Param&eacute;tres</h5>
+
+						<div>Pays: <b>[[${summary.totalCountries}]]</b></div>
+						<div><a th:href="@{/settings#countries}">G&eacute;rer les pays</a></div>
+						<div>&Eacute;tats/Provinces: <b>[[${summary.totalStates}]]</b></div>
+						<div><a th:href="@{/settings#states}">G&eacute;rer les &eacute;tats</a></div>
+						<div>Serveur de messagerie: <b>[[${summary.mailServer}]]</b></div>
+						<div><a th:href="@{/settings#mailServer}">Configurer le service de messagerie</a></div>
+
+					</dl>
+
+					<div class="item item-rounded-lg bg-body-light">
+						<i class="fa fa-cogs fs-3 text-primary"></i>
+					</div>
+
+				</div>
+				<div class="bg-body-light rounded-bottom">
+					<a class="block-content block-content-full block-content-sm fs-sm fw-medium d-flex align-items-center justify-content-between"
+						th:href="@{/settings}">
+						<span>Plus de d&eacute;tails</span>
+						<i class="fa fa-arrow-alt-circle-right ms-1 opacity-25 fs-base"></i>
+					</a>
+				</div>
+			</div>
+			<!-- END Pending Orders -->
+		</div>
+	</div>
+</body>
+
+</html>

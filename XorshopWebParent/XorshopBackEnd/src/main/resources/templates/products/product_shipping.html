@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+  <div th:fragment="content" th:remove="tag">
+    <h4 class="content-heading">D&eacute;tails d'expéditions</h4>
+    <div class="block-content">
+      <div class="row">
+        <div class="col-xl-12">
+          <p>Les informations suivantes sont importantes pour calculer les frais d'expédition du produit.</p>
+          <p>Les dimensions <strong>(L, L, H, P)</strong> correspondent à la boîte utilisée pour emballer le produit -
+            et non aux dimensions du produit.</p>
+        </div>
+      </div>
+    </div>
+    <div class="block block-rounded">
+      <div class="block-header block-header-default">
+        <h3 class="block-title mx-mb-n5">Longueur </h3>
+      </div>
+      <div class="block-content">
+        <div class="mb-12">
+          <input type="number" class="form-control" th:field="*{length}" />
+        </div>
+      </div>
+      <br />
+      <div class="block-header block-header-default">
+        <h3 class="block-title mx-mb-n5">Largeur</h3>
+      </div>
+      <div class="block-content">
+        <div class="mb-12">
+          <input type="number" class="form-control" th:field="*{width}" />
+        </div>
+      </div>
+      <br />
+      <div class="block-header block-header-default">
+        <h3 class="block-title mx-mb-n5">Hauteur</h3>
+      </div>
+      <div class="block-content">
+        <div class="mb-12">
+          <input type="number" class="form-control" th:field="*{height}" />
+        </div>
+      </div>
+      <br />
+      <div class="block-header block-header-default">
+        <h3 class="block-title mx-mb-n5">Poids</h3>
+      </div>
+      <div class="block-content">
+        <div class="mb-12">
+          <input type="number" class="form-control" th:field="*{weight}" />
+        </div>
+      </div>
+      <br />
+    </div>
+  </div>
+</body>
+
+</html>

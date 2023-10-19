@@ -1,0 +1,312 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<th th:replace="fragments ::page_Head(' Panneau d&#146;administration de contr&ocirc;le')" />
+
+<body>
+	<!-- Page Container -->
+	<!--
+      Available classes for #page-container:
+      GENERIC
+        'remember-theme'                            Remembers active color theme and dark mode between pages using localStorage when set through
+                                                    - Theme helper buttons [data-toggle="theme"],
+                                                    - Layout helper buttons [data-toggle="layout" data-action="dark_mode_[on/off/toggle]"]
+                                                    - ..and/or One.layout('dark_mode_[on/off/toggle]')
+         SIDEBAR & SIDE OVERLAY
+        'sidebar-r'                                 Right Sidebar and left Side Overlay (default is left Sidebar and right Side Overlay)
+        'sidebar-mini'                              Mini hoverable Sidebar (screen width > 991px)
+        'sidebar-o'                                 Visible Sidebar by default (screen width > 991px)
+        'sidebar-o-xs'                              Visible Sidebar by default (screen width < 992px)
+        'sidebar-dark'                              Dark themed sidebar
+        'side-overlay-hover'                        Hoverable Side Overlay (screen width > 991px)
+        'side-overlay-o'                            Visible Side Overlay by default
+        'enable-page-overlay'                       Enables a visible clickable Page Overlay (closes Side Overlay on click) when Side Overlay opens
+        'side-scroll'                               Enables custom scrolling on Sidebar and Side Overlay instead of native scrolling (screen width > 991px)
+         HEADER
+        ''                                          Static Header if no class is added
+        'page-header-fixed'                         Fixed Header
+         HEADER STYLE
+        ''                                          Light themed Header
+        'page-header-dark'                          Dark themed Header
+        MAIN CONTENT LAYOUT
+        ''                                          Full width Main Content if no class is added
+        'main-content-boxed'                        Full width Main Content with a specific maximum width (screen width > 1200px)
+        'main-content-narrow'                       Full width Main Content with a percentage width (screen width > 1200px)
+         DARK MODE
+        'sidebar-dark page-header-dark dark-mode'   Enable dark mode (light sidebar/header is not supported with dark mode)
+    -->
+	<div id="page-container"
+		class="sidebar-o sidebar-dark enable-page-overlay side-scroll page-header-fixed main-content-boxed">
+		<!-- Side Overlay-->
+		<aside th:replace="navigation ::Aside" />
+		<!-- END Side Overlay -->
+		<!-- Sidebar -->
+		<!--
+          Sidebar Mini Mode - Display Helper classes
+
+          Adding 'smini-hide' class to an element will make it invisible (opacity: 0) when the sidebar is in mini mode
+          Adding 'smini-show' class to an element will make it visible (opacity: 1) when the sidebar is in mini mode
+              If you would like to disable the transition animation, make sure to also add the 'no-transition' class to your element
+
+          Adding 'smini-hidden' to an element will hide it when the sidebar is in mini mode
+          Adding 'smini-visible' to an element will show it (display: inline-block) only when the sidebar is in mini mode
+          Adding 'smini-visible-block' to an element will show it (display: block) only when the sidebar is in mini mode
+      -->
+		<nav th:replace="navigation ::Navigation" />
+		<!-- END Sidebar -->
+
+		<!-- Header -->
+		<header th:replace="navigation ::Header" />
+		<!-- END Header -->
+		<!-- Main Container -->
+		<main id="main-container">
+			<!-- Page Content -->
+			<div class="content">
+				<!-- Hero -->
+				<div class="content mb-4">
+					<div
+						class="d-flex flex-column flex-md-row justify-content-md-between align-items-md-center py-2 text-center text-md-start">
+						<div class="flex-grow-1 mb-1 mb-md-0">
+							<h1 class="h3 fw-bold mb-1">
+								Panneau d&#146;administration de contr&ocirc;le
+							</h1>
+							<h2 class="h6 fw-medium fw-medium text-muted mb-0">
+								Bienvenue <a class="fw-semibold" href="#" sec:authentication="principal.Pseudo"></a>,
+								tout semble parfait.
+							</h2>
+						</div>
+						<th:block sec:authorize="hasAuthority('Admin')">
+							<div class="mt-3 mt-md-0 ms-md-3 space-x-1">
+								<a class="btn btn-sm btn-alt-secondary space-x-1" th:href="@{/settings}">
+									<i class="fa fa-cogs opacity-50"></i>
+									<span>Param&eacute;tres</span>
+								</a>
+
+							</div>
+						</th:block>
+
+					</div>
+				</div>
+				<!-- END Hero -->
+				<!-- Overview -->
+				<div class="row items-push">
+					<th:block sec:authorize="hasAuthority('Admin')">
+						<div th:replace="dashboard/general_info :: content" />
+						<div th:replace="dashboard/setting_summary :: content" />
+						<div th:replace="dashboard/user_summary :: content" />
+						<div th:replace="dashboard/section_summary :: content" />
+
+					</th:block>
+
+					<th:block sec:authorize="hasAnyAuthority('Admin', 'Editeur')">
+						<div th:replace="dashboard/category_summary :: content" />
+						<div th:replace="dashboard/brand_summary :: content" />
+					</th:block>
+
+					<th:block sec:authorize="hasAnyAuthority('Admin', 'Editeur', 'Vendeur', 'Livreur')">
+						<div th:replace="dashboard/product_summary :: content" />
+					</th:block>
+					<th:block sec:authorize="hasAnyAuthority('Admin', 'Salesperson', 'Shipper')">
+						<div th:replace="dashboard/order_summary :: content" />
+					</th:block>
+					<th:block sec:authorize="hasAnyAuthority('Admin', 'Vendeur')">
+						<div th:replace="dashboard/customer_summary :: content" />
+						<div th:replace="dashboard/shipping_rate_summary :: content" />
+					</th:block>
+					<th:block sec:authorize="hasAnyAuthority('Admin', 'Assistant')">
+						<div th:replace="dashboard/question_summary :: content" />
+						<div th:replace="dashboard/review_summary :: content" />
+					</th:block>
+					<th:block sec:authorize="hasAnyAuthority('Admin', 'Editeur')">
+						<div th:replace="dashboard/article_summary :: content" />
+						<div th:replace="dashboard/menu_summary :: content" />
+					</th:block>
+				</div>
+				<!-- Quick Overview -->
+				<th:block sec:authorize="hasAuthority('Admin')">
+				<div class="row">
+					<div class="col-6 col-lg-3">
+						<a class="block block-rounded block-link-shadow text-center" href="be_pages_ecom_orders.html">
+							<div class="block-content block-content-full">
+								<div class="fs-2 fw-semibold text-primary">[[${summary.processingOrdersCount}]]</div>
+							</div>
+							<div class="block-content py-2 bg-body-light">
+								<p class="fw-medium fs-sm text-muted mb-0">
+									Les ordres en attente
+								</p>
+							</div>
+						</a>
+					</div>
+					<div class="col-6 col-lg-3">
+						<a class="block block-rounded block-link-shadow text-center" href="javascript:void(0)">
+							<div class="block-content block-content-full">
+								<div class="fs-2 fw-semibold text-success"><div th:replace="fragments :: format_Pourcent(${summary.profitPourcentToday})">
+													</div> </div>
+							</div>
+							<div class="block-content py-2 bg-body-light">
+								<p class="fw-medium fs-sm text-muted mb-0">
+									Marge d'aujourd'hui
+								</p>
+							</div>
+						</a>
+					</div>
+					<div class="col-6 col-lg-3">
+						<a class="block block-rounded block-link-shadow text-center" href="javascript:void(0)">
+							<div class="block-content block-content-full">
+								<div class="fs-2 fw-semibold text-dark">[[${summary.newOrdersTodayCount}]]</div>
+							</div>
+							<div class="block-content py-2 bg-body-light">
+								<p class="fw-medium fs-sm text-muted mb-0">
+									Commandes aujourd'hui
+								</p>
+							</div>
+						</a>
+					</div>
+					<div class="col-6 col-lg-3">
+						<a class="block block-rounded block-link-shadow text-center" href="javascript:void(0)">
+							<div class="block-content block-content-full">
+								<div class="fs-2 fw-semibold text-dark"><div th:replace="fragments :: format_currency(${summary.gainToday})">
+													</div></div>
+							</div>
+							<div class="block-content py-2 bg-body-light">
+								<p class="fw-medium fs-sm text-muted mb-0">
+									Gains aujourd'hui
+								</p>
+							</div>
+						</a>
+					</div>
+				</div>
+				<!-- END Quick Overview -->
+
+				<!-- Orders Overview -->
+				<div class="block block-rounded">
+					<div class="block-header block-header-default">
+						<h3 class="block-title">Aperçu des commandes</h3>
+						<div class="block-options">
+							<button type="button" class="btn-block-option" data-toggle="block-option"
+								data-action="state_toggle" data-action-mode="demo">
+								<i class="si si-refresh"></i>
+							</button>
+						</div>
+					</div>
+					<div class="block-content block-content-full">
+						<!-- Chart.js is initialized in js/pages/be_pages_ecom_dashboard.min.js which was auto compiled from _js/pages/be_pages_ecom_dashboard.js) -->
+						<!-- For more info and examples you can check out http://www.chartjs.org/docs/ -->
+						<div style="height: 400px;"><canvas id="js-chartjs-overview"></canvas></div>
+					</div>
+				</div>
+				<!-- END Orders Overview -->
+               </th:block>
+				<!-- Top Products and Latest Orders -->
+				<th:block sec:authorize="hasAuthority('Admin')">
+					<div class="row items-push">
+						<div class="col-xl-6">
+							<!-- Top Products -->
+							<div class="block block-rounded h-100 mb-0">
+								<div class="block-header block-header-default">
+									<h3 class="block-title">Top Produits</h3>
+									<div class="block-options">
+										<button type="button" class="btn-block-option" data-toggle="block-option"
+											data-action="state_toggle" data-action-mode="demo">
+											<i class="si si-refresh"></i>
+										</button>
+									</div>
+								</div>
+								<div class="block-content">
+									<table class="table table-borderless table-striped table-vcenter fs-sm">
+										<tbody>
+											<tr th:each="product :${listTopRaitingProduct}">
+												<td class="text-center" style="width: 100px;">
+													<a class="fw-semibold" href="#">PID.[[${product.id}]]</a>
+												</td>
+												<td>
+													<a href="#">[[${product.truncateName()}]]</a>
+												</td>
+												<td class="d-none d-sm-table-cell text-center">
+
+													<!--<i class="fa fa-star text-warning"></i>
+												<i class="far fa-star-half-stroke text-warning"></i>
+												<i class="far fa-star text-warning"></i>-->
+													<span
+														th:each="starNum : ${#numbers.sequence(1, product.averageRating)}">
+														<i class="fa fa-star text-warning"></i>
+													</span>
+													<!--												<span th:each="starNum : ${#numbers.sequence(1, product.averageRating)}">
+													<i class="fa fa-star text-warning"></i>
+												</span>-->
+													<span th:if="${5 - product.averageRating > 0}">
+														<i class="far fa-star-half-stroke text-warning"></i>
+													</span>
+
+												</td>
+											</tr>
+
+										</tbody>
+									</table>
+								</div>
+							</div>
+							<!-- END Top Products -->
+						</div>
+						<div class="col-xl-6">
+							<!-- Latest Orders -->
+							<div class="block block-rounded h-100 mb-0">
+								<div class="block-header block-header-default">
+									<h3 class="block-title">DERNIÈRES COMMANDES</h3>
+									<div class="block-options">
+										<button type="button" class="btn-block-option" data-toggle="block-option"
+											data-action="state_toggle" data-action-mode="demo">
+											<i class="si si-refresh"></i>
+										</button>
+									</div>
+								</div>
+								<div class="block-content">
+									<table class="table table-borderless table-striped table-vcenter">
+										<tbody>
+											<tr th:each="order : ${listOrders}">
+												<td class="fw-semibold text-center fs-sm" style="width: 100px;">
+													<a href="#">ORD.[[${order.id}]]</a>
+												</td>
+												<td class="d-none d-sm-table-cell fs-sm">
+													<a href="#">[[${order.customer.fullName}]]</a>
+												</td>
+												<td>
+													<div th:replace="fragments :: OrderStatus(${order.status})"></div>
+												</td>
+												<td class="fw-medium fs-sm text-end">
+													<div th:replace="fragments :: format_currency(${order.total})">
+													</div>
+												</td>
+											</tr>
+
+										</tbody>
+									</table>
+								</div>
+							</div>
+							<!-- END Latest Orders -->
+						</div>
+					</div>
+				</th:block>
+				<!-- END Top Products and Latest Orders -->
+			</div>
+			<!-- END Page Content -->
+		</main>
+		<!-- END Main Container -->
+
+		<!-- Footer -->
+		<footer th:replace="fragments ::footer" />
+		<!-- END Footer -->
+	</div>
+	<!-- END Page Container -->
+
+	<!--
+        OneUI JS
+
+        Core libraries and functionality
+        webpack is putting everything together at assets/_js/main/app.js
+    -->
+	<script type="text/javascript" th:src="@{/assets/js/oneui.app.min.js}"></script>
+	<!-- Page JS Plugins -->
+	<script th:src="@{/assets/js/plugins/chart.js/chart.umd.js}"></script>
+
+	<!-- Page JS Code -->
+	<script th:src="@{/assets/js/pages/be_pages_ecom_dashboard.min.js}"></script>
+</body>

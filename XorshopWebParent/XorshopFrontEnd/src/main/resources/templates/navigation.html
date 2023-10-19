@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<body>
+	<header th:fragment="Navigation" class="header-section">
+		<div class="superNav border-bottom py-2 bg-light">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 centerOnMobile">
+						<select class="me-3 border-0 bg-light">
+							<option value="en-us">FR-fr</option>
+						</select>
+						<span class="d-none d-lg-inline-block d-md-inline-block d-sm-inline-block d-xs-none me-3"><i
+								class="fas fa-envelope me-1 text-warning"></i><strong>[[${MAIL_INFO}]]</strong></span>
+						<span class="me-3"><i class="fas fa-phone me-1 text-warning"></i>
+							<strong>[[${PHONE_NUMBER}]]</strong></span>
+					</div>
+					<div
+						class="col-lg-6 col-md-6 col-sm-12 col-xs-12 d-none d-lg-block d-md-block-d-sm-block d-xs-none text-end">
+						<th:block th:each="headerMenu : ${headerMenuTopItems}">
+							<span class="me-3"><i th:class="'text-warning me-1 ' + ${headerMenu.classCss}"></i><a
+									class="text-muted"
+									th:href="@{'/m/' + ${headerMenu.alias}}">[[${headerMenu.title}]]</a></span>
+						</th:block>
+
+					</div>
+				</div>
+			</div>
+		</div>
+		<nav class="navbar navbar-expand-lg bg-white sticky-top navbar-light p-3 shadow-sm">
+			<div class="container">
+				<a class="navbar-brand" th:href="@{/}"><img th:src="@{${S3_BASE_URI + SITE_LOGO}}" width="125px"></a>
+				<button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+					data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
+					aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+
+				<div class="mx-auto my-3 d-lg-none d-sm-block d-xs-block">
+					<div th:replace="fragments ::search_form_header" />
+				</div>
+				<div class=" collapse navbar-collapse" id="navbarNavDropdown">
+					<div class="ms-auto d-none d-lg-block">
+						<div th:replace="fragments ::search_form_header" />
+					</div>
+					<ul class="navbar-nav ms-auto ">
+						<th:block th:each="headerMenu : ${headerMenuItems}">
+
+							<li class="nav-item">
+								<a  class="nav-link mx-1 text-uppercase" th:if="${headerMenu.title eq 'Accueil'}"  th:classappend="${( (actiflink==0) or (actiflink==null) ) ? 'active':''}"
+									th:href="@{/}">
+									[[${headerMenu.title}]]
+								</a>
+								<a class="nav-link mx-1 text-uppercase" th:unless="${headerMenu.title eq 'Accueil'}" th:classappend="${ (actiflink == headerMenu.id ) ? 'active':''}"
+									th:href="@{'/m/' + ${headerMenu.alias}}">
+									[[${headerMenu.title}]]
+								</a>
+
+							</li>
+						</th:block>
+					</ul>
+					<ul class="navbar-nav ms-auto ">
+						<th:block sec:authorize="!isAuthenticated()">
+							<li class="nav-item">
+								<a class="nav-link mx-2 text-uppercase" th:href="@{/cart}"><i
+										class="fas fa-shopping-cart text-warning me-1"></i></a>
+							</li>
+
+						</th:block>
+						<th:block sec:authorize="isAuthenticated()">
+							<li class="nav-item d-none d-md-flex mt-1">
+
+								<i class="fas fa-shopping-cart text-warning mt-2"></i> <a th:href="@{/cart}"><span
+										class="cart-basket d-flex align-items-center justify-content-center "
+										id="total_number_product" style="margin-right: 10px;">
+										0
+									</span></a>
+
+
+
+							</li>
+
+						</th:block>
+
+						<th:block sec:authorize="!isAuthenticated()">
+							<li class="nav-item dropdown d-md-flex ml-md-auto">
+								<a href="" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"> <i
+										class="far fa-user p-1"></i>Se
+									connecter </a>
+								<ul class="dropdown-menu">
+									<li><a class="dropdown-item" th:href="@{/login}"><i
+												class="text-warning fas fa-sign-in-alt p-1"></i>Se connecter</a></li>
+									<li>
+										<hr class="dropdown-divider">
+									</li>
+									<li class="ml-auto"><a class="dropdown-item" th:href="@{/register}"><i
+												class="text-warning fas fa-user-circle p-1"></i>S'inscrire</a></li>
+								</ul>
+							</li>
+						</th:block>
+						<th:block sec:authorize="isAuthenticated()">
+							<li class="nav-item">
+								<div class="d-flex flex-row d-none d-md-flex mr-auto">
+									<img th:src="@{/assets/media/images/avatar0.jpg}" class="rounded-circle mt-1"
+										width="30">
+								</div>
+							</li>
+							<li class="nav-item dropdown">
+								<a class="nav-link dropdown-toggle" data-bs-toggle="dropdown"
+									sec:authentication="principal.fullName"> <i class="far fa-user p-1"></i> </a>
+								<ul class="dropdown-menu custom-ml-lg1">
+									<li><a class="dropdown-item" th:href="@{/account_details}"> <i
+												class="text-warning fas fa-user p-1"></i>Mon compte</a></li>
+									<li><a class="dropdown-item" th:href="@{/address_book}"> <i
+												class="text-warning fas fa-map-marker p-1"></i>Mes adresses</a></li>
+									<li><a class="dropdown-item" th:href="@{/orders}"> <i
+												class="text-warning fas fa-list-alt p-1"></i>Mes commandes</a></li>
+									<li><a class="dropdown-item" th:href="@{/cart}"> <i
+												class="text-warning fas fa-shopping-cart p-1"></i>Mon panier</a></li>
+									<li><a class="dropdown-item" th:href="@{/reviews}"> <i
+												class="text-warning fas fa-comment p-1"></i>Mes avis</a></li>
+									<li>
+									<li><a class="dropdown-item" th:href="@{/customer/questions}"> <i
+												class="text-warning fas fa-question-circle p-1"></i>Mes questions</a>
+									</li>
+									<li>
+
+										<hr class="dropdown-divider">
+									</li>
+									<li><a class="dropdown-item" th:href="@{/logout}"><i
+												class="text-warning fas fa-sign-out-alt p-1"></i>D&eacute;connecter</a>
+									</li>
+								</ul>
+							</li>
+						</th:block>
+					</ul>
+				</div>
+			</div>
+		</nav>
+	</header>
+
+	<div th:fragment="footer" class="footer">
+
+
+</body>
+
+</html>

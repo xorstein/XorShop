@@ -1,0 +1,273 @@
+<!doctype html>
+<th th:replace="fragments ::page_Head('Gestion des produits')" />
+<link rel="stylesheet" type="text/css" th:href="@{/assets/js/plugins/simplemde/simplemde.min.css}">
+<link rel="stylesheet" th:href="@{/assets/richtext/richtext.min.css}" />
+<script th:src="@{/assets/richtext/jquery.richtext.min.js}"></script>
+
+<body>
+  <!-- Page Container -->
+  <!--
+      Available classes for #page-container:
+
+      GENERIC
+
+        'remember-theme'                            Remembers active color theme and dark mode between pages using localStorage when set through
+                                                    - Theme helper buttons [data-toggle="theme"],
+                                                    - Layout helper buttons [data-toggle="layout" data-action="dark_mode_[on/off/toggle]"]
+                                                    - ..and/or One.layout('dark_mode_[on/off/toggle]')
+
+      SIDEBAR & SIDE OVERLAY
+
+        'sidebar-r'                                 Right Sidebar and left Side Overlay (default is left Sidebar and right Side Overlay)
+        'sidebar-mini'                              Mini hoverable Sidebar (screen width > 991px)
+        'sidebar-o'                                 Visible Sidebar by default (screen width > 991px)
+        'sidebar-o-xs'                              Visible Sidebar by default (screen width < 992px)
+        'sidebar-dark'                              Dark themed sidebar
+
+        'side-overlay-hover'                        Hoverable Side Overlay (screen width > 991px)
+        'side-overlay-o'                            Visible Side Overlay by default
+
+        'enable-page-overlay'                       Enables a visible clickable Page Overlay (closes Side Overlay on click) when Side Overlay opens
+
+        'side-scroll'                               Enables custom scrolling on Sidebar and Side Overlay instead of native scrolling (screen width > 991px)
+
+      HEADER
+
+        ''                                          Static Header if no class is added
+        'page-header-fixed'                         Fixed Header
+
+      HEADER STYLE
+
+        ''                                          Light themed Header
+        'page-header-dark'                          Dark themed Header
+
+      MAIN CONTENT LAYOUT
+
+        ''                                          Full width Main Content if no class is added
+        'main-content-boxed'                        Full width Main Content with a specific maximum width (screen width > 1200px)
+        'main-content-narrow'                       Full width Main Content with a percentage width (screen width > 1200px)
+
+      DARK MODE
+
+        'sidebar-dark page-header-dark dark-mode'   Enable dark mode (light sidebar/header is not supported with dark mode)
+    -->
+  <div id="page-container"
+    class="sidebar-o sidebar-dark enable-page-overlay side-scroll page-header-fixed main-content-narrow">
+    <!-- Side Overlay-->
+    <aside th:replace="navigation ::Aside" />
+    <!-- END Side Overlay -->
+
+    <!-- Sidebar -->
+    <!--
+          Sidebar Mini Mode - Display Helper classes
+
+          Adding 'smini-hide' class to an element will make it invisible (opacity: 0) when the sidebar is in mini mode
+          Adding 'smini-show' class to an element will make it visible (opacity: 1) when the sidebar is in mini mode
+              If you would like to disable the transition animation, make sure to also add the 'no-transition' class to your element
+
+          Adding 'smini-hidden' to an element will hide it when the sidebar is in mini mode
+          Adding 'smini-visible' to an element will show it (display: inline-block) only when the sidebar is in mini mode
+          Adding 'smini-visible-block' to an element will show it (display: block) only when the sidebar is in mini mode
+      -->
+    <nav th:replace="navigation ::Navigation" />
+    <!-- END Sidebar -->
+
+    <!-- Header -->
+    <header th:replace="navigation ::Header" />
+    <!-- END Header -->
+
+    <!-- Main Container -->
+    <main id="main-container">
+      <!-- Hero -->
+      <div class="bg-body-light">
+        <div class="content content-full">
+          <div class="d-flex flex-column flex-sm-row justify-content-sm-between align-items-sm-center py-2">
+            <div class="flex-grow-1">
+              <h1 class="h3 fw-bold mb-1">
+                Produits
+              </h1>
+              <h2 class="fs-base lh-base fw-medium text-muted mb-0">
+                [[${PageTitle}]]
+              </h2>
+            </div>
+            <nav class="flex-shrink-0 mt-3 mt-sm-0 ms-sm-3" aria-label="breadcrumb">
+              <ol class="breadcrumb breadcrumb-alt">
+                <li class="breadcrumb-item">
+                  <a class="link-fx" href="javascript:void(0)">Gestion de produits</a>
+                </li>
+                <li class="breadcrumb-item" aria-current="page">
+                  Produits <a class="font-w600" th:href="@{/products}"><i
+                      class="fab fa-product-hunt fa-1x text-primary"></i></a>
+                </li>
+              </ol>
+            </nav>
+          </div>
+        </div>
+      </div>
+      <!-- END Hero -->
+      <!-- Page Content -->
+      <div class="content">
+        <div class="row">
+          <div class="col-12">
+            <!-- Dynamic Table with Export Buttons -->
+            <div class="block block-rounded">
+              <div class="block-header block-header-default">
+                <h3 class="block-title"> [[${PageTitle}]] <a class="font-w600"
+                    th:href="@{/products}"><small>Retour</small></a> </h3>
+              </div>
+              <div class="block-content block-content-full">
+
+                <div class="row">
+                  <form role="form" method="post" onsubmit="return CheckUnique(this);" enctype="multipart/form-data"
+                    th:action="@{/products/save}" th:object="${product}">
+                    <input type="hidden" th:field="*{id}">
+                    <input th:if="${product.category != null}" type="hidden" id="categoryId"
+                      th:value="${product.category.id}" />
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs nav-tabs-block" id="myTab" role="tablist">
+                      <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="overview-tab" data-bs-toggle="tab"
+                          data-bs-target="#overview" type="button" role="tab" aria-controls="overview"
+                          aria-selected="true">G&eacute;n&eacute;ral</button>
+                      </li>
+                      <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="description-tab" data-bs-toggle="tab" data-bs-target="#description"
+                          type="button" role="tab" aria-controls="description"
+                          aria-selected="false">Description</button>
+                      </li>
+                      <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="images-tab" data-bs-toggle="tab" data-bs-target="#images"
+                          type="button" role="tab" aria-controls="images" aria-selected="false">Images</button>
+                      </li>
+                      <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="details-tab" data-bs-toggle="tab" data-bs-target="#details"
+                          type="button" role="tab" aria-controls="details" aria-selected="false">D&eacute;tails</button>
+                      </li>
+                      <li class="nav-item ms-auto" role="presentation">
+                        <button class="nav-link" id="shipping-tab" data-bs-toggle="tab" data-bs-target="#shipping"
+                          type="button" role="tab" aria-controls="shipping" aria-selected="false"> <i
+                            class="fa fa-truck-moving"></i></button>
+                      </li>
+                    </ul>
+                    <!-- Tab panes -->
+                    <div class="tab-content">
+                      <div class="tab-pane active" id="overview" role="tabpanel" aria-labelledby="overview-tab">
+                        <div th:replace="products/product_overview :: content" />
+                      </div>
+                      <div class="tab-pane" id="description" role="tabpanel" aria-labelledby="description-tab">
+                         <th:block th:if="${isReadOnlyForSalesperson}">
+							  <div th:replace="products/product_description_readonly :: content" />
+                         </th:block>
+                         <th:block th:unless="${isReadOnlyForSalesperson}">
+							  <div th:replace="products/product_description :: content" />
+                         </th:block>
+                       
+                      </div>
+                      <div class="tab-pane" id="images" role="tabpanel" aria-labelledby="images-tab">
+                      
+                         <th:block th:if="${isReadOnlyForSalesperson}">
+							  <div th:replace="products/product_images_readonly :: content" />
+                         </th:block>
+                         <th:block th:unless="${isReadOnlyForSalesperson}">
+							  <div th:replace="products/product_images :: content" />
+                         </th:block>
+                      </div>
+                      <div class="tab-pane" id="details" role="tabpanel" aria-labelledby="details-tab">
+                       
+                         <th:block th:if="${isReadOnlyForSalesperson}">
+							  <div th:replace="products/product_details_readonly :: content" />
+                         </th:block>
+                         <th:block th:unless="${isReadOnlyForSalesperson}">
+							  <div th:replace="products/product_details :: content" />
+							   <div class="col-lg-8 space-y-2">
+                          <input type="button" class="btn btn-secondary" value="Add More Detail"
+                            onclick="addNextDetailSection()" />
+                        </div>
+                         </th:block>
+                        </br>
+                       
+                      </div>
+                      <div class="tab-pane" id="shipping" role="tabpanel" aria-labelledby="shipping-tab">
+                       
+                         <th:block th:if="${isReadOnlyForSalesperson}">
+							  <div th:replace="products/product_shipping_readonly :: content" />
+                         </th:block>
+                         <th:block th:unless="${isReadOnlyForSalesperson}">
+							 <div th:replace="products/product_shipping:: content" />
+                         </th:block>
+                      </div>
+                    </div>
+                    </br>
+                    <div class="col-lg-12  mb-5">
+                      <div class="col-md-6 offset-md-5">
+                        <button type="submit" class="btn btn-success me-1 mb-3">
+                          <i class="fa fa-fw fa-check me-1"></i> Enregistrer
+                        </button>
+                        <button type="button" class="btn btn-info me-1 mb-3" id="buttonCancel">
+                          <i class="fa fa-undo me-1"></i> Annuler
+                        </button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <!-- END Dynamic Table with Export Buttons -->
+
+      <!-- END Page Content -->
+    </main>
+    <!-- END Main Container -->
+    <!-- Modal -->
+    <div th:replace="fragments ::modalDuplicate" />
+    <!-- END Modal -->
+    <!-- Footer -->
+    <!-- Footer -->
+    <footer th:replace="fragments ::footer" />
+    <!-- END Footer -->
+    <!-- END Footer -->
+  </div>
+  <!-- END Page Container -->
+
+  <!--
+        OneUI JS
+
+        Core libraries and functionality
+        webpack is putting everything together at assets/_js/main/app.js
+    -->
+  <script stype="text/javascript" th:src="@{/assets/js/oneui.app.min.js}"></script>
+  <script th:src="@{/assets/js/common_form.js}"></script>
+
+
+  <!-- Page JS Plugins -->
+ 
+  <!--<script type="text/javascript" th:src="@{/assets/js/plugins/simplemde/simplemde.min.js}"></script>-->
+
+   <!-- Page JS Plugins -->
+  <!--<script type="text/javascript" th:src="@{/assets/js/plugins/simplemde/simplemde.min.js}"></script>-->
+  <!-- Page JS Helpers (CKEditor + SimpleMDE plugins) -->
+
+
+  <!-- Page JS Helpers (CKEditor + SimpleMDE plugins) -->
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      MAX_FILE_SIZE = 502400 //500KB 
+      moduleURL = "[[@{/products}]]";
+      brandModuleURL = "[[@{/brands}]]";
+      defaultImageThumbnailSrc = "[[@{/assets/media/images/image-thumbnail.png}]]";
+      ChekUnniqueUrl = "[[@{/products/check_unique}]]";
+      $("#fullDescription").richText();
+      $("#shortDescription").richText();
+    });        
+  </script>
+
+  <script stype="text/javascript" th:src="@{/assets/js/product_form_overview.js}"></script>
+  <script stype="text/javascript" th:src="@{/assets/js/product_form_images.js}"></script>
+  <script stype="text/javascript" th:src="@{/assets/js/product_form_details.js}"></script>
+</body>
+
+</html>

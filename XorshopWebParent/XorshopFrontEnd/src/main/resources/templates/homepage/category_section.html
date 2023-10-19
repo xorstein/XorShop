@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+	<th:block th:fragment="content" th:remove="tag">
+		<h2 class="title mt-4">[[${section.heading}]]</h2>
+		<p class="text-center" style="margin-top: -50px;">
+			[[${section.description}]]
+		</p>
+
+		<div class="row">
+			<div class="col p-1" th:each="catSection : ${section.categorySections}" th:with="cat = ${catSection.category}">
+				<div class="text-center">
+					<img th:src="@{${cat.CategoryImagePath}}" width="80" />
+				</div>
+				<div class="text-center breadcrumb-item">
+					<a th:href="@{'/c/' + ${cat.alias}}" th:text="${cat.name}"></a>
+				</div>
+			</div>
+		</div>		
+	</th:block>
+</body>
+</html>

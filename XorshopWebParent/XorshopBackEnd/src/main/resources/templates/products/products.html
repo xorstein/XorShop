@@ -1,0 +1,356 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<th th:replace="fragments ::page_HeadCSSSelect('Gestion des produits')" />
+
+<body>
+  <!-- Page Container -->
+  <!--
+      Available classes for #page-container:
+      GENERIC
+        'remember-theme'                            Remembers active color theme and dark mode between pages using localStorage when set through
+                                                    - Theme helper buttons [data-toggle="theme"],
+                                                    - Layout helper buttons [data-toggle="layout" data-action="dark_mode_[on/off/toggle]"]
+                                                    - ..and/or One.layout('dark_mode_[on/off/toggle]')
+         SIDEBAR & SIDE OVERLAY
+        'sidebar-r'                                 Right Sidebar and left Side Overlay (default is left Sidebar and right Side Overlay)
+        'sidebar-mini'                              Mini hoverable Sidebar (screen width > 991px)
+        'sidebar-o'                                 Visible Sidebar by default (screen width > 991px)
+        'sidebar-o-xs'                              Visible Sidebar by default (screen width < 992px)
+        'sidebar-dark'                              Dark themed sidebar
+        'side-overlay-hover'                        Hoverable Side Overlay (screen width > 991px)
+        'side-overlay-o'                            Visible Side Overlay by default
+        'enable-page-overlay'                       Enables a visible clickable Page Overlay (closes Side Overlay on click) when Side Overlay opens
+        'side-scroll'                               Enables custom scrolling on Sidebar and Side Overlay instead of native scrolling (screen width > 991px)
+         HEADER
+        ''                                          Static Header if no class is added
+        'page-header-fixed'                         Fixed Header
+         HEADER STYLE
+        ''                                          Light themed Header
+        'page-header-dark'                          Dark themed Header
+        MAIN CONTENT LAYOUT
+        ''                                          Full width Main Content if no class is added
+        'main-content-boxed'                        Full width Main Content with a specific maximum width (screen width > 1200px)
+        'main-content-narrow'                       Full width Main Content with a percentage width (screen width > 1200px)
+         DARK MODE
+        'sidebar-dark page-header-dark dark-mode'   Enable dark mode (light sidebar/header is not supported with dark mode)
+    -->
+  <div id="page-container"
+    class="sidebar-o sidebar-dark enable-page-overlay side-scroll page-header-fixed main-content-boxed">
+    <!-- Side Overlay-->
+    <aside th:replace="navigation ::Aside" />
+    <!-- END Side Overlay -->
+
+    <!-- Sidebar -->
+    <!--
+          Sidebar Mini Mode - Display Helper classes
+
+          Adding 'smini-hide' class to an element will make it invisible (opacity: 0) when the sidebar is in mini mode
+          Adding 'smini-show' class to an element will make it visible (opacity: 1) when the sidebar is in mini mode
+              If you would like to disable the transition animation, make sure to also add the 'no-transition' class to your element
+
+          Adding 'smini-hidden' to an element will hide it when the sidebar is in mini mode
+          Adding 'smini-visible' to an element will show it (display: inline-block) only when the sidebar is in mini mode
+          Adding 'smini-visible-block' to an element will show it (display: block) only when the sidebar is in mini mode
+      -->
+    <nav th:replace="navigation ::Navigation" />
+    <!-- END Sidebar -->
+    <!-- Header -->
+    <header th:replace="navigation ::Header" />
+    <!-- Form Styles -->
+
+    <!-- Page JS Plugins CSS -->
+
+
+
+
+
+
+    <!-- END Header -->
+
+    <!-- Main Container -->
+    <main id="main-container">
+      <!-- Hero -->
+      <!-- Hero -->
+      <div class="bg-body-light">
+        <div class="content content-full">
+          <div class="d-flex flex-column flex-sm-row justify-content-sm-between align-items-sm-center py-2">
+            <div class="flex-grow-1">
+              <h1 class="h3 fw-bold mb-1">
+                Produits
+              </h1>
+              <h2 class="fs-base lh-base fw-medium text-muted mb-0">
+                Cr&eacute;ation et gestion des produits
+              </h2>
+            </div>
+            <nav class="flex-shrink-0 mt-3 mt-sm-0 ms-sm-3" aria-label="breadcrumb">
+              <ol class="breadcrumb breadcrumb-alt">
+                <li class="breadcrumb-item">
+                  <a class="link-fx" href="javascript:void(0)">Gestion des produits</a>
+                </li>
+                <li class="breadcrumb-item" aria-current="page">
+                  Produits <a class="font-w600" th:href="@{/products/new}"> <i
+                      class="fab fa-product-hunt fa-1x text-primary"></i></a>
+                </li>
+              </ol>
+            </nav>
+          </div>
+        </div>
+      </div>
+      <!-- END Hero -->
+
+      <!-- Page Content -->
+      <div class="content">
+        <div class="row">
+          <div class="flex-fill ml-3">
+            <div th:if="${message!=null}" class="alert alert-success text-center">[[${message}]]</div>
+          </div>
+          <div class="col-12">
+            <!-- Dynamic Table with Export Buttons -->
+            <div class="block block-rounded">
+              <div class="block-header block-header-default">
+                <h3 class="block-title">Liste des produits <th:block
+                    sec:authorize="hasAnyAuthority('Admin', 'Editeur')"><small>Boutons d'exportation</small></th:block>
+                </h3>
+                <div class="block-options">
+                  <div class="dropdown">
+                    <button type="button" class="btn-block-option" id="dropdown-ecom-filters" data-bs-toggle="dropdown"
+                      aria-haspopup="true" aria-expanded="false">
+                      Filters <i class="fa fa-angle-down ms-1"></i>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-ecom-filters">
+                      <a class="dropdown-item d-flex align-items-center justify-content-between"
+                        href="javascript:void(0)">
+                        New
+                        <span class="badge bg-success rounded-pill">260</span>
+                      </a>
+                      <a class="dropdown-item d-flex align-items-center justify-content-between"
+                        href="javascript:void(0)">
+                        Out of Stock
+                        <span class="badge bg-danger rounded-pill">24</span>
+                      </a>
+                      <a class="dropdown-item d-flex align-items-center justify-content-between"
+                        href="javascript:void(0)">
+                        All
+                        <span class="badge bg-primary rounded-pill">14503</span>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="block-content block-content-full">
+                <div class="row items-push">
+                  <form th:action="@{/products/page/1}" id="searchForm">
+                    <input type="hidden" name="sortField" th:value="${sortField}" />
+                    <input type="hidden" name="sortDir" th:value="${sortDir}" />
+
+                    <div class="row">
+
+                      <div class="col-lg-4">
+                        <th:block sec:authorize="hasAnyAuthority('Admin', 'Editeur')">
+                          <p class="fs-sm text-muted">
+                            Extraire vos données en fonction de vos besoins spécifiques!
+                          </p>
+                        </th:block>
+                      </div>
+
+                      <div class="col-lg-8 col-xl-5">
+                        <th:block sec:authorize="hasAnyAuthority('Admin', 'Editeur')">
+                          <div class="mb-4 text-center">
+                            <a th:href="@{'/products/export/csv/' + ${keyword}}"><button type="button"
+                                class="btn btn-sm btn-alt-primary">
+                                <i class="fas fa-file-csv"></i> CSV
+                              </button></a>
+                            <a th:href="@{/products/new}"><button type="button" class="btn btn-sm btn-alt-secondary">
+                                <i class="fab fa-product-hunt fa-1x text-primary"></i> Ajouter
+                              </button></a>
+                          </div>
+                        </th:block>
+
+                        <div class="mb-4">
+                          <!-- Select2 (.js-select2 class is initialized in Helpers.jqSelect2()) -->
+                          <!-- For more info and examples you can check out https://github.com/select2/select2 -->
+                          <label class="form-label" for="one-ecom-product-category">Cat&eacute;gorie</label>
+                          <select class="js-select2 form-select" name="categoryId" id="dropdownCategory"
+                            style="width: 100%;" data-placeholder="Choose one..">
+                            <option value="0"></option>
+                            <!-- Required for data-placeholder attribute to work with Select2 plugin -->
+                            <th:block th:each="cat : ${listCategories}">
+                              <option th:value="${cat.id}" th:selected="(${categoryId} == ${cat.id})">[[${cat.name}]]
+                              </option>
+                            </th:block>
+                          </select>
+                        </div>
+                        <div class="mb-4">
+                          <div class="input-group">
+                            <input type="text" class="form-control form-control-alt" id="one-ecom-orders-search"
+                              name="keyword" th:value="${keyword}"
+                              placeholder="Tapez le mot cl&eacute; et cliquez sur entrer" required>
+                            <button type="submit" class="btn btn-alt-primary">
+                              <i class="fa fa-search opacity-50"></i>
+                            </button>
+                            <button type="button" class="btn btn-alt-primary" id="vider" onclick="clearFilter()">
+                              <i class="fa fa-eraser opacity-50"></i>
+                            </button>
+                          </div>
+
+                        </div>
+                      </div>
+                    </div>
+
+                  </form>
+                </div>
+              </div>
+              <!-- DataTables init on table by adding .js-dataTable-buttons class, functionality is initialized in js/pages/be_tables_datatables.min.js which was auto compiled from _js/pages/be_tables_datatables.js -->
+              <div class="table-responsive">
+                <table class="table table-bordered table-striped table-vcenter js-dataTable-buttons">
+                  <thead>
+                    <tr>
+
+                      <th class="text-center" style="width: 10%;">
+                        <th th:replace="fragments :: column_header_link('id','ID','tag')" />
+                      </th>
+                      <th class="text-center" style="width: 10%;">
+                        Image principale
+                      </th>
+                      <th class="text-center" style="width: 100px;">
+                        <th th:replace="fragments :: column_header_link('name','Nom du produit','tag')" />
+                      </th>
+
+
+                      <th class="d-none d-sm-table-cell text-center" style="width: 15%;">
+                        <th th:replace="fragments :: column_header_link('brand', 'Marque', 'tag')" />
+                      </th>
+                      </th>
+                      <th class="d-none d-sm-table-cell text-center" style="width: 15%;">
+                        <th th:replace="fragments :: column_header_link('category', 'Cat&eacute;gorie', 'tag')" />
+                      </th>
+                      </th>
+                      <th:block sec:authorize="hasAnyAuthority('Admin', 'Editeur')">
+                        <th class="d-none d-sm-table-cell text-center" style="width: 15%;">
+                          <th th:replace="fragments :: column_header_link('enabled','Blocage','tag')" />
+                        </th>
+                      </th:block>
+
+                      <th class="text-center" style="width: 15%;">
+                        Action
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr th:each="product :${listProducts}">
+                      <td class="text-center fs-sm" style="width: 10%;"> <a class="fw-semibold" href="#">
+                          <strong>PID.[[${product.id}]]</strong></td>
+                      <td class="text-center fs-sm" style="width: 15%;">
+                        <img th:src="@{${product.mainImagePath}}" class="img-fluid" style="width: 120px" />
+                      </td>
+                      <td class="text-left fw-semibold fs-sm" style="width: 25%;"> <a class="link-detail"
+                          th:href="@{'/products/detail/' + ${product.id}}"> [[${product.name}]]</a></td>
+                      <td class="text-left d-none d-sm-table-cell" style="width: 15%;">
+                        [[${product.brand.name}]]
+                      </td>
+                      <td class="text-left d-none d-sm-table-cell" style="width: 15%;">
+                        <span
+                          class="fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-info-light text-info">[[${product.category.name}]]</span>
+                      </td>
+                      <th:block sec:authorize="hasAnyAuthority('Admin', 'Editeur')">
+                        <td class="text-left d-none d-sm-table-cell" style="width: 15%;">
+                          <p class="text-center"> <a th:if="${product.enabled==true}" th:entityId="${product.id}"
+                              th:entitytName="${product.name}"
+                              th:href="@{'/products/' + ${product.id}+'/enabled/false'}"
+                              class="fas fa-circle link-enabled" style="color: #30c78d"></a> <a
+                              th:if="${product.enabled==false}" th:entityId="${product.id}"
+                              th:entitytName="${product.name}" th:href="@{'/products/' + ${product.id}+'/enabled/true'}"
+                              class="fas fa-circle link-enabled" style="color: #283747"></a></p>
+                        </td>
+                      </th:block>
+
+
+                      <td class="text-center fs-sm" style="width: 15%;">
+                        <div class="btn-group">
+
+
+                          <th:block
+                            th:replace="fragments :: ActionEntity('btn btn-sm btn-alt-secondary','Voir','link-detail',@{'/products/detail/' + ${product.id}},${product.id},${product.name},'fa fa-fw fa-eye')" />
+                          <th:block sec:authorize="hasAnyAuthority('Admin', 'Editeur','Vendeur')">
+                            <th:block
+                              th:replace="fragments :: ActionEntity('btn btn-sm btn-alt-success','Modifier','link-edited',@{'/products/edit/' + ${product.id}},${product.id},${product.name},'fa fa-fw fa-pencil-alt text-success')" />
+                          </th:block>
+
+                          <th:block sec:authorize="hasAnyAuthority('Admin', 'Editeur')">
+                            <th:block
+                              th:replace="fragments :: ActionEntity('btn btn-sm btn-alt-danger','Supprimer','link-deleted',@{'/products/delete/' + ${product.id}},${product.id},${product.name},'fa fa-fw fa-times text-danger')" />
+                          </th:block>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="row text-center">
+                <div class="col-md-5 offset-md-7">
+                  <div class="block block-rounded">
+                    <div class="block-content">
+                      <div th:replace="fragments :: pagination('products')" />
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <!-- END Dynamic Table with Export Buttons -->
+      <!-- END Page Content -->
+    </main>
+    <!-- END Main Container -->
+    <!-- Modal -->
+    <div th:replace="fragments ::modal" />
+    <!-- END Modal -->
+    <div class="modal fade" id="detailModal">
+      <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+
+        </div>
+      </div>
+    </div>
+    <!-- Footer -->
+    <footer th:replace="fragments ::footer" />
+    <!-- END Footer -->
+    <!--
+        OneUI JS
+        Core libraries and functionality
+        webpack is putting everything together at assets/_js/main/app.js
+    -->
+    <script type="text/javascript" th:src="@{/assets/js/oneui.app.min.js}"></script>
+    <script th:src="@{/assets/js/lib/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/assets/js/plugins/select2/js/select2.full.min.js}"></script>
+    <script type="text/javascript"
+      th:src="@{/assets/js/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js}"></script>
+    <!-- Page JS Plugins -->
+    <!-- jQuery (required for BS Datepicker + BS Maxlength + Select2 + Masked Inputs + Ion Range Slider plugins) -->
+
+    <script th:src="@{/assets/js/common_list.js}"></script>
+    <script type="text/javascript">
+      moduleURL = "[[@{/products}]]";
+      EntityName = "le produit";
+      EntityName2 = "produit";
+      $(document).ready(function () {
+        handleDefaultDetailLinkClick();
+        $("#dropdownCategory").on("change", function () {
+          $("#searchForm").submit();
+        });
+      });
+    </script>
+    <script>
+      var selectElement = document.getElementById('dropdownCategory');
+      var options = selectElement.getElementsByTagName('option');
+
+      for (var i = 0; i < options.length; i++) {
+        options[i].textContent = options[i].textContent.replace(/--/g, '\u00A0\u00A0'); // Replace with non-breaking spaces
+      }
+
+    </script>
+    <script>One.helpersOnLoad(['jq-maxlength', 'jq-select2']);</script>
+</body>

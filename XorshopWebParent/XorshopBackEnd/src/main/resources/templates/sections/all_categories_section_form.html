@@ -1,0 +1,204 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<th th:replace="fragments ::page_Head(${pageTitle})" />
+
+<body>
+	<!-- Page Container -->
+	<!--
+      Available classes for #page-container:
+      GENERIC
+        'remember-theme'                            Remembers active color theme and dark mode between pages using localStorage when set through
+                                                    - Theme helper buttons [data-toggle="theme"],
+                                                    - Layout helper buttons [data-toggle="layout" data-action="dark_mode_[on/off/toggle]"]
+                                                    - ..and/or One.layout('dark_mode_[on/off/toggle]')
+         SIDEBAR & SIDE OVERLAY
+        'sidebar-r'                                 Right Sidebar and left Side Overlay (default is left Sidebar and right Side Overlay)
+        'sidebar-mini'                              Mini hoverable Sidebar (screen width > 991px)
+        'sidebar-o'                                 Visible Sidebar by default (screen width > 991px)
+        'sidebar-o-xs'                              Visible Sidebar by default (screen width < 992px)
+        'sidebar-dark'                              Dark themed sidebar
+        'side-overlay-hover'                        Hoverable Side Overlay (screen width > 991px)
+        'side-overlay-o'                            Visible Side Overlay by default
+        'enable-page-overlay'                       Enables a visible clickable Page Overlay (closes Side Overlay on click) when Side Overlay opens
+        'side-scroll'                               Enables custom scrolling on Sidebar and Side Overlay instead of native scrolling (screen width > 991px)
+         HEADER
+        ''                                          Static Header if no class is added
+        'page-header-fixed'                         Fixed Header
+         HEADER STYLE
+        ''                                          Light themed Header
+        'page-header-dark'                          Dark themed Header
+        MAIN CONTENT LAYOUT
+        ''                                          Full width Main Content if no class is added
+        'main-content-boxed'                        Full width Main Content with a specific maximum width (screen width > 1200px)
+        'main-content-narrow'                       Full width Main Content with a percentage width (screen width > 1200px)
+         DARK MODE
+        'sidebar-dark page-header-dark dark-mode'   Enable dark mode (light sidebar/header is not supported with dark mode)
+    -->
+	<div id="page-container"
+		class="sidebar-o sidebar-dark enable-page-overlay side-scroll page-header-fixed main-content-boxed">
+		<!-- Side Overlay-->
+		<aside th:replace="navigation ::Aside" />
+		<!-- END Side Overlay -->
+		<!-- Sidebar -->
+		<!--
+          Sidebar Mini Mode - Display Helper classes
+
+          Adding 'smini-hide' class to an element will make it invisible (opacity: 0) when the sidebar is in mini mode
+          Adding 'smini-show' class to an element will make it visible (opacity: 1) when the sidebar is in mini mode
+              If you would like to disable the transition animation, make sure to also add the 'no-transition' class to your element
+
+          Adding 'smini-hidden' to an element will hide it when the sidebar is in mini mode
+          Adding 'smini-visible' to an element will show it (display: inline-block) only when the sidebar is in mini mode
+          Adding 'smini-visible-block' to an element will show it (display: block) only when the sidebar is in mini mode
+      -->
+		<nav th:replace="navigation ::Navigation" />
+		<!-- END Sidebar -->
+		<!-- Header -->
+		<header th:replace="navigation ::Header" />
+		<!-- END Header -->
+		<!-- Main Container -->
+		<main id="main-container">
+		<!-- Hero -->
+			<div class="bg-body-light">
+				<div class="content content-full">
+					<div class="d-flex flex-column flex-sm-row justify-content-sm-between align-items-sm-center py-2">
+						<div class="flex-grow-1">
+							<h1 class="h3 fw-bold mb-1">
+								Sections
+							</h1>
+							<h2 class="fs-base lh-base fw-medium text-muted mb-0">
+								Gestion des sections
+							</h2>
+						</div>
+						<nav class="flex-shrink-0 mt-3 mt-sm-0 ms-sm-3" aria-label="breadcrumb">
+							<ol class="breadcrumb breadcrumb-alt">
+								<li class="breadcrumb-item">
+									<a class="link-fx" href="javascript:void(0)">Pages</a>
+								</li>
+								<li class="breadcrumb-item" aria-current="page">
+									Sections <th:block sec:authorize="hasAnyAuthority('Admin', 'Editeur')">
+										<a class="font-w600" href="#"> <i
+												class="fas fa-puzzle-piece fa-1x text-primary"></i></a>
+									</th:block>
+								</li>
+							</ol>
+						</nav>
+					</div>
+				</div>
+			</div>
+			<!-- END Hero -->
+
+			<!-- Page Content -->
+			<div class="content">
+				<div class="row">
+					<div class="col-12">
+						<!-- Dynamic Table with Export Buttons -->
+						<div class="block block-rounded">
+							<div class="block-header block-header-default">
+								<h3 class="block-title"> [[${pageTitle}]] <a class="font-w600"
+										th:href="@{/sections}"><small>Retour</small></a> </h3>
+							</div>
+							<div class="block-content block-content-full">
+								<form th:action="@{/sections/save/all_categories}" th:object="${section}" method="post"
+									style="max-width: 600px; margin: 0 auto;">
+									<input type="hidden" th:field="*{id}" />
+									<input type="hidden" th:field="*{type}" />
+									<input type="hidden" th:field="*{sectionOrder}" />
+
+								
+
+										<div class="form-group row mt-4">
+											<label class="col-sm-2 col-form-label">Titre:</label>
+											<div class="col-sm-10">
+												<input type="text" class="form-control" th:field="*{heading}" required
+													minlength="10" maxlength="200">
+											</div>
+										</div>
+
+										<div class="form-group row mt-4">
+											<label class="col-sm-2 col-form-label">Description:</label>
+											<div class="col-sm-10">
+												<textarea rows="3" class="form-control" th:field="*{description}"
+													maxlength="500" min="20"></textarea>
+											</div>
+										</div>
+
+										<div class="form-group row mt-4">
+											<label class="col-sm-2 col-form-label">Publi&eacute;:</label>
+											<div class="col-sm-10">
+												<div class="space-y-2">
+														<div class="form-check form-switch">
+															<input class="form-check-input" type="checkbox" value=""
+																th:field="*{enabled}" >
+														</div>
+
+													</div>
+											</div>
+											
+										</div>
+
+
+										<div>
+											<p class="text-center">
+												<button type="submit" class="btn btn-success me-1 mb-4">
+													<i class="fa fa-fw fa-check me-1"></i> Enregistrer
+												</button>
+												<button type="button" class="btn btn-info me-1 mb-3" id="buttonCancel">
+													<i class="fa fa-undo me-1"></i> Annuler
+												</button>
+											</p>
+										</div>
+								
+								</form>
+
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+	</div>
+
+	<!-- END Dynamic Table with Export Buttons -->
+
+	<!-- END Page Content -->
+	</main>
+	<!-- END Main Container -->
+	<!-- Footer -->
+	<!-- Modal -->
+	<div th:replace="fragments ::modalDuplicate" />
+	<!-- END Modal -->
+	<!-- Footer -->
+	<footer th:replace="fragments ::footer" />
+	<!-- END Footer -->
+	<!-- END Footer -->
+	<!-- END Page Container -->
+	<!--
+        OneUI JS
+
+        Core libraries and functionality
+        webpack is putting everything together at assets/_js/main/app.js
+    -->
+
+	<script type="text/javascript" th:src="@{/assets/js/oneui.app.min.js}"></script>
+	<!-- jQuery (required for DataTables plugin) -->
+	<script type="text/javascript" th:src="@{/assets/js/lib/jquery.min.js}"></script>
+	<script type="text/javascript">
+		moduleURL = "[[@{/menus}]]";
+	</script>
+	<script th:src="@{/assets/js/common_form.js}"></script>
+	<!-- Page JS Plugins -->
+	<!--<script type="text/javascript" th:src="@{/assets/js/plugins/simplemde/simplemde.min.js}"></script>-->
+	<script type="text/javascript">
+		contextPath = "[[@{/}]]";
+		moduleURL = "[[@{/sections}]]";	
+	</script>
+
+	<!-- Page JS Helpers (CKEditor + SimpleMDE plugins) -->
+
+
+
+</body>
+
+</html>

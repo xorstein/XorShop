@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+	<head th:replace="fragments :: page_head(${pageTitle}, 'tag')" />
+</head>
+
+<body>
+	<header th:replace="navigation ::Navigation" />
+	<div class="container-page p-5 mt-5">
+		<div th:replace="breadcrumb :: content1(${pageTitle})"></div>
+		<div class="row g-0 bg-primary-dark-op">
+
+			<div class="hero-static col-lg-8 d-flex flex-column align-items-center bg-body-extra-light">
+				<div class="p-3 w-100 d-lg-none text-center">
+					<a class="link-fx fw-semibold fs-3 text-dark" href="index.html">
+						XORshop
+					</a>
+				</div>
+				<div class="p-4 w-100 flex-grow-1 d-flex align-items-center">
+					<div class="w-100">
+						<!-- Header -->
+						<div class="text-center mb-5">
+							<p class="mb-3">
+								<a th:href="@{/}"><img th:src="@{${S3_BASE_URI +SITE_LOGIN_LOGO}}"></a>
+							</p>
+							<div class="">
+
+
+								<h3 class="custom-color fw-bold mb-2">
+									Contact
+								</h3>
+								<h4>Votre message a été envoyé avec succès</h4>
+								<p class="fw-medium text-muted text-dark">
+								<p class="custom-color font-weight-bold mx-4 text-left">
+									Merci pour votre message !
+								</p>
+								<p class="m-4 mt-n2">
+									Nous vous remercions d'avoir pris le temps de nous contacter. Votre demande a bien
+									été reçue, et nous nous engageons à vous répondre dans les plus brefs délais. La
+									satisfaction de nos clients est notre priorité, et nous nous efforçons de fournir un
+									service exceptionnel.
+								</p>
+								<p class="mx-4">
+									D'ici là, n'hésitez pas à parcourir notre site web pour en savoir plus sur nos
+									produits et services. Si vous avez d'autres questions ou besoins, n'hésitez pas à
+									nous contacter à tout moment.</p>
+								<p class="mx-4">
+									Nous vous remercions de votre confiance.</p>
+								<p class="mx-4"> Cordialement,</p>
+								</p>
+							</div>
+							<!-- END Header -->
+
+
+						</div>
+					</div>
+				</div>
+				<!-- END Main Section -->
+			</div>
+		</div>
+	</div>
+
+
+	<!----------Footer--------------->
+
+	<!-- Footer -->
+	<footer th:replace="fragments ::footer" />
+	<!-- END Footer -->
+	<th:block sec:authorize="isAuthenticated()">
+		<footer th:replace="fragments ::LoadTotalCountProduct" />
+	</th:block>
+
+
+
+</body>
+
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+  <div th:fragment="content" th:remove="tag">
+    <h4 class="content-heading">Description</h4>
+    <div class="block block-rounded">
+      <div class="block-header block-header-default">
+        <h3 class="block-title mx-mb-n5">Description global</h3>
+      </div>
+      <div class="block-content">
+        <div class="mb-12">
+            <textarea class="form-control"  th:field="*{shortDescription}" id="shortDescription" rows="4"></textarea>
+        </div>
+      </div>
+      <br />
+      <div class="block-header block-header-default">
+        <h3 class="block-title mx-mb-n5">Description d&eacute;taill&eacute;e</h3>
+      </div>
+      <div class="block-content">
+        <div class="mb-12">
+          <textarea th:field="*{fullDescription}" rows="10" id="fullDescription" required></textarea>
+        </div>
+      </div>
+      <br />
+    </div>
+  </div>
+</body>
+
+</html>

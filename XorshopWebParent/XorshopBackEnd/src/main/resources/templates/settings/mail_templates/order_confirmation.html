@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<link rel="stylesheet" type="text/css" th:href="@{/assets/js/plugins/simplemde/simplemde.min.css}">	
+<body>
+<div th:fragment="content" th:remove="tag">
+
+	<div class="form-group row mt-4">
+		<label class="col-sm-2 col-form-label">Sujet: </label>
+		<div class="col-sm-10">
+			<input type="text" class="form-control" name="ORDER_CONFIRMATION_SUBJECT" 
+				th:value="${ORDER_CONFIRMATION_SUBJECT}" required  />
+		</div>
+	</div>	
+	<div class="form-group row mt-4">
+		<label class="col-sm-2 col-form-label">Message: </label>
+		<div class="col-sm-10">
+			<textarea rows="20"  name="ORDER_CONFIRMATION_CONTENT" id="orderConfirmationContent" >[[${ORDER_CONFIRMATION_CONTENT}]]</textarea>
+		</div>
+		
+	</div>	
+</div>
+</body>
+</html> 

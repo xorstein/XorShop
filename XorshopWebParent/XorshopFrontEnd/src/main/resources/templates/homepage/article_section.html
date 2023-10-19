@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+	<th:block th:fragment="content" th:remove="tag">
+		<h2 class="title">[[${section.heading}]]</h2>
+		<p class="text-center" style="margin-top: -50px;">
+			[[${section.description}]]
+		</p>
+		<ul class="list-inline" th:each="articleSection : ${section.articleSections}"
+			th:with="article = ${articleSection.article}">
+			<li class="list-inline-item me-4">
+				<a th:href="@{'/a/' + ${article.alias}}">[[${article.title}]]</a>
+			</li>
+		</ul>
+	</th:block>
+</body>
+
+</html>

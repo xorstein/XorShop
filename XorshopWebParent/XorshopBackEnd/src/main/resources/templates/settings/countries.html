@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+  <div th:fragment="content" th:remove="tag">
+    <h4 class="content-heading">Pays</h4>
+   <div>
+		<p>
+			Utilisez cette page pour gérer les pays qui seront affichés dans le formulaire d'inscription pour les clients. Cliquez d'abord sur Charger la liste des pays.
+		</p>
+	</div>
+	<div>
+		
+	      <button type="button" class="btn btn-lg rounded-pill btn-alt-success px-4 me-1 mb-3" id="buttonLoadCountries">
+                <i class="si si-globe me-1"></i> Charger la liste des pays
+              </button>
+	       
+	</div>
+	<div>
+		<select class="form-control m-2" style="height: 300px" size="3" id="dropDownCountries">
+		</select>
+	</div>
+		<form id="formCountry" onsubmit="return checkUnique(this)">
+		<div class="form-group row ml-2">
+			<label class="col-form-label mt-2" id="labelCountryName">Nom du pays</label>
+			<div class="col-md">
+				<input type="text" class="form-control mt-2" id="fieldCountryName" required minlength="3" maxlength="45"/>
+			</div>
+			<label class="col-form-label mt-2">Code du pays</label>
+			<div class="col-md">
+				<input type="text" class="form-control mt-2" id="fieldCountryCode" required minlength="2" maxlength="45"/>
+			</div>	
+			<div class="col-lg-6 mt-2">
+				   <button type="button" class="btn btn-sm btn-alt-secondary" id="buttonAddCountry">
+            <i class="si si-globe fa-1x text-primary"></i> Nouveau
+        </button>
+        <button type="button" class="btn btn-sm btn-alt-warning" id="buttonUpdateCountry" disabled="disabled">
+            <i class="fa fa-fw fa-pencil-alt text-warning"></i> Modifier
+        </button>
+        <button type="button" class="btn btn-sm btn-alt-danger" id="buttonDeleteCountry" disabled="disabled">
+            <i class="fa fa-fw fa-times fa-1x text-danger"></i> Supprimer
+        </button>
+			</div>	
+		</div>
+	</form>
+  </div>
+</body>
+
+</html>

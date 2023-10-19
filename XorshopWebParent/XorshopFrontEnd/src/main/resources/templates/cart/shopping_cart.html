@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+	<head th:replace="fragments :: page_head(${pageTitle}, 'tag')" />
+</head>
+
+<body>
+	<header th:replace="navigation ::Navigation" />
+	<div class="container-page p-5 mt-5">
+		<div th:replace="breadcrumb :: content1(${pageTitle})"></div>
+
+		<div class="row m-1">
+			<div class="col-sm-8">
+				<th:block th:each="item, status : ${cartItems}">
+					<div class="row border rounded p-1" th:with="product = ${item.product}"
+						th:id="'row' + ${status.count}">
+						<div class="col-1">
+							<div class="btn-group mt-2" role="group" aria-label="Basic mixed styles example">
+								<button type="button" class="btn btn-dark">
+									<div class="divCount">[[${status.count}]]</div>
+								</button>
+								<button type="button" class="btn btn-danger">
+									<div>
+										<a class="text-white fas fa-trash icon-dark linkRemove"
+											th:rowNumber="${status.count}" th:entityId="${product.id}"
+											th:entitytName="${product.name}"
+											th:href="@{'/cart/remove/' + ${product.id}}"></a>
+									</div>
+								</button>
+
+							</div>
+						</div>
+						<div class="col-3">
+							<img th:src="@{${product.mainImagePath}}" class="img-fluid" />
+						</div>
+						<div class="col-6">
+							<div>
+								<a th:href="@{'/p/' + ${product.alias}}" target="_blank" th:title="${product.name}">
+									<b>[[${product.shortName}]]</b>
+								</a>
+							</div>
+							<div
+								th:replace="cart/quantity_control :: quantity_control(${item.quantity}, ${product.id})">
+							</div>
+
+							<div>
+								<span>X&nbsp;</span>
+								<div th:replace="product/product_fragment :: product_price"></div>
+							</div>
+							<div>
+								<span>=&nbsp;</span>
+								<span th:if="${CURRENCY_SYMBOL_POSITION == 'Before price'}" th:remove="tag">
+									[[${CURRENCY_SYMBOL}]]
+								</span>
+								<span th:id="'subtotal' + ${product.id}" class="h4 subtotal">
+									[[${#numbers.formatDecimal(item.subtotal, 1, THOUSANDS_POINT_TYPE, DECIMAL_DIGITS,
+									DECIMAL_POINT_TYPE)}]]
+								</span>
+								<span th:if="${CURRENCY_SYMBOL_POSITION == 'After price'}" th:remove="tag">
+									[[${CURRENCY_SYMBOL}]]
+								</span>
+							</div>
+						</div>
+					</div>
+					<div class="row m-1" th:id="'blankLine' + ${status.count}">&nbsp;</div>
+				</th:block>
+			</div>
+
+			<div class="col-sm-4" th:unless="${#lists.isEmpty(cartItems)}" id="sectionTotal">
+				<div>
+					<span class="h3">Montant Total:</span>
+				</div>
+				<div class="mt-2">
+					<span th:if="${CURRENCY_SYMBOL_POSITION == 'Before price'}"
+						th:remove="tag">[[${CURRENCY_SYMBOL}]]</span><span id="total" class="h2">
+						[[${#numbers.formatDecimal(estimatedTotal, 1, THOUSANDS_POINT_TYPE, DECIMAL_DIGITS,
+						DECIMAL_POINT_TYPE)}]] </span><span th:if="${CURRENCY_SYMBOL_POSITION == 'After price'}"
+						th:remove="tag">[[${CURRENCY_SYMBOL}]]</span>
+				</div>
+				<div class="mt-2">
+					<div th:if="${shippingSupported}">
+						<form th:action="@{/checkout}">
+							<button type="submit" class="btn btn-danger p-3 mt-2">Commander</button>
+						</form>
+					</div>
+
+					<div th:unless="${shippingSupported}">
+						<div class="mb-2"><span class="h5 text-warning ">Aucune exp&eacute;dition disponible pour votre
+								emplacement</span></div>
+
+						<div th:if="${usePrimaryAddressAsDefault}">
+							<a th:href="@{/account_details(redirect=cart)}" class="custom-color">Mettez à jour votre
+								adresse</a>
+						</div>
+
+						<div th:unless="${usePrimaryAddressAsDefault}">
+							<a th:href="@{/address_book(redirect=cart)}" class="custom-color">Utiliser une autre adresse
+								de livraison</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="sectionEmptyCartMessage" th:class="'text-center' + ${#lists.isEmpty(cartItems) ? '' : ' d-none'}">
+			<h3>Vous n'avez encore choisi aucun produit.</h3>
+		</div>
+
+
+	</div>
+	<div th:replace="fragments :: modal_dialog"></div>
+	<div th:replace="fragments :: confirm_modal"></div>
+	<!----------Footer--------------->
+	<!-- Footer -->
+	<footer th:replace="fragments ::footer" />
+	<footer th:replace="fragments ::LoadTotalCountProduct" />
+	<!-- END Footer -->
+	<script type="text/javascript">
+		contextPath = "[[@{/}]]";
+		var csrfHeaderName = "[[${_csrf.headerName}]]";
+		var csrfValue = "[[${_csrf.token}]]";
+
+		decimalDigits = "[[${DECIMAL_DIGITS}]]";
+		decimalPointType = "[[${DECIMAL_POINT_TYPE}]]";
+		thousandsPointType = "[[${THOUSANDS_POINT_TYPE}]]";
+
+	</script>
+	<script type="text/javascript" th:src="@{/assets/js/jquery.number.min.js}"></script>
+	<script type="text/javascript" th:src="@{/assets/js/shopping_cart.js}"></script>
+	<script type="text/javascript" th:src="@{/assets/js/common_modal.js}"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+	<head th:replace="fragments :: page_head(${pageTitle}, 'tag')" />
+
+</head>
+
+<body>
+	<header th:replace="navigation ::Navigation" />
+	<div class="container-page p-5 mt-5">
+		<div th:replace="breadcrumb :: content1(${article.title})"></div>
+		<div th:utext="${article.content}" class=" p-2 m-2"></div>
+
+
+		<th:block th:if="${(menu != null and not #strings.isEmpty(menu)) and menu eq 'contact'}">
+			<div th:replace="fragments :: send_email()" />
+		</th:block>
+
+
+
+
+	</div>
+	<div th:replace="fragments :: modal_dialog"></div>
+	<div th:replace="fragments :: confirm_modal"></div>
+	<!----------Footer--------------->
+	<!-- Footer -->
+	<footer th:replace="fragments ::footer" />
+	<footer th:replace="fragments ::LoadTotalCountProduct" />
+	<!-- END Footer -->
+
+	<th:block th:if="${(menu != null and not #strings.isEmpty(menu)) and menu eq 'contact'}">
+		<script th:src="@{/assets/js/validator.js}" type="text/javascript"></script>
+		<script th:src="@{/assets/js/contact.js}" type="text/javascript"></script>
+		<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+	</th:block>
+
+
+</body>
+
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+  <div th:fragment="content" th:remove="tag">
+    <div class="block-content block-content-full">
+      <h4 class="content-heading">G&eacute;n&eacute;ral</h4>
+      <div class="block block-rounded">
+        <div class="block-header block-header-default">
+          <h3 class="block-title mx-mb-n5">Nom du produit</h3>
+        </div>
+        <div class="block-content">
+          <div class="mb-12">
+            <input type="text" class="form-control" th:value="${product.name}" disabled />
+          </div>
+        </div>
+        <br />
+        <div class="block-header block-header-default">
+          <h3 class="block-title mx-mb-n5">Alias du produit</h3>
+        </div>
+        <div class="block-content">
+          <div class="mb-12">
+            <input type="text" class="form-control" th:value="${product.alias}" disabled />
+          </div>
+        </div>
+        <br />
+        <div class="block-header block-header-default">
+          <h3 class="block-title mx-mb-n5">Marque de produit</h3>
+        </div>
+        <div class="block-content">
+          <div class="mb-12">
+            <input type="text" class="form-control" th:value="${product.brand.name}" disabled />
+          </div>
+        </div>
+        <br />
+        <div class="block-header block-header-default">
+          <h3 class="block-title mx-mb-n5">Cat&eacute;gorie</h3>
+        </div>
+        <div class="block-content">
+          <div class="mb-12">
+            <input type="text" class="form-control" th:value="${product.category.name}" disabled />
+          </div>
+        </div>
+        <br />
+        <div class="block-header block-header-default">
+          <h3 class="block-title mx-mb-n5">Libre</h3>
+        </div>
+        <div class="block-content">
+          <div class="mb-12">
+            <input type="checkbox" th:checked="${product.enabled}" onclick="return false;" />
+          </div>
+        </div>
+        <br />
+        <div class="block-header block-header-default">
+          <h3 class="block-title mx-mb-n5">En stock</h3>
+        </div>
+        <div class="block-content">
+          <div class="mb-12">
+            <input type="checkbox" th:checked="${product.inStock}" onclick="return false;" />
+          </div>
+        </div>
+        <br />
+        <div class="block-header block-header-default">
+          <h3 class="block-title mx-mb-n5">Prix d'achat</h3>
+        </div>
+        <div class="block-content">
+          <div class="mb-12">
+            <input type="number" class="form-control" th:value="${product.cost}" disabled />
+          </div>
+        </div>
+        <br />
+        <div class="block-header block-header-default">
+          <h3 class="block-title mx-mb-n5">Prix de vente</h3>
+        </div>
+        <div class="block-content">
+          <input type="number" class="form-control" th:value="${product.price}" disabled />
+        </div>
+
+        <br />
+        <div class="block-header block-header-default">
+          <h3 class="block-title mx-mb-n5">Remise de produit:</h3>
+        </div>
+        <div class="block-content">
+          <div class="mb-12">
+            <input type="number" class="form-control" th:value="${product.discountPercent}" disabled />
+          </div>
+        </div>
+        <br />
+        <div class="block-header block-header-default">
+          <h3 class="block-title mx-mb-n5">Date de mise à jour</h3>
+        </div>
+        <div class="block-content">
+          <span th:text="${#dates.format(product.updatedTime, 'yyyy-MM-dd HH:mm:ss')}"></span>
+        </div>
+      </div>
+      <br />
+    </div>
+  </div>
+</body>
+
+</html>
