@@ -9,9 +9,9 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.xorshop</groupId>
-	<artifactId>XorShopWebParent</artifactId>
+	<artifactId>XorshopWebParent</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>XorShopWebParent</name>
+	<name>XorshopWebParent</name>
 	<packaging>pom</packaging>
 	
 	<description>parent spring web project</description>
@@ -21,8 +21,8 @@
 			
 	<modules>
 		<!-- 2 ) Define XorshopBackEnd and XorShopFrontEnd Module -->
-		<module>XorShopBackEnd</module>
-		<module>XorShopFrontEnd</module>
+		<module>XorshopBackEnd</module>
+		<module>XorshopFrontEnd</module>
 	</modules>
 	<dependencies>
 		<dependency>

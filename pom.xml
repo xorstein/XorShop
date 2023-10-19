@@ -6,5 +6,5 @@
   <packaging>pom</packaging>
   <name>Xorshop</name>
   <description>Root project</description>
-  <modules><module>XorshopCommon</module><module>XorShopWebParent</module></modules>
+  <modules><module>XorshopCommon</module><module>XorshopWebParent</module></modules>
 </project>

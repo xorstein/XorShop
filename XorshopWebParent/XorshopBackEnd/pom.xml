@@ -5,11 +5,11 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.xorshop</groupId>
-		<artifactId>XorShopWebParent</artifactId>
+		<artifactId>XorshopWebParent</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>XorShopBackEnd</artifactId>
-	<name>XorShopBackEnd</name>
+	<artifactId>XorshopBackEnd</artifactId>
+	<name>XorshopBackEnd</name>
 	
 	<description>Xortic Admin page</description>
 	<properties>
