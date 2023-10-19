@@ -3,6 +3,6 @@ COPY . .
 RUN mvn clean package -DskipTests
 
 FROM openjdk:17.0.1-jdk-slim
-COPY --from=build XorshopWebParent/XorshopFrontEnd/target/XorshopFrontEnd-0.0.1-SNAPSHOT.jar XorshopFrontEnd.jar
+COPY --from=build XorshopWebParent/XorshopBackEnd/target/XorshopBackEnd-0.0.1-SNAPSHOT.jar XorshopBackEnd.jar
 EXPOSE 80
-ENTRYPOINT ["java","-jar","XorshopFrontEnd.jar"]
+ENTRYPOINT ["java","-jar","XorshopBackEnd.jar"]
