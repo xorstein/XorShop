@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+	<head th:replace="fragments :: page_head('Mes adresses- '+${pageTitle}, 'tag')" />
+</head>
+
+<body>
+	<header th:replace="navigation ::Navigation" />
+	<div class="container-fluid producst-by-category p-5 mt-5">
+
+		<div th:replace="breadcrumb :: content1(${pageTitle})"></div>
+		<div class="container-fluid"
+			th:with="redirectedFromCheckoutPage = ${param.redirect != null && param.redirect[0] == 'checkout'}">
+
+
+			<div>
+				<div class="text-center">
+					<div>
+						<!--<h3  class="custom-color fw-bold mb-2" th:text="${redirectedFromCheckoutPage} ? 'Choose a Shipping Address' : 'Votre carnet d&#39;adresses'"></h3>-->
+						<h3 class="custom-color fw-bold mb-2" th:if="${redirectedFromCheckoutPage}">
+							Choisissez une adresse de livraison
+						</h3>
+						<h3 class="custom-color fw-bold mb-2" th:unless="${redirectedFromCheckoutPage}">
+							Votre carnet d'adresses
+						</h3>
+					</div>
+					<div>
+
+
+						<a th:unless="${param.redirect}" th:href="@{/address_book/new}"><button type="button"
+								class="lg-btn">
+								<i class="fa fa-location-arrow"></i> Nouvelle adresse
+							</button></a>
+						<a th:if="${redirectedFromCheckoutPage}" th:href="@{/address_book/new(redirect=checkout)}"><button type="button"
+								class="lg-btn">
+								<i class="fa fa-location-arrow"></i> Nouvelle adresse
+							</button></a>
+					</div>
+				</div>
+
+				<div th:if="${message != null}" class="alert alert-success text-center mt-4">
+					[[${message}]]
+				</div>
+			</div>
+
+			<div class="row m-1">
+				<div class="col-sm-6 mt-2">
+					<div class="card" th:classappend="${usePrimaryAddressAsDefault ? 'bg-warning' : ''}">
+						<div class="card-header">
+							<div class="row">
+								<div class="col">
+									<b>Votre adresse principale</b>
+
+									<th:block th:if="${usePrimaryAddressAsDefault}">
+										<span class="text-danger"
+											th:text="${redirectedFromCheckoutPage ? '[Actuellement s&eacute;lectionn&eacute;]' : '[Par d&eacute;faut]'}"></span>
+									</th:block>
+
+									<th:block th:unless="${usePrimaryAddressAsDefault}">
+										<a th:unless="${param.redirect}"
+											th:href="@{'/address_book/default/0'}">[D&eacute;finir par
+											d&eacute;faut]</a>
+										<a th:if="${param.redirect != null && param.redirect[0] == 'cart'}"
+											th:href="@{'/address_book/default/0?redirect=cart'}">[D&eacute;finir par
+											d&eacute;faut]</a>
+										<a th:if="${redirectedFromCheckoutPage}"
+											th:href="@{'/address_book/default/0?redirect=checkout'}">[Choisir]</a>
+									</th:block>
+
+								</div>
+							</div>
+							<div class="col">
+								<div class="float-right">
+									<a th:unless="${param.redirect}" class="text-success fas fa-edit icon-dark"
+										title="Modifiez votre adresse principale"
+										th:href="@{/account_details(redirect=address_book)}"></a>
+
+									<a th:if="${redirectedFromCheckoutPage}" class="text-success fas fa-edit icon-dark"
+										title="Modifier cette adresse" th:href="@{/account_details(redirect=checkout)}"></a>
+								</div>
+							</div>
+						</div>
+						<div class="card-body">
+							[[${customer}]] 
+						</div>
+					</div>
+				</div>
+
+				<th:block th:each="address, status: ${listAddresses}">
+					<div class="col-sm-6 mt-2">
+						<div class="card" th:classappend="${address.defaultForShipping ? 'text-dark bg-warning' : ''}">
+							<div class="card-header">
+								<div class="row">
+									<div class="col">
+										<b>Addresse #[[${status.count + 1}]]</b>
+
+										<th:block th:if="${address.defaultForShipping}">
+											<span class="text-danger"
+												th:text="${redirectedFromCheckoutPage ? '[Actuellement s&eacute;lectionn&eacute;]' : '[Par default]'}"></span>
+										</th:block>
+
+										<th:block th:unless="${address.defaultForShipping}">
+											<a th:unless="${param.redirect}"
+												th:href="@{'/address_book/default/' + ${address.id}}">[D&eacute;finir
+												par d&eacute;faut]</a>
+											<a th:if="${param.redirect != null && param.redirect[0] == 'cart'}"
+												th:href="@{'/address_book/default/' + ${address.id} + '?redirect=cart'}">[D&eacute;finir
+												par d&eacute;faut]</a>
+											<a th:if="${redirectedFromCheckoutPage}"
+												th:href="@{'/address_book/default/' + ${address.id} + '?redirect=checkout'}">[Choisir]</a>
+										</th:block>
+
+									</div>
+
+								</div>
+								<div class="col">
+									<div class="float-right">
+										<a th:if="${redirectedFromCheckoutPage}"
+											class="text-success fas fa-edit icon-dark" title="Modifier cette adresse"
+											th:href="@{'/address_book/edit/' + ${address.id}}"></a>
+										&nbsp;
+
+										<a class="text-danger fas fa-trash icon-dark linkDelete"
+											title="Supprimer cette adresse" th:entityId="${address.id}" th:NameAdresse="'Adresse ' + ${status.count + 1}"
+											th:href="@{'/address_book/delete/' + ${address.id}}"></a>
+									</div>
+								</div>
+							</div>
+							<div class="card-body">
+								[[${address}]]
+							</div>
+						</div>
+					</div>
+				</th:block>
+			</div>
+			<div>&nbsp;</div>
+			<div th:replace="fragments :: confirm_modal"></div>
+
+		</div>
+	</div>
+	<!-- Footer -->
+	<footer th:replace="fragments ::footer" />
+	<!-- END Footer -->
+	<div th:replace="fragments ::LoadTotalCountProduct" />
+	<script type="text/javascript">
+		$(document).ready(function () {
+			$(".linkDelete").on("click", function (evt) {
+				lastClickedElement = $(this);
+				evt.preventDefault();
+				entityId = $(this).attr("entityId");
+				var addressText =$(this).attr("NameAdresse");
+				var modalText = "Voulez-vous vraiment supprimer l'adresse:  <strong>" + addressText + "</strong> du votre carnet d'adresses ?";
+				$("#modalBodyConfirme").html(modalText);
+				showModalDialog1("Suppression d'adresse");
+			});
+			$("#confirmModal").find("#yesButton").on("click", function () {
+				if (lastClickedElement) {
+					
+					var link = lastClickedElement.attr("href"); // Get the href attribute of the clicked link
+					window.location.href = link;
+				}
+
+			});
+		});
+
+		function showDeleteConfirmModal(link, entityName, lastClickedElement) {
+
+
+
+		}	
+	</script>
+	<script type="text/javascript" th:src="@{/assets/js/common_modal.js}"></script>
+</body>
+
+</html>

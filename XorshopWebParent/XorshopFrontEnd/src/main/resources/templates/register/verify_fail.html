@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+  <head th:replace="fragments :: page_head(${pageTitle}, 'tag')" />
+</head>
+
+<body>
+  <header th:replace="navigation ::Navigation" />
+  <div class="container-page p-5 mt-5">
+    <div th:replace="breadcrumb :: content1(${pageTitle})"></div>
+    <div class="row g-0 bg-primary-dark-op">
+
+      <div class="hero-static col-lg-8 d-flex flex-column align-items-center bg-body-extra-light">
+        <div class="p-3 w-100 d-lg-none text-center">
+          <a class="link-fx fw-semibold fs-3 text-dark" href="index.html">
+            XORshop
+          </a>
+        </div>
+        <div class="p-4 w-100 flex-grow-1 d-flex align-items-center">
+          <div class="w-100">
+            <!-- Header -->
+            <div class="text-center mb-5">
+              <p class="mb-3">
+
+                <a th:href="@{/}"><img th:src="@{${S3_BASE_URI +SITE_LOGIN_LOGO}}"></a>
+
+              </p>
+              <div class="">
+
+
+                <h3 class="fw-bold mb-2">
+                  Vérification échouée!
+                </h3>
+               	<h4 class="text-danger p-2">Votre compte a déjà été vérifié ou le code de vérification est invalide.</h4> 
+               
+              </div>
+              <!-- END Header -->
+
+           
+        </div>
+      </div>
+    </div>
+    <!-- END Main Section -->
+  </div>
+  </div>
+  </div>
+
+
+  <!----------Footer--------------->
+
+  <!-- Footer -->
+  <footer th:replace="fragments ::footer" />
+  <!-- END Footer -->
+
+
+</body>
+
+</html>

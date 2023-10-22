@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+	<div th:fragment="content" th:remove="tag">
+		<div class="col-sm-6 col-xxl-3">
+			<!-- Pending Orders -->
+			<div class="block block-rounded d-flex flex-column h-100 mb-0">
+				<div
+					class="block-content block-content-full flex-grow-1 d-flex justify-content-between align-items-center">
+					<dl class="">
+
+						<h5 class="fw-bold">Utilisateurs</h5>
+						<dt class="fs-3 fw-bold">[[${summary.totalUsers}]]</dt>
+						<div><a th:href="@{/users/new}">Nouveau utilisateur</a></div>
+						<div><a th:href="@{'/users/page/1?sortField=enabled&sortDir=desc'}">Actif:
+								<b>[[${summary.enabledUsersCount}]]</b></a></div>
+						<div><a th:href="@{'/users/page/1?sortField=enabled&sortDir=asc'}">Inactif:
+								<b>[[${summary.disabledUsersCount}]]</b></a></div>
+
+					</dl>
+
+					<div class="item item-rounded-lg bg-body-light">
+						<i class="fas fa-users-cog fs-3 text-primary"></i>
+					</div>
+
+				</div>
+				<div class="bg-body-light rounded-bottom">
+					<a class="block-content block-content-full block-content-sm fs-sm fw-medium d-flex align-items-center justify-content-between"
+						th:href="@{/users}">
+						<span>Plus de d&eacute;tails</span>
+						<i class="fa fa-arrow-alt-circle-right ms-1 opacity-25 fs-base"></i>
+					</a>
+				</div>
+			</div>
+			<!-- END Pending Orders -->
+		</div>
+	</div>
+</body>
+
+</html>

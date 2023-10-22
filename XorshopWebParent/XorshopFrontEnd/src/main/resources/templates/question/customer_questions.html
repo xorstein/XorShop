@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+	<head th:replace="fragments :: page_head(${pageTitle}, 'tag')" />
+</head>
+
+<body>
+	<header th:replace="navigation ::Navigation" />
+	<div class="container-page p-5 mt-5">
+		<div th:replace="breadcrumb :: content1(${pageTitle})"></div>
+		<div class="text-center">
+			<h2 class="custom-color"> [[${pageTitle}]]</h2>
+		</div>
+		<div th:replace="fragments :: search_form"></div>
+		<div class="ms-auto d-none d-lg-block">
+			<table class="table table-bordered  table-hover table-responsive-xl mt-4">
+				<thead class="thead-dark">
+					<tr class="table-dark">
+						<th th:replace="fragments :: column_link('id', 'ID', 'none')" />
+						<th th:replace="fragments :: column_link('product', 'Produit', 'none')" />
+						<th th:replace="fragments :: column_link('questionContent', 'Question', 'none')" />
+						<th th:replace="fragments :: column_link('askTime', 'Temps de publication', 'none')" />
+						<th th:replace="fragments :: column_link('approved', 'Approuv&eacute;e', 'none')" />
+						<th>R&eacute;pondue</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="question : ${listQuestions}">
+						<td th:text="${question.id}">ID</td>
+						<td>
+							<a th:href="@{${question.product.URI}}" target="_blank"
+								th:title="${question.product.name}">[[${question.product.shortName}]]</a>
+						</td>
+						<td th:text="${question.questionContent}">Question</td>
+						<td th:text="${question.askTime}">Ask Time</td>
+
+						<td class="text-center">
+							<span class="fas fa-2x"
+								th:classappend="${question.approved ? 'fa-check-circle text-success' : 'fa-circle text-dark'}"></span>
+						</td>
+
+						<td class="text-center">
+							<span class="fas fa-2x"
+								th:classappend="${question.answered ? 'fa-check-circle text-success' : 'fa-circle text-dark'}"></span>
+						</td>
+
+						<td class="text-center">
+							<a class="fas fa-file-alt fa-2x icon-green link-detail"
+								th:href="@{'/customer/questions/detail/' + ${question.id}}"
+								title="View details of this question"></a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="mx-auto my-3 d-lg-none d-sm-block d-xs-block">
+			<div th:each="question : ${listQuestions}" class="row m-1">
+				<div class="col-2">
+					<span>[[${question.id}]]</span>
+				</div>
+				<div class="col-10">
+					<div class="mb-1">
+						<a th:href="@{${question.product.URI}}" target="_blank"
+							th:title="${question.product.name}">[[${question.product.shortName}]]</a>
+					</div>
+
+					<div class="mb-1">
+						<span><i>[[${question.questionContent}]]</i></span>
+					</div>
+					<div>
+						&nbsp;
+						<small>
+							<div th:replace="fragments :: format_time(${question.askTime})"></div>
+						</small>
+						&nbsp;
+						<a class="fas fa-file-alt fa-2x icon-green link-detail"
+							th:href="@{'/customer/questions/detail/' + ${question.id}}"
+							title="View details of this question"></a>
+					</div>
+				</div>
+				<div>&nbsp;</div>
+			</div>
+		</div>
+		<div th:replace="fragments :: pagination('/customer/questions', 'questions')"></div>
+		<div class="modal fade" id="detailModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-xl">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="OrderModalTitle">Détails de l'avis</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	</div>
+	<div th:replace="fragments :: modal_dialog"></div>
+	<div th:replace="fragments :: confirm_modal"></div>
+	<!----------Footer--------------->
+	<!-- Footer -->
+	<footer th:replace="fragments ::footer" />
+	<footer th:replace="fragments ::LoadTotalCountProduct" />
+	<!-- END Footer -->
+	<script th:src="@{/assets/js/common_list.js}"></script>
+	<script type="text/javascript">
+		moduleURL = "[[@{/customer/questions}]]";
+
+		$(document).ready(function () {
+			handleDefaultDetailLinkClick("Détails de ma question");
+		});
+	</script>
+
+
+</body>
+
+</html>

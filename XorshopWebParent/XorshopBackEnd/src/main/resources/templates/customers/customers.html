@@ -1,0 +1,353 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<th th:replace="fragments ::page_Head('Gestion des clients')" />
+<style>
+	@media screen and (max-width: 768px) {
+
+		/* small screen */
+		div.full-details {
+			display: none
+		}
+
+		div.less-details {
+			display: block;
+			text-align: center;
+		}
+	}
+
+	@media screen and (min-width: 768px) and (max-width: 1024px) {
+
+		/* medium screen */
+		div.full-details {
+			display: block;
+		}
+
+		div.less-details {
+			display: none;
+		}
+
+		.hideable-column {
+			display: none
+		}
+	}
+
+	@media screen and (min-width: 1024px) {
+
+		/* small screen */
+		div.less-details {
+			display: none;
+		}
+
+		.hideable-column {
+			display: table-cell;
+		}
+	}
+</style>
+
+<body>
+	<!-- Page Container -->
+	<!--
+      Available classes for #page-container:
+      GENERIC
+        'remember-theme'                            Remembers active color theme and dark mode between pages using localStorage when set through
+                                                    - Theme helper buttons [data-toggle="theme"],
+                                                    - Layout helper buttons [data-toggle="layout" data-action="dark_mode_[on/off/toggle]"]
+                                                    - ..and/or One.layout('dark_mode_[on/off/toggle]')
+         SIDEBAR & SIDE OVERLAY
+        'sidebar-r'                                 Right Sidebar and left Side Overlay (default is left Sidebar and right Side Overlay)
+        'sidebar-mini'                              Mini hoverable Sidebar (screen width > 991px)
+        'sidebar-o'                                 Visible Sidebar by default (screen width > 991px)
+        'sidebar-o-xs'                              Visible Sidebar by default (screen width < 992px)
+        'sidebar-dark'                              Dark themed sidebar
+        'side-overlay-hover'                        Hoverable Side Overlay (screen width > 991px)
+        'side-overlay-o'                            Visible Side Overlay by default
+        'enable-page-overlay'                       Enables a visible clickable Page Overlay (closes Side Overlay on click) when Side Overlay opens
+        'side-scroll'                               Enables custom scrolling on Sidebar and Side Overlay instead of native scrolling (screen width > 991px)
+         HEADER
+        ''                                          Static Header if no class is added
+        'page-header-fixed'                         Fixed Header
+         HEADER STYLE
+        ''                                          Light themed Header
+        'page-header-dark'                          Dark themed Header
+        MAIN CONTENT LAYOUT
+        ''                                          Full width Main Content if no class is added
+        'main-content-boxed'                        Full width Main Content with a specific maximum width (screen width > 1200px)
+        'main-content-narrow'                       Full width Main Content with a percentage width (screen width > 1200px)
+         DARK MODE
+        'sidebar-dark page-header-dark dark-mode'   Enable dark mode (light sidebar/header is not supported with dark mode)
+    -->
+	<div id="page-container"
+		class="sidebar-o sidebar-dark enable-page-overlay side-scroll page-header-fixed main-content-boxed">
+		<!-- Side Overlay-->
+		<aside th:replace="navigation ::Aside" />
+		<!-- END Side Overlay -->
+
+		<!-- Sidebar -->
+		<!--
+          Sidebar Mini Mode - Display Helper classes
+
+          Adding 'smini-hide' class to an element will make it invisible (opacity: 0) when the sidebar is in mini mode
+          Adding 'smini-show' class to an element will make it visible (opacity: 1) when the sidebar is in mini mode
+              If you would like to disable the transition animation, make sure to also add the 'no-transition' class to your element
+
+          Adding 'smini-hidden' to an element will hide it when the sidebar is in mini mode
+          Adding 'smini-visible' to an element will show it (display: inline-block) only when the sidebar is in mini mode
+          Adding 'smini-visible-block' to an element will show it (display: block) only when the sidebar is in mini mode
+      -->
+		<nav th:replace="navigation ::Navigation" />
+		<!-- END Sidebar -->
+
+		<!-- Header -->
+		<header th:replace="navigation ::Header" />
+		<!-- END Header -->
+
+		<!-- Main Container -->
+		<main id="main-container">
+			<!-- Hero -->
+			<div class="bg-body-light">
+				<div class="content content-full">
+					<div class="d-flex flex-column flex-sm-row justify-content-sm-between align-items-sm-center py-2">
+						<div class="flex-grow-1">
+							<h1 class="h3 fw-bold mb-1">
+								Clients
+							</h1>
+							<h2 class="fs-base lh-base fw-medium text-muted mb-0">
+								Gestion des comptes clients
+							</h2>
+						</div>
+						<nav class="flex-shrink-0 mt-3 mt-sm-0 ms-sm-3" aria-label="breadcrumb">
+							<ol class="breadcrumb breadcrumb-alt">
+								<li class="breadcrumb-item">
+									<a class="link-fx" href="javascript:void(0)">E-commerce</a>
+								</li>
+								<li class="breadcrumb-item" aria-current="page">
+									Clients <a class="font-w600" href="#"> <i
+											class="fa fa-chalkboard-user fa-1x text-primary"></i></a>
+								</li>
+							</ol>
+						</nav>
+					</div>
+				</div>
+			</div>
+			<!-- END Hero -->
+
+			<!-- Page Content -->
+			<div class="content">
+				<div class="row">
+					<div class="flex-fill ml-3">
+						<div th:if="${message!=null}" class="alert alert-success text-center">[[${message}]]</div>
+					</div>
+					<div class="col-12">
+						<!-- Dynamic Table with Export Buttons -->
+						<div class="block block-rounded">
+							<div class="block-header block-header-default">
+								<h3 class="block-title">Liste des clients <small>Boutons d'exportation</small> </h3>
+							</div>
+							<div class="block-content block-content-full">
+								<div class="row items-push">
+									<form th:action="@{/customers/page/1}">
+										<input type="hidden" name="sortField" th:value="${sortField}" />
+										<input type="hidden" name="sortDir" th:value="${sortDir}" />
+										<div class="row">
+											<div class="col-lg-4">
+												<p class="fs-sm text-muted">
+													Extraire vos données en fonction de vos besoins spécifiques!
+												</p>
+											</div>
+											<div class="col-lg-8 col-xl-5">
+												<div class="mb-4 text-center">
+													<a th:href="@{/customers/export/csv}"><button type="button"
+															class="btn btn-sm btn-alt-primary">
+															<i class="fas fa-file-csv"></i> CSV
+														</button></a>
+													<a th:href="@{/customers/export/excel}"><button type="button"
+															class="btn btn-sm btn-alt-primary">
+															<i class="fa fa-file-excel"></i> EXCEL
+														</button></a>
+													<a th:href="@{/customers/export/pdf}"><button type="button"
+															class="btn btn-sm btn-alt-primary">
+															<i class="fa fa-file-pdf"></i> PDF
+														</button></a>
+
+												</div>
+												<div class="mb-4">
+													<div class="input-group">
+														<input type="text" class="form-control form-control-alt"
+															id="one-ecom-orders-search" name="keyword"
+															th:value="${keyword}"
+															placeholder="Tapez le mot cl&eacute; et cliquez sur entrer"
+															required>
+														<button type="submit" class="btn btn-alt-primary">
+															<i class="fa fa-search opacity-50"></i>
+														</button>
+														<button type="button" class="btn btn-alt-primary" id="vider"
+															onclick="clearFilter()">
+															<i class="fa fa-eraser opacity-50"></i>
+														</button>
+													</div>
+												</div>
+											</div>
+										</div>
+									</form>
+								</div>
+
+								<div class="container">
+									<div class="row">
+										<div class="col-md-12">
+											<div class="table-responsive">
+												<!-- DataTables init on table by adding .js-dataTable-buttons class, functionality is initialized in js/pages/be_tables_datatables.min.js which was auto compiled from _js/pages/be_tables_datatables.js -->
+												<table class="table table-bordered table-striped table-vcenter">
+                          <thead>
+                            <tr>
+                              <th class="d-none d-sm-table-cell text-center" style="width: 10%;">
+                                <th th:replace="fragments :: column_header_link('id','ID','tag')" />
+                              </th>
+                              <th class="d-none d-sm-table-cell text-center" style="width: 10%;">
+                                <th th:replace="fragments :: column_header_link('firstName','Prénom','tag')" />
+                              </th>
+                              <th class="d-none d-sm-table-cell text-center" style="width: 10%;">
+                                <th th:replace="fragments :: column_header_link('lastName','Nom','tag')" />
+                              </th>
+                              <th class="d-none d-sm-table-cell text-center" style="width: 15%;">
+                                <th th:replace="fragments :: column_header_link('email','E-mail','tag')" />
+                              </th>
+                              <th class="d-none d-sm-table-cell text-center">
+                                <th th:replace="fragments :: column_header_link('city','Ville','tag')" />
+                              </th>
+                              <th class="d-none d-sm-table-cell text-center">
+                                <th th:replace="fragments :: column_header_link('state','Province','tag')" />
+                              </th>
+
+                              <th class="d-none d-sm-table-cell text-center">
+                                <th th:replace="fragments :: column_header_link('country','Pays','tag')" />
+                              </th>
+                              <th class="d-none d-sm-table-cell text-center">
+                                Status
+                              </th>
+                              <th class="d-none d-sm-table-cell text-center" style="width: 10%;">
+                                Action
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr th:each="customer : ${listCustomers}">
+                              <td class="d-none d-sm-table-cell text-center fs-sm" style="width: 10%;">[[${customer.id}]]</td>
+                              <td class="d-none d-sm-table-cell text-center fs-sm fw-semibold fs-sm" style="width: 10%;">
+                                [[${customer.firstName}]]</tdclass="text-center fs-sm">
+                              <td class="d-none d-sm-table-cell text-center fs-sm fw-semibold fs-sm" style="width: 10%;">
+                                [[${customer.lastName}]]</td>
+                              <td class="d-none d-sm-table-cell text-center"><span class="text-muted"
+                                  style="width: 15%;">[[${customer.email}]]</span>
+                              </td>
+                              <td class="d-none d-sm-table-cell text-center">[[${customer.city}]]</td>
+                              <td class="d-none d-sm-table-cell text-center">[[${customer.state}]]</td>
+                              <td class="d-none d-sm-table-cell text-center">[[${customer.country.name}]]</td>
+                              <td class="d-none d-sm-table-cell text-center">
+                                <p> <a th:if="${customer.enabled==true}" th:entityId="${customer.id}"
+                                    th:entitytName="${customer.FullName}"
+                                    th:href="@{'/customers/' + ${customer.id}+'/enabled/false'}"
+                                    class="fas fa-circle link-enabled" style="color: #30c78d"></a> <a
+                                    th:if="${customer.enabled==false}" th:entityId="${customer.id}"
+                                    th:entitytName="${customer.FullName}"
+                                    th:href="@{'/customers/' + ${customer.id}+'/enabled/true'}"
+                                    class="fas fa-circle link-enabled" style="color: #283747"></a></p>
+
+                              </td>
+                              <td class="d-none d-sm-table-cell text-center fs-sm">
+                                <div class="btn-group">
+                                  <th:block
+                                    th:replace="fragments :: ActionEntity('btn btn-sm btn-alt-secondary','Voir les details du client','link-detail',@{'/customers/detail/' + ${customer.id}},${customer.id},${customer.FullName},'fa fa-fw fa-eye')" />
+                                  <th:block
+                                    th:replace="fragments :: ActionEntity('btn btn-sm btn-alt-success','Modifier le client','link-edited',@{'/customers/edit/' + ${customer.id}},${customer.id},${customer.FullName},'fa fa-fw fa-pencil-alt text-success')" />
+                                  <th:block
+                                    th:replace="fragments :: ActionEntity('btn btn-sm btn-alt-danger','Supprimer le client','link-deleted',@{'/customers/delete/' + ${customer.id}},${customer.id},${customer.FullName},'fa fa-fw fa-times text-danger')" />
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="less-details">
+									<div th:each="customer : ${listCustomers}" class="row m-1">
+										<div class="col-4">
+											<span><b>[[${customer.fullName}]]</b></span>
+										</div>
+										<div class="col-8">
+											<div class="mb-1">
+												<span>[[${customer.country.name}]]</span>
+											</div>
+											<div class="btn-group">
+												<th:block
+													th:replace="fragments :: ActionEntity('btn btn-sm btn-alt-secondary','Voir les details du client','link-detail',@{'/customers/detail/' + ${customer.id}},${customer.id},${customer.FullName},'fa fa-fw fa-eye')" />
+												<th:block
+													th:replace="fragments :: ActionEntity('btn btn-sm btn-alt-success','Modifier le client','link-edited',@{'/customers/edit/' + ${customer.id}},${customer.id},${customer.FullName},'fa fa-fw fa-pencil-alt text-success')" />
+												<th:block
+													th:replace="fragments :: ActionEntity('btn btn-sm btn-alt-danger','Supprimer le client','link-deleted',@{'/customers/delete/' + ${customer.id}},${customer.id},${customer.FullName},'fa fa-fw fa-times text-danger')" />
+											</div>
+										</div>
+										<div>&nbsp;</div>
+									</div>
+								</div>
+								<div class="row text-center">
+
+									<div class="col-md-5 offset-md-7">
+										<div class="block block-rounded">
+											<div class="block-content">
+												<div th:replace="fragments :: pagination('customers')" />
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</div>
+
+			</div>
+			<!-- END Page Content -->
+		</main>
+		<!-- END Main Container -->
+		<!-- Modal -->
+		<div th:replace="fragments ::modal" />
+		<!-- END Modal -->
+		<div class="modal fade" id="detailModal">
+			<div class="modal-dialog modal-xl">
+				<div class="modal-content">
+
+				</div>
+			</div>
+		</div>
+		<!-- Footer -->
+		<footer th:replace="fragments ::footer" />
+		<!-- END Footer -->
+		<!--
+        OneUI JS
+        Core libraries and functionality
+        webpack is putting everything together at assets/_js/main/app.js
+    -->
+		<script type="text/javascript" th:src="@{/assets/js/oneui.app.min.js}"></script>
+		<script th:src="@{/assets/js/lib/jquery.min.js}"></script>
+		<script type="text/javascript" th:src="@{/assets/js/plugins/select2/js/select2.full.min.js}"></script>
+		<script type="text/javascript"
+			th:src="@{/assets/js/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js}"></script>
+		<!-- Page JS Plugins -->
+		<!-- jQuery (required for BS Datepicker + BS Maxlength + Select2 + Masked Inputs + Ion Range Slider plugins) -->
+
+		<script th:src="@{/assets/js/common_list.js}"></script>
+		<script type="text/javascript">
+			moduleURL = "[[@{/customers}]]";
+			EntityName = "le client";
+			EntityName2 = "client";
+			$(document).ready(function () {
+				handleDefaultDetailLinkClick();
+
+			});
+		</script>
+
+		<script>One.helpersOnLoad(['jq-maxlength', 'jq-select2']);</script>
+</body>

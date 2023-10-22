@@ -1,0 +1,458 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
+<html lang="fr" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:fragment="page_Head(Title)">
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0">
+	<title>[[${Title}]]</title>
+	<meta name="description" content="Xorshop - Panneau d&#146;administration de contr&ocirc;le">
+	<meta name="author" content="pixelcave">
+	<meta name="robots" content="noindex, nofollow">
+	<!-- Open Graph Meta -->
+	<meta property="og:title" content="Xorshop - Panneau d&#146;administration de contr&ocirc;le">
+	<meta property="og:site_name" content="Xorshop">
+	<meta property="og:description" content="Xorshop - Panneau d&#146;administration de contr&ocirc;le">
+	<meta property="og:type" content="website">
+	<meta property="og:url" content="">
+	<meta property="og:image" content="">
+	<!-- Icons -->
+	<!-- The following icons can be replaced with your own, they are used by desktop and mobile browsers -->
+	<link rel="shortcut icon" th:href="@{/assets/media/favicons/favicon.png}" />
+	<link rel="icon" type="image/png" sizes="192x192" th:href="@{/assets/media/favicons/favicon-192x192.png}" />
+	<link rel="apple-touch-icon" sizes="180x180" th:href="@{/assets/media/favicons/apple-touch-icon-180x180.png}" />
+	<!-- END Icons -->
+	<!-- Stylesheets -->
+	<!-- OneUI framework -->
+	<link rel="stylesheet" type="text/css" id="css-main" th:href="@{/assets/css/oneui.min.css}" />
+	<!-- You can include a specific file from css/themes/ folder to alter the default color theme of the template. eg: -->
+	<!-- <link rel="stylesheet" id="css-theme" href="assets/css/themes/amethyst.min.css"> -->
+	<!-- END Stylesheets -->
+	<!-- Stylesheets -->
+	<script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
+</head>
+
+<head th:fragment="page_HeadCSSSelect(Title)">
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0">
+	<title>[[${Title}]]</title>
+	<meta name="description" content="Xorshop - Panneau d&#146;administration de contr&ocirc;le">
+	<meta name="author" content="pixelcave">
+	<meta name="robots" content="noindex, nofollow">
+	<!-- Open Graph Meta -->
+	<meta property="og:title" content="Xorshop - Bootstrap 5 Admin Template &amp;">
+	<meta property="og:site_name" content="Xorshop">
+	<meta property="og:description" content="Xorshop - Panneau d&#146;administration de contr&ocirc;le">
+	<meta property="og:type" content="website">
+	<meta property="og:url" content="">
+	<meta property="og:image" content="">
+	<!-- Icons -->
+	<!-- The following icons can be replaced with your own, they are used by desktop and mobile browsers -->
+	<link rel="shortcut icon" th:href="@{/assets/media/favicons/favicon.png}" />
+	<link rel="icon" type="image/png" sizes="192x192" th:href="@{/assets/media/favicons/favicon-192x192.png}" />
+	<link rel="apple-touch-icon" sizes="180x180" th:href="@{/assets/media/favicons/apple-touch-icon-180x180.png}" />
+	<!-- END Icons -->
+	<!-- Stylesheets -->
+	<link rel="stylesheet" type="text/css" th:href="@{/assets/js/plugins/select2/css/select2.min.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/assets/js/plugins/dropzone/min/dropzone.min.css}">
+	<link rel="stylesheet" type="text/css"
+		th:href="@{/assets/js/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css}">
+	<!-- OneUI framework -->
+	<link rel="stylesheet" type="text/css" id="css-main" th:href="@{/assets/css/oneui.min.css}" />
+	<!-- You can include a specific file from css/themes/ folder to alter the default color theme of the template. eg: -->
+	<!-- <link rel="stylesheet" id="css-theme" href="assets/css/themes/amethyst.min.css"> -->
+	<!-- END Stylesheets -->
+	<!-- Stylesheets -->
+</head>
+
+<body>
+	<!-- Modal -->
+	<div th:fragment="modal" class="modal fade" id="modal-block-slideleft" tabindex="-1" role="dialog"
+		aria-labelledby="modal-block-slideleft" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-slideleft" role="document">
+			<div class="modal-content">
+				<div class="block block-rounded block-transparent mb-0">
+					<div class="block-header block-header-default">
+						<h3 class="block-title" id="modal-block-slideleft-title">Suppression</h3>
+						<div class="block-options">
+							<button type="button" class="btn-block-option" data-bs-dismiss="modal" aria-label="Close">
+								<i class="fa fa-fw fa-times"></i>
+							</button>
+						</div>
+					</div>
+					<div class="block-content fs-sm">
+						<p id="modalBody">Message</p>
+					</div>
+					<div class="block-content block-content-full text-end bg-body">
+						<a href="" id="yesButton"> <button type="button" class="btn btn-danger">Oui</button></a>
+						<button type="button" class="btn btn-success" data-bs-dismiss="modal">Non</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- END Modal -->
+	<!-- Modal Duplicate -->
+	<div th:fragment="modalDuplicate" class="modal fade" id="modal-block-slideleft" tabindex="-1" role="dialog"
+		aria-labelledby="modal-block-slideleft" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-slideleft" role="document">
+			<div class="modal-content">
+				<div class="block block-rounded block-transparent mb-0">
+					<div class="block-header block-header-default">
+						<h3 class="block-title" id="modalTitle">Attention</h3>
+						<div class="block-options">
+							<button type="button" class="btn-block-option" data-bs-dismiss="modal" aria-label="Close">
+								<i class="fa fa-fw fa-times"></i>
+							</button>
+						</div>
+					</div>
+					<div class="block-content fs-sm">
+						<p id="modalBody">Message</p>
+					</div>
+					<div class="block-content block-content-full text-end bg-body">
+						<button type="button" class="btn btn-danger" data-bs-dismiss="modal">Fermer</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- END Modal Duplicate -->
+	<!-- Pop In Block Modal -->
+	<div th:fragment="ModalConfirmationDialog" class="modal fade" id="modal-block-popin" tabindex="-1" role="dialog"
+		aria-labelledby="modal-block-popin" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-popin" role="document">
+			<div class="modal-content">
+				<div class="block block-rounded block-transparent mb-0">
+					<div class="block-header block-header-default">
+						<h3 class="block-title" id="modalTitleProduct">Modal Title</h3>
+						<div class="block-options">
+							<button type="button" class="btn-block-option" data-bs-dismiss="modal" aria-label="Close">
+								<i class="fa fa-fw fa-times"></i>
+							</button>
+						</div>
+					</div>
+					<div class="block-content fs-sm">
+						<p id="modalBodyProduct">Message</p>
+					</div>
+					<div class="block-content block-content-full text-end bg-body">
+						<button type="button" class="btn btn-sm btn-warning"
+							id="yesButton-modal-block-popin">Confimer</button>
+						<button type="button" class="btn btn-sm btn-alt-secondary me-1"
+							data-bs-dismiss="modal">Annuler</button>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- END Pop In Block Modal -->
+	<!-- Footer -->
+	<footer th:fragment="footer" id="page-footer" class="bg-body-light">
+		<div class="content py-3">
+			<div class="row fs-sm">
+				<div class="col-sm-6 order-sm-2 py-1 text-center text-sm-end">
+					XorShop <i class="fa fa-heart text-danger"></i> by <a class="fw-semibold" href="#"
+						target="_blank">Xorstein</a>
+				</div>
+				<div class="col-sm-6 order-sm-1 py-1 text-center text-sm-start">
+					<a class="fw-semibold" href="#" target="_blank">Xorshop </a> &copy; <span
+						data-toggle="year-copy"></span>
+				</div>
+			</div>
+		</div>
+	</footer>
+	<!-- END Footer -->
+	<!-- Menu Link -->
+	<a th:fragment="HrefLinkWithSpan(classfont,toggle,haspopup,expanded,TitleLabel,link,activelink,classfontIcon)"
+		th:class="${classfont}" th:data-toggle="${toggle}" th:aria-expanded="${expanded}" th:aria-haspopup="${haspopup}"
+		th:href="${link}">
+		<i th:class="${classfontIcon}"></i>
+		<span class="nav-main-link-name">[[${TitleLabel}]]</span>
+	</a>
+	<!-- Menu Link -->
+	<!-- Menu Link -->
+	<th th:fragment="Menu_link(classfont,TitleLabel)">
+		<li th:class="${classfont}">[[${TitleLabel}]] </li>
+	</th>
+	<!-- Menu Link -->
+	<!-- Menu Link 01-->
+	<li class="nav-main-item" th:fragment="Menu_link1(classfont,TitleLabel,hreflink,linknumber)"><a
+			th:classappend="${activelink==linknumber ? 'nav-main-link active':''}" class="nav-main-link"
+			th:href="@{'/'+ ${hreflink} }"> <i th:class="${classfont}"></i> <span
+				class="nav-main-link-name">[[${TitleLabel}]]</span>
+		</a>
+	</li>
+	<!-- Menu Link 01-->
+	<!-- Menu Link 02-->
+	<li class="nav-main-item" th:fragment="Menu_link2(classfont,TitleLabel,hreflink,linknumber)"><a
+			th:classappend="${activelink==linknumber ? 'nav-main-link active':''}" class="nav-main-link"
+			th:href="@{'/'+ ${hreflink} }"> <i th:class="${classfont}"></i> <span
+				class="nav-main-link-name">[[${TitleLabel}]]</span>
+		</a></li>
+	<!-- Menu Link 02-->
+	<!-- Column With Link-->
+	<th th:fragment="Column_link(fileName,colomnLabel,removeTag)" th:remove="${removeTag}"><a style="color: #343a40;"
+			th:href="@{'/users/page/'+ ${currentPage} +'?sortField='+${fileName}+'&sortDir='+${sortField !=fileName ? sortDi:reversesortDir }+ ${keyword !=null ? '&keyword='+keyword:''}}">
+			[[${colomnLabel}]] </a> <span th:if="${sortField==fileName}"
+			th:class="${sortDir=='asc' ? 'fa fa-sort-up' : 'fa fa-sort-down'}"></span>
+	</th>
+	<!-- Column With Link-->
+	<!-- Column With Link & Href-->
+	<th th:fragment="Column_linkWithLink(fileName,colomnLabel,removeTag,gohref)" th:remove="${removeTag}"><a
+			style="color: #343a40;"
+			th:href="@{'/'+${gohref}+'/page/'+ ${currentPage} +'?sortField='+${fileName}+'&sortDir='+${sortField !=fileName ? sortDi:reversesortDir }+ ${keyword !=null ? '&keyword='+keyword:''}}">
+			[[${colomnLabel}]]<i th:if="${sortField!=fileName}" class="fa fa-sort" aria-hidden="true"></i> </a> <i
+			th:if="${sortField==fileName}" th:class="${sortDir=='asc' ? 'fa fa-sort-desc' : 'fa fa-sort-asc'}"></i>
+	</th>
+
+	<!-- Column With Link & Href-->
+
+	<!-- Column With Link & Href-->
+	<th th:fragment="Column_CategoryWithLink(colomnLabel)">
+		<a style="color: #343a40;"
+			th:href="@{${moduleURL} + '/page/' + ${currentPage} + '?sortDir=' + ${sortField == 'name' ? sortDir : reverseSortDir} + ${keyword != null ? '&keyword=' + keyword : ''}}">
+			[[${colomnLabel}]]
+
+		</a>
+		<i th:if="${sortDir != null}" th:class="${sortDir == 'asc' ? 'fa fa-sort-asc' : 'fa fa-sort-desc'}"></i>
+	</th>
+
+
+	<!-- Column With Link & Href-->
+
+
+
+	<!-- Page With Number and Class-->
+	<a th:fragment="Page_link(pageNum,classfont,gohref)" class="page-link"
+		th:href="@{'/'+${gohref}+'/page/'+${pageNum}+'?sortField=' + ${sortField}+'&sortDir='+${sortDir}+ ${keyword !=null ? '&keyword='+keyword:''}}">
+		<i th:class="${classfont}"></i>
+	</a>
+	<!-- Page With Number and Class-->
+	<!-- Page With Number and Label-->
+	<a th:fragment="Page_linkName(pageNum,label,gohref)" class="page-link"
+		th:href="@{'/'+${gohref}+'/page/'+${pageNum}+'?sortField=' + ${sortField}+'&sortDir='+${sortDir}+ ${keyword !=null ? '&keyword='+keyword:''}}">
+		[[${label}]] </a>
+	<!-- Page With Number and Label-->
+	<div th:fragment="category_actions" lass="btn-group">
+
+		<button type="button" class="btn btn-sm btn-alt-success" data-bs-toggle="tooltip" title="Modifier la categorie">
+			<a class="link-edited" th:href="@{'/categories/edit/' + ${category.id}}" th:entityId="${category.id}"
+				th:entitytName="${category.name}"><i class="fa fa-fw fa-pencil-alt text-success"></i></a>
+		</button>
+		<th:block th:if="${category.hasChildren==false}">
+			<button type="button" class="btn btn-sm btn-alt-danger" data-bs-toggle="tooltip"
+				title="Supprimer la categorie">
+				<a class="link-deleted" th:href="@{'/categories/delete/' + ${category.id}}" th:entityId="${category.id}"
+					th:entitytName="${category.name}" title="Supprimer la categorie"> <i
+						class="fa fa-fw fa-times text-danger"></i></a>
+			</button>
+		</th:block>
+	</div>
+
+	<p th:fragment="category_status" class="text-center">
+		<a th:if="${category.enabled==true}" th:entityId="${category.id}" th:entitytName="${category.name}"
+			th:href="@{'/categories/' + ${category.id}+'/enabled/false'}" class="fas fa-circle link-enabled"
+			style="color: #30c78d"></a> <a th:if="${category.enabled==false}" th:entityId="${category.id}"
+			th:entitytName="${category.name}" th:href="@{'/categories/' + ${category.id}+'/enabled/true'}"
+			class="fas fa-circle link-enabled" style="color:  #283747"></a>
+
+	</p>
+	<!-- COLUMN LINK -->
+	<th th:fragment="column_header_link(fieldName, columnLabel, removeTag)" th:remove="${removeTag}">
+
+		<a style="color: #343a40;"
+			th:href="@{${moduleURL} + '/page/' + ${currentPage} + '?sortField=' + ${fieldName}  +'&sortDir=' + ${sortField != fieldName ? sortDir : reverseSortDir} + ${keyword != null ? '&keyword=' + keyword : ''} + ${categoryId != null ? '&categoryId=' + categoryId : ''}}">
+			[[${columnLabel}]]
+		</a>
+		</a>
+		<span th:if="${sortField != fieldName}" class="fa fa-sort" aria-hidden="true"></span>
+
+		<span th:if="${sortField == fieldName}"
+			th:class="${sortDir == 'asc' ? 'fa fa-sort-asc' : 'fa fa-sort-desc'}"></span>
+
+	</th>
+	<!-- PAGE LINK CSS -->
+	<a th:fragment="pagination_linkCSS(pageNum, classfont)" class="page-link"
+		th:href="@{${moduleURL} + '/page/' + ${pageNum} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + ${keyword != null ? '&keyword=' + keyword : ''} + ${categoryId != null ? '&categoryId=' + categoryId : ''}}">
+		<i th:class="${classfont}"></i>
+	</a>
+	<!-- PAGE LINK CSS END -->
+
+	<!-- PAGE LINK -->
+	<a th:fragment="pagination_link(pageNum, label)" class="page-link"
+		th:href="@{${moduleURL} + '/page/' + ${pageNum} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + ${keyword != null ? '&keyword=' + keyword : ''} + ${categoryId != null ? '&categoryId=' + categoryId : ''}}">[[${label}]]</a>
+	<!-- PAGE LINK END -->
+
+	<!-- PAGINATION -->
+	<div th:fragment="pagination(entityName)" th:remove="tag">
+
+		<th:block th:if="${totalPages  <=0}">
+			<nav aria-label="Page navigation">
+				<ul class="pagination justify-content-center">
+					<li class="page-item"><span th:unless="${totalItems>0}" class="block-title">Aucun
+							[[${moduleURL}]]</span>
+					</li>
+				</ul>
+		</th:block>
+		<th:block th:if="${totalPages > 1}">
+			<nav aria-label="Photos Search Navigation">
+				<ul class="pagination pagination-sm justify-content-end mt-2">
+					<li th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'}">
+						<a th:replace="fragments :: pagination_linkCSS(1,'fa fa-angle-double-left' )"></a>
+					</li>
+					<li th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'}">
+						<a th:replace="fragments :: pagination_linkCSS(${currentPage - 1},'fa fa-angle-left')"></a>
+					</li>
+
+					<li th:each="i : ${#numbers.sequence(1, totalPages)}">
+						<span th:if="${currentPage == i}">
+							<a th:replace="fragments :: pagination_link(${i}, ${i})"></a>
+						</span>
+					</li>
+
+					<li th:class="${currentPage < totalPages ? 'page-item' : 'page-item disabled'}">
+						<a th:replace="fragments :: pagination_linkCSS(${currentPage + 1}, 'fa fa-angle-right')"></a>
+					</li>
+
+					<li th:class="${currentPage < totalPages ? 'page-item' : 'page-item disabled'}">
+						<a th:replace="fragments :: pagination_linkCSS(${totalPages},'fa fa-angle-double-right')"></a>
+					</li>
+					<li class="page-item"><span th:if="${totalItems>0}" class="block-title"> [[${startCount}]] de
+							[[${endCount}]] sur [[${totalItems}]]</span></li>
+
+				</ul>
+			</nav>
+		</th:block>
+	</div>
+	<!-- PAGINATION END-->
+
+	<!-- PAGINATION -->
+	<div th:fragment="paginationSearchEditOrder" th:remove="tag">
+		<th:block th:if="${totalPages  <=0}">
+			<nav aria-label="Page navigation">
+				<ul class="pagination justify-content-center">
+					<li class="page-item"><span th:unless="${totalItems>0}" class="block-title"> Aucun produit</span>
+					</li>
+				</ul>
+		</th:block>
+
+		<th:block th:if="${totalPages > 1}">
+			<nav aria-label="Page navigation">
+				<ul class="pagination justify-content-center">
+					<li th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'}">
+						<a th:replace="fragments :: pagination_linkCSS(1,'fa fa-angle-double-left' )"></a>
+					</li>
+					<li th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'}">
+						<a th:replace="fragments :: pagination_linkCSS(${currentPage - 1},'fa fa-angle-left')"></a>
+					</li>
+
+					<li th:each="i : ${#numbers.sequence(1, totalPages)}">
+						<span th:if="${currentPage == i}">
+							<a th:replace="fragments :: pagination_link(${i}, ${i})"></a>
+						</span>
+					</li>
+
+					<li th:class="${currentPage < totalPages ? 'page-item' : 'page-item disabled'}">
+						<a th:replace="fragments :: pagination_linkCSS(${currentPage + 1}, 'fa fa-angle-right')"></a>
+					</li>
+
+					<li th:class="${currentPage < totalPages ? 'page-item' : 'page-item disabled'}">
+						<a th:replace="fragments :: pagination_linkCSS(${totalPages},'fa fa-angle-double-right')"></a>
+					</li>
+					<li class="page-item mt-1">
+						[[${startCount}]] &nbsp;&nbsp; de
+						&nbsp;&nbsp; [[${endCount}]] &nbsp;&nbsp; sur &nbsp;&nbsp; [[${totalItems}]]
+					</li>
+
+
+				</ul>
+			</nav>
+		</th:block>
+	</div>
+	<!-- PAGINATION END-->
+
+	<!-- Menu Link -->
+	<th:block th:fragment="ActionEntity(ClassButton,title,ClassA,HrefA,entityId,entitytName,fontAwesome)">
+		<button type="button" th:class="${ClassButton}" data-bs-toggle="tooltip" th:title="${title}">
+			<a th:class="${ClassA}" th:href="${HrefA}" th:entityId="${entityId}" th:entitytName="${entitytName}"><i
+					th:class="${fontAwesome}"></i></a>
+		</button>
+	</th:block>
+	<!-- Menu Link -->
+
+	<!-- FORMAT CURRENCY -->
+	<div th:fragment="format_currency(amount)" th:remove="tag">
+		<span th:if="${CURRENCY_SYMBOL_POSITION == 'Before price'}" th:remove="tag">[[${CURRENCY_SYMBOL}]]
+		</span>[[${#numbers.formatDecimal(amount, 1, THOUSANDS_POINT_TYPE, DECIMAL_DIGITS, DECIMAL_POINT_TYPE)}]]<span
+			th:if="${CURRENCY_SYMBOL_POSITION == 'After price'}" th:remove="tag"> [[${CURRENCY_SYMBOL}]]</span>
+	</div>
+	<!-- FORMAT CURRENCY END-->
+	<!-- FORMAT CURRENCY -->
+	<div th:fragment="format_Pourcent(amount)" th:remove="tag">
+		<span th:if="${amount == null or amount == ''}">0%</span>
+		<span th:if="${amount != null and amount != ''}">
+			[[${#numbers.formatDecimal(amount, 1, THOUSANDS_POINT_TYPE, DECIMAL_DIGITS, DECIMAL_POINT_TYPE)}]] %
+		</span>
+	</div>
+	<!-- FORMAT CURRENCY END-->
+	<!-- FORMAT TIME -->
+	<div th:fragment="format_time(dateTime)" th:remove="tag">
+		<span th:text="${#dates.format(dateTime, 'yyyy-MM-dd HH:mm:ss')}"></span>
+	</div>
+	<!-- FORMAT TIME END -->
+	<!-- CURRENCY INPUT -->
+	<div th:fragment="currency_input(amount)" th:remove="tag">
+		<input type="text" readonly class="form-control"
+			th:value="${(CURRENCY_SYMBOL_POSITION == 'Before price' ? CURRENCY_SYMBOL : '') + #numbers.formatDecimal(amount, 1, THOUSANDS_POINT_TYPE, DECIMAL_DIGITS, DECIMAL_POINT_TYPE) + (CURRENCY_SYMBOL_POSITION == 'After price' ? CURRENCY_SYMBOL : '')}">
+	</div>
+	<!-- CURRENCY INPUT END -->
+
+	<!-- SPAN STATUS -->
+	<div th:fragment="OrderStatus(status)" th:remove="tag">
+
+		<div th:fragment="OrderStatus(status)" th:remove="tag">
+			<span th:if="${status.toString() == 'NEW' 
+                    or status.toString() == 'PACKAGED' 
+                    or status.toString() == 'SHIPPING'}" class="badge bg-info" th:text="${status}"></span>
+			<span th:if="${status.toString() == 'CANCELLED' 
+                    or status.toString() == 'RETURNED'}" class="badge bg-danger" th:text="${status}"></span>
+			<span th:if="${status.toString() == 'PROCESSING'                  
+                    or status.toString() == 'REFUNDED' 
+                    or status.toString() == 'RETURN_REQUESTED'}" class="badge bg-warning" th:text="${status}"></span>
+			<span th:if="${status.toString() == 'PICKED'  or status.toString() == 'PAID' 
+                    or status.toString() == 'DELIVERED'}" class="badge bg-success" th:text="${status}"></span>
+		</div>
+
+	</div>
+	<!-- SPAN STATUS -->
+
+	<!-- PaymentMethod -->
+
+
+	<div th:fragment="PaymentMethod(paymentMethod)" th:remove="tag">
+		<span th:if="${paymentMethod.toString() == 'COD'}"><i class="text-primary fas fa-money-bill fa-xl"
+				title="Cash"></i></span>
+		<span th:if="${paymentMethod.toString() == 'CREDIT_CARD'}"><i class="text-primary fa-brands fa-cc-visa fa-xl"
+				title="Carte de Visa"></i></span>
+		<span th:if="${paymentMethod.toString() == 'PAYPAL'}" <i class="text-primary fa-brands fa-cc-paypal fa-xl"
+			title="Paypal"></i></span>
+	</div>
+
+
+
+	<!-- PaymentMethod -->
+
+	<!-- STATUS -->
+	<div th:fragment="status(enabled, entityName, entityURL)" th:remove="tag" class="text-center">
+		<a th:if="${enabled == true}" class="fas fa-check-circle fa-2x text-success" style="text-decoration: none;"
+			th:href="@{${entityURL} + '/enabled/false'}" th:title="'Disable this ' + ${entityName}"></a>
+
+		<a th:if="${enabled == false}" class="fas fa-circle fa-2x text-dark" style="text-decoration: none;"
+			th:href="@{${entityURL} + '/enabled/true'}" th:title="'Enable this ' + ${entityName}"></a>
+	</div>
+
+	<!-- STATUS END -->
+
+</body>
+
+</html>

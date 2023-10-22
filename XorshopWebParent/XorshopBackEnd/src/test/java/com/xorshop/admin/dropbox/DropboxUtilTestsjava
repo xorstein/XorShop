@@ -1,0 +1,41 @@
+package com.xorshop.admin.dropbox;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.util.List;
+
+import org.junit.jupiter.api.Test;
+
+import com.dropbox.core.DbxException;
+import com.xorshop.admin.util.DropboxUtil;
+
+public class DropboxUtilTests {
+
+	@Test
+	public void testListFolder() {
+		String folderName = "product-images/";
+		List<String> listKeys = DropboxUtil.listFolder(folderName);
+		listKeys.forEach(System.out::println);
+	}
+
+	/*@Test
+	public void testUploadFile() throws FileNotFoundException {
+		String folderName = "test-upload";
+		String fileName = "xortech-beta.png";
+		String filePath = "C:\\dev\\Xorshop Code\\images\\" + fileName;
+		
+		InputStream inputStream = new FileInputStream(filePath);
+
+		DropboxUtil.uploadFile(folderName, fileName, inputStream);
+	}*/
+
+	/*@Test
+	public void testDeleteFile() {
+		String fileName = "test-upload/xortech-beta.png";
+		DropboxUtil.deleteFile(fileName);
+	}*/
+	
+
+	
+}

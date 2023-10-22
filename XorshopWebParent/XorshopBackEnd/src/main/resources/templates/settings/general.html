@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+	<div th:fragment="content" th:remove="tag">
+		<form th:action="@{/settings/save_general}" method="post" enctype="multipart/form-data">
+			<h4 class="content-heading">G&eacute;n&eacute;ral</h4>
+			<div class="container">
+				<div class="row m-4">
+					<div class="col-md-4">
+						<div class="text-left">
+							<h3 class="block-title mx-mb-n5">Nom du site</h3>
+						</div>
+					</div>
+					<div class="col-md-8"><input type="text" class="form-control" name="SITE_NAME"
+							th:value="${SITE_NAME}" required /></div>
+				</div>
+				<div class="row m-4">
+					<div class="col-md-4">
+						<div class="text-left">
+							<h3 class="block-title mx-mb-n5">Droits d'auteur</h3>
+						</div>
+					</div>
+					<div class="col-md-8"><input type="text" class="form-control" name="COPYRIGHT"
+							th:value="${COPYRIGHT}" required /></div>
+				</div>
+				<div class="row m-4">
+					<div class="col-md-4">
+						<div class="text-left">
+							<h3 class="block-title mx-mb-n5">E-mail info</h3>
+						</div>
+					</div>
+					<div class="col-md-8"><input type="text" class="form-control" name="MAIL_INFO"
+							th:value="${MAIL_INFO}" required /></div>
+				</div>
+				<div class="row m-4">
+					<div class="col-md-4">
+						<div class="text-left">
+							<h3 class="block-title mx-mb-n5">Compte Facebook</h3>
+						</div>
+					</div>
+					<div class="col-md-8"><input type="text" class="form-control" name="SITE_URL_FACEBOOK"
+							th:value="${SITE_URL_FACEBOOK}" required /></div>
+				</div>
+				<div class="row m-4">
+					<div class="col-md-4">
+						<div class="text-left">
+							<h3 class="block-title mx-mb-n5">Compte Instagram</h3>
+						</div>
+					</div>
+					<div class="col-md-8"><input type="text" class="form-control" name="SITE_URL_INSTAGRAM"
+							th:value="${SITE_URL_INSTAGRAM}" required /></div>
+				</div>
+				<div class="row m-4">
+					<div class="col-md-4">
+						<div class="text-left">
+							<h3 class="block-title mx-mb-n5">Compte Twitter</h3>
+						</div>
+					</div>
+					<div class="col-md-8"><input type="text" class="form-control" name="SITE_URL_TWITTER"
+							th:value="${SITE_URL_TWITTER}" required /></div>
+				</div>
+				<div class="row m-4">
+					<div class="col-md-4">
+						<div class="text-left">
+							<h3 class="block-title mx-mb-n5">T&eacute;l&eacute;phone</h3>
+						</div>
+					</div>
+					<div class="col-md-8"><input type="text" class="form-control" name="PHONE_NUMBER"
+							th:value="${PHONE_NUMBER}" required /></div>
+				</div>
+				<div class="row m-4">
+					<div class="col-md-4">
+						<div class="text-left">
+							<h3 class="block-title mx-mb-n5">Texte de pied de page</h3>
+						</div>
+					</div>
+					<div class="col-md-8">
+						<textarea class="form-control" name="SITE_FOOTER_TEXT" rows="4"
+							required>[[${SITE_FOOTER_TEXT}]]</textarea>
+					</div>
+				</div>
+
+				<div class="row m-4">
+					<div class="col-md-4">
+						<div class="text-left">
+							<h3 class="block-title mx-mb-n5">Type de devise</h3>
+						</div>
+					</div>
+					<div class="col-md-8">
+						<select name="CURRENCY_ID" class="form-control">
+							<th:block th:each="currency : ${listCurrencies}">
+								<option th:value="${currency.id}" th:selected="(${currency.id} == ${CURRENCY_ID})">
+									[[${currency}]]
+								</option>
+							</th:block>
+						</select>
+					</div>
+				</div>
+				<div class="row m-4">
+					<div class="col-md-4">
+						<div class="text-left">
+							<h3 class="block-title mx-mb-n5">Positions des symboles monétaires</h3>
+						</div>
+					</div>
+					<div class="col-md-8">
+						<select name="CURRENCY_SYMBOL_POSITION" class="form-control">
+							<option value="Before price" th:selected="(${CURRENCY_SYMBOL_POSITION} == 'Before price')">
+								Avant</option>
+							<option value="After price" th:selected="(${CURRENCY_SYMBOL_POSITION} == 'After price')">
+								Apr&eacute;s
+							</option>
+						</select>
+					</div>
+				</div>
+				<div class="row m-4">
+					<div class="col-md-4">
+						<div class="text-left">
+							<h3 class="block-title mx-mb-n5">Type de point décimal</h3>
+						</div>
+					</div>
+					<div class="col-md-8">
+						<select name="DECIMAL_POINT_TYPE" class="form-control">
+							<option value="POINT" th:selected="(${DECIMAL_POINT_TYPE} == 'POINT')">Point ( . )</option>
+							<option value="COMMA" th:selected="(${DECIMAL_POINT_TYPE} == 'COMMA')">Virgule ( , )
+							</option>
+						</select>
+					</div>
+				</div>
+				<div class="row m-4">
+					<div class="col-md-4">
+						<div class="text-left">
+							<h3 class="block-title mx-mb-n5">Chiffres décimaux</h3>
+						</div>
+					</div>
+					<div class="col-md-8">
+						<select name="DECIMAL_DIGITS" class="form-control">
+							<option value="0" th:selected="(${DECIMAL_DIGITS} == 0)">0</option>
+							<option value="1" th:selected="(${DECIMAL_DIGITS} == 1)">1</option>
+							<option value="2" th:selected="(${DECIMAL_DIGITS} == 2)">2</option>
+							<option value="3" th:selected="(${DECIMAL_DIGITS} == 3)">3</option>
+							<option value="4" th:selected="(${DECIMAL_DIGITS} == 4)">4</option>
+						</select>
+					</div>
+				</div>
+				<div class="row m-4">
+					<div class="col-md-4">
+						<div class="text-left">
+							<h3 class="block-title mx-mb-n5">Type de milliers de points</h3>
+						</div>
+					</div>
+					<div class="col-md-8">
+						<select name="THOUSANDS_POINT_TYPE" class="form-control">
+							<option value="POINT" th:selected="(${THOUSANDS_POINT_TYPE} == 'POINT')">Point ( . )
+							</option>
+							<option value="COMMA" th:selected="(${THOUSANDS_POINT_TYPE} == 'COMMA')">Virgule ( , )
+							</option>
+						</select>
+					</div>
+				</div>
+				<div class="col-lg-12  mb-5">
+					<div class="col-md-6 offset-md-5">
+						<button type="submit" class="btn btn-success me-1 mb-3">
+							<i class="fa fa-fw fa-check me-1"></i> Enregistrer
+						</button>
+						<button type="button" class="btn btn-info me-1 mb-3 buttonCancel">
+							<i class="fa fa-undo me-1"></i> Annuler
+						</button>
+					</div>
+				</div>
+			</div>
+
+		</form>
+</body>
+
+</html>

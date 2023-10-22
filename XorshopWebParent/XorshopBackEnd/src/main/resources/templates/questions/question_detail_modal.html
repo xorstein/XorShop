@@ -1,0 +1,87 @@
+<div class="block-header block-header-default">
+	<h3 class="block-title">D&eacute;tails de la question</h3>
+	<div class="block-options">
+		<button type="button" class="btn-block-option" data-bs-dismiss="modal" aria-label="Close">
+			<i class="fa fa-fw fa-times"></i>
+		</button>
+	</div>
+</div>
+<div class="block block-rounded block-transparent mb-0">
+<div class="container">
+  <div class="row">
+    <div class="col-12 mx-auto text-center">
+      <!-- Your content goes here -->
+     <form>
+		<th:block th:if="${question.approved == false}">
+			<div class="mt-4 text-center "><span class="text-warning"><b>Cette question n'a pas été approuvée.</b></span>
+			</div>
+		</th:block>
+		<th:block th:if="${question.approved == true}">
+			<div class="mt-4 text-center"><span class="text-success"><b>Cette question a été approuvée.</b></span></div>
+		</th:block>
+
+		<div class="form-group row mt-4">
+			<label for="name" class="col-sm-2 col-form-label">Produit:</label>
+			<div class="col-sm-10">
+				<input type="text" readonly class="form-control" th:value="${question.product.name}">
+			</div>
+		</div>
+		<div class="form-group row mt-4">
+			<label for="name" class="col-sm-2 col-form-label">Question:</label>
+			<div class="col-sm-10">
+				<textarea readonly class="form-control" th:text="${question.questionContent}" rows="2"></textarea>
+			</div>
+		</div>
+		<div class="form-group row mt-4">
+			<label for="name" class="col-sm-2 col-form-label">Question pos&eacute;e par:</label>
+			<div class="col-sm-10">
+				<input type="text" readonly class="form-control" th:value="${question.asker.fullName}">
+			</div>
+		</div>
+		<div class="form-group row mt-4">
+			<label for="name" class="col-sm-2 col-form-label">Temps de publication:</label>
+			<div class="col-sm-10">
+				<input type="text" readonly class="form-control" th:value="${question.askTime}">
+			</div>
+		</div>
+		<div class="form-group row mt-4">
+			<label for="name" class="col-sm-2 col-form-label">Votes:</label>
+			<div class="col-sm-10">
+				<input type="text" readonly class="form-control" th:value="${question.votes}">
+			</div>
+		</div>
+
+		<th:block th:if="${question.answered == true}">
+			<div class="form-group row mt-4">
+				<label for="name" class="col-sm-2 col-form-label">R&eacute;ponse:</label>
+				<div class="col-sm-10">
+					<textarea readonly class="form-control" th:text="${question.answer}" rows="3"></textarea>
+				</div>
+			</div>
+			<div class="form-group row mt-4">
+				<label for="name" class="col-sm-2 col-form-label">R&eacute;pondue par:</label>
+				<div class="col-sm-10">
+					<input type="text" readonly class="form-control" th:value="${question.answerer.fullName}">
+				</div>
+			</div>
+			<div class="form-group row mt-4">
+				<label for="name" class="col-sm-2 col-form-label">Temps de publication:</label>
+				<div class="col-sm-10">
+					<input type="text" readonly class="form-control" th:value="${question.answerTime}">
+				</div>
+			</div>
+		</th:block>
+
+		<th:block th:if="${question.answered == false}">
+			<div class="text-center m-4"><span class="text-warning"><b>Cette question n'a aucune réponse pour le moment.</b></span></div>
+		</th:block>
+
+	</form>
+    </div>
+  </div>
+</div>
+	<div class="block-content block-content-full text-end bg-body">
+		<button type="button" class="btn btn-sm btn-alt-secondary me-1" data-bs-dismiss="modal">Fermer</button>
+		<button type="button" class="btn btn-sm btn-primary" data-bs-dismiss="modal">Ok</button>
+	</div>
+</div>

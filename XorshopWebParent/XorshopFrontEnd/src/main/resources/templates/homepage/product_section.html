@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+
+	<th:block th:fragment="content" th:remove="tag">
+		
+			<h2 class="title mt-5">[[${section.heading}]]</h2>
+			<p style="margin-top: -50px;">
+				[[${section.description}]]
+			</p>
+			<div class="row">
+				<div class="col-4" th:each="productSection : ${section.productSections}"
+					th:with="product = ${productSection.product}">
+					<a href="product-details.html"><img th:src="@{${product.mainImagePath}}" height="150" /></a>
+					<h4 class="mt-2"><a th:href="@{${product.URI}}" th:title="${product.name}">[[${product.truncateName()}]]</a></h4>
+					<div>
+						<table>
+							<tr>
+								<td><input type="text" class="kv-ltr-theme-svg-star rating-loading" dir="ltr"
+										data-size="xs" th:value="${product.averageRating}" /></td>
+								<td>Avis <small>[[${product.reviewCount}]]</small></td>
+							</tr>
+						</table>
+					</div>
+					<div>
+						<div th:replace="product/product_fragment :: product_price"></div>
+					</div>
+				</div>
+
+			</div>
+	
+	</th:block>
+</body>
+
+</html>

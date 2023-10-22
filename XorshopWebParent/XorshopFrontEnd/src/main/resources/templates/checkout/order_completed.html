@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+	<head th:replace="fragments :: page_head(${pageTitle}, 'tag')" />
+</head>
+
+<body>
+	<header th:replace="navigation ::Navigation" />
+	<div class="container-page p-5 mt-5">
+		<div th:replace="breadcrumb :: content1(${pageTitle})"></div>
+
+		<div class="text-center">
+			<h2 class="custom-color"> Votre commande a été complétée !</h2>
+			<h4>Un e-mail de confirmation vous a été envoyé.</h4>
+
+		<p class="fw-medium text-muted text-dark">
+			Veuillez vérifier votre courrier électronique pour plus de détails.
+		</p>
+		</div>
+
+		
+	</div>
+
+	<div th:replace="fragments :: modal_dialog"></div>
+	<!----------Footer--------------->
+
+	<!-- Footer -->
+	<footer th:replace="fragments ::footer" />
+	<!-- END Footer -->
+	<div th:replace="fragments ::LoadTotalCountProduct" />
+
+
+
+</body>
+
+</html>

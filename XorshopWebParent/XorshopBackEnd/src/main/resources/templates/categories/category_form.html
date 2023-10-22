@@ -1,0 +1,257 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<th th:replace="fragments ::page_HeadCSSSelect('Gestion des cat&eacute;gories')" />
+
+<body>
+  <!-- Page Container -->
+  <!--
+      Available classes for #page-container:
+      GENERIC
+        'remember-theme'                            Remembers active color theme and dark mode between pages using localStorage when set through
+                                                    - Theme helper buttons [data-toggle="theme"],
+                                                    - Layout helper buttons [data-toggle="layout" data-action="dark_mode_[on/off/toggle]"]
+                                                    - ..and/or One.layout('dark_mode_[on/off/toggle]')
+         SIDEBAR & SIDE OVERLAY
+        'sidebar-r'                                 Right Sidebar and left Side Overlay (default is left Sidebar and right Side Overlay)
+        'sidebar-mini'                              Mini hoverable Sidebar (screen width > 991px)
+        'sidebar-o'                                 Visible Sidebar by default (screen width > 991px)
+        'sidebar-o-xs'                              Visible Sidebar by default (screen width < 992px)
+        'sidebar-dark'                              Dark themed sidebar
+        'side-overlay-hover'                        Hoverable Side Overlay (screen width > 991px)
+        'side-overlay-o'                            Visible Side Overlay by default
+        'enable-page-overlay'                       Enables a visible clickable Page Overlay (closes Side Overlay on click) when Side Overlay opens
+        'side-scroll'                               Enables custom scrolling on Sidebar and Side Overlay instead of native scrolling (screen width > 991px)
+         HEADER
+        ''                                          Static Header if no class is added
+        'page-header-fixed'                         Fixed Header
+         HEADER STYLE
+        ''                                          Light themed Header
+        'page-header-dark'                          Dark themed Header
+        MAIN CONTENT LAYOUT
+        ''                                          Full width Main Content if no class is added
+        'main-content-boxed'                        Full width Main Content with a specific maximum width (screen width > 1200px)
+        'main-content-narrow'                       Full width Main Content with a percentage width (screen width > 1200px)
+         DARK MODE
+        'sidebar-dark page-header-dark dark-mode'   Enable dark mode (light sidebar/header is not supported with dark mode)
+    -->
+  <div id="page-container"
+    class="sidebar-o sidebar-dark enable-page-overlay side-scroll page-header-fixed main-content-boxed">
+    <!-- Side Overlay-->
+    <aside th:replace="navigation ::Aside" />
+    <!-- END Side Overlay -->
+
+    <!-- Sidebar -->
+    <!--
+          Sidebar Mini Mode - Display Helper classes
+
+          Adding 'smini-hide' class to an element will make it invisible (opacity: 0) when the sidebar is in mini mode
+          Adding 'smini-show' class to an element will make it visible (opacity: 1) when the sidebar is in mini mode
+              If you would like to disable the transition animation, make sure to also add the 'no-transition' class to your element
+
+          Adding 'smini-hidden' to an element will hide it when the sidebar is in mini mode
+          Adding 'smini-visible' to an element will show it (display: inline-block) only when the sidebar is in mini mode
+          Adding 'smini-visible-block' to an element will show it (display: block) only when the sidebar is in mini mode
+      -->
+    <nav th:replace="navigation ::Navigation" />
+    <!-- END Sidebar -->
+    <!-- Header -->
+    <header th:replace="navigation ::Header" />
+    <!-- Form Styles -->
+
+    <!-- Page JS Plugins CSS -->
+
+
+
+
+
+
+    <!-- END Header -->
+
+    <!-- Main Container -->
+    <main id="main-container">
+      <!-- Hero -->
+      <div class="bg-body-light">
+        <div class="content content-full">
+          <div class="d-flex flex-column flex-sm-row justify-content-sm-between align-items-sm-center py-2">
+            <div class="flex-grow-1">
+              <h1 class="h3 fw-bold mb-1">
+                Cat&eacute;gories
+              </h1>
+              <h2 class="fs-base lh-base fw-medium text-muted mb-0">
+                [[${PageTitle}]]
+              </h2>
+            </div>
+            <nav class="flex-shrink-0 mt-3 mt-sm-0 ms-sm-3" aria-label="breadcrumb">
+              <ol class="breadcrumb breadcrumb-alt">
+                <li class="breadcrumb-item">
+                  <a class="link-fx" href="javascript:void(0)">Gestion de produits</a>
+                </li>
+                <li class="breadcrumb-item" aria-current="page">
+                  Cat&eacute;gories <a class="font-w600" th:href="@{/categories}"><i
+                      class="fas fa-arrow-alt-circle-left text-dark"></i></a>
+                </li>
+              </ol>
+            </nav>
+          </div>
+        </div>
+      </div>
+      <!-- END Hero -->
+
+     <!-- Page Content -->
+      <div class="content">
+        <div class="row">
+          <div class="col-12">
+            <!-- Dynamic Table with Export Buttons -->
+            <div class="block block-rounded">
+              <div class="block-header block-header-default">
+                <h3 class="block-title"> [[${PageTitle}]] <a class="font-w600"
+                    th:href="@{/categories}"><small>Retour</small></a> </h3>
+              </div>
+              <div class="block-content block-content-full">
+
+                <div class="row push">
+                  <div class="col-lg-4">
+                    <p class="fs-sm text-muted">
+                      Pour cr&eacute;er une nouvelle cat&eacute;gorie, veuillez remplir tous les champs.
+                    </p>
+                  </div>
+                  <div class="col-lg-8 col-xl-5">
+                    <form role="form" method="post" onsubmit="return CheckUnique(this);"
+                      enctype="multipart/form-data" style="max-width: 700px; margin: 0 auto" th:action="@{/categories/save}"
+                      th:object="${category}">
+                      <input type="hidden" th:field="*{id}">
+                      <div class="mb-4">
+                        <label class="form-label" for="example-lastname-input">Nom de cat&eacute;gorie:</label>
+                        <input type="text" class="form-control" placeholder="Nom de cat&eacute;gorie" th:field="*{name}" required
+                          minlenght="3" />
+                      </div>
+                          <div class="mb-4">
+                        <label class="form-label" for="example-firstname-input">Alias:</label>
+                        <input type="text" class="form-control" placeholder="Alias" th:field="*{alias}"
+                          required minlenght="3" />
+                      </div>
+                       <div class="mb-4">
+                            <!-- Select2 (.js-select2 class is initialized in Helpers.jqSelect2()) -->
+                            <!-- For more info and examples you can check out https://github.com/select2/select2 -->
+                            <label class="form-label" for="one-ecom-product-category">Cat&eacute;gorie parente</label>
+                            <select class="js-select2 form-select" th:field="*{parent}"
+                              style="width: 100%;" data-placeholder="Choose one..">
+                             <option value="0">Aucune cat&eacute;gorie</option>
+                              <!-- Required for data-placeholder attribute to work with Select2 plugin -->
+                              <th:block th:each="cat : ${ListCategories}">
+							 <option th:value="${cat.id}">[[${cat.name}]]</option>
+						</th:block>
+                            </select>
+                          </div>
+                     
+                      <div class="mb-4">
+                        <label class="form-label" for="photo-input"> Image de cat&eacute;gorie:</label>
+                        <input type="hidden" th:field="*{image}" /> <input type="file" id="fileImage" name="fileImage"
+                          accept="image/png,image/jpeg" class="mb-2" required  /> <img id="thumbnail" th:src="@{${category.CategoryImagePath}}"
+                          class="img-fluid" />
+                      </div>
+                      <div class="mb-4">
+						  <label class="form-label">Status</label>
+                      <div class="space-x-2">
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" th:field="*{enabled}" >
+                          <label class="form-check-label" for="example-checkbox-inline1">Actif/inactif</label>
+                        </div>
+                      
+                      </div>
+                        
+                      </div>
+                      <div class="mb-4">
+                        <button type="submit" class="btn btn-success me-1 mb-3">
+                          <i class="fa fa-fw fa-check me-1"></i> Enregistrer
+                        </button>
+                        <button type="button" class="btn btn-info me-1 mb-3" id="buttonCancel">
+                          <i class="fa fa-undo me-1"></i> Annuler
+                        </button>
+                    </form>
+
+
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- END Dynamic Table with Export Buttons -->
+      <!-- END Page Content -->
+    </main>
+    <!-- END Main Container -->
+    <!-- Modal -->
+    <div th:replace="fragments ::modal" />
+    <!-- END Modal -->
+    <div class="modal fade" id="detailModal">
+      <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+
+        </div>
+      </div>
+    </div>
+    <!-- Footer -->
+    <footer th:replace="fragments ::footer" />
+    <!-- END Footer -->
+    <!--
+        OneUI JS
+        Core libraries and functionality
+        webpack is putting everything together at assets/_js/main/app.js
+    -->
+    <script type="text/javascript" th:src="@{/assets/js/oneui.app.min.js}"></script>
+    <script th:src="@{/assets/js/lib/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/assets/js/plugins/select2/js/select2.full.min.js}"></script>
+    <script type="text/javascript"
+      th:src="@{/assets/js/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js}"></script>
+    <!-- Page JS Plugins -->
+    <!-- jQuery (required for BS Datepicker + BS Maxlength + Select2 + Masked Inputs + Ion Range Slider plugins) -->
+
+
+     <script type="text/javascript">
+      MAX_FILE_SIZE = 102400; // 100KB
+
+	  moduleURL = "[[@{/categories}]]";
+      function CheckUnique(form) {
+        url = "[[@{/categories/check_unique}]]";
+        catgoryName = $("#name").val();
+        categoryAlias = $("#alias").val();
+        categoryID = $("#id").val();
+        csrfValue = $("input[name='_csrf']").val();
+        params = { id: categoryID, name: catgoryName,alias: categoryAlias, _csrf: csrfValue };
+        $.post(url, params, function (response) {
+          if (response == "OK") {
+            form.submit();
+          }
+          else if (response == "Nom Dupliqué") {
+            ShowModalDialog("Attention", "Le nom de la catégorie " + catgoryName + " est déjà utilisé!");
+          }
+          else if (response == "Alias Dupliqué") {
+            ShowModalDialog("Attention", "L'alias' de la catégorie " + categoryAlias + " est déjà utilisé!");
+          }
+          else {
+            ShowModalDialog("Erreur", "Une erreur inconnue s’est produite lors du traitement de la requete!");
+          }
+        }).fail(function () {
+          ShowModalDialog("Erreur", "Impossible de se connecter au serveur!");
+        });
+        return false;
+      }
+        
+    </script>
+    <script>
+      var selectElement = document.getElementById('parent');
+      var options = selectElement.getElementsByTagName('option');
+
+      for (var i = 0; i < options.length; i++) {
+        options[i].textContent = options[i].textContent.replace(/--/g, '\u00A0\u00A0'); // Replace with non-breaking spaces
+      }
+
+    </script>
+    <script>One.helpersOnLoad(['jq-maxlength', 'jq-select2']);</script>
+     <script th:src="@{/assets/js/common_form.js}"></script>
+</body>

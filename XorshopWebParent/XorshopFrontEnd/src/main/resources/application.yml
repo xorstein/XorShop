@@ -1,0 +1,58 @@
+logging:
+  file:
+    name: Xorshop-frontend.log
+  logback:
+    rollingpolicy:
+      file-name-pattern: Xorshop-frontend-%d{yyyy-MM-dd}.%i.log
+      max-file-size: 100KB
+      max-history: 14
+      total-size-cap: 1MB
+server:
+ port: 80
+# max-http-header-size: 20000
+ # servlet:
+  #   context-path: /Xorshop
+  #   encoding:
+ #      charset: UTF-8
+ #      enabled: true
+  #     force: true
+spring:
+  datasource:
+
+   # password: dzundza
+   # url: jdbc:mysql://localhost:3306/xorshop
+ #   username: root
+   # hikari:
+  #   minimum-idle: 1
+  #   maximum-pool-size: 2
+
+    password: 0lqFarqStAInnplx9gef
+    url: jdbc:mysql://containers-us-west-142.railway.app:6133/railway
+    username: root
+ #   hikari:
+ #    minimum-idle: 1
+ #    maximum-pool-size: 2
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        format_sql: true
+    show-sql: true
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            clientId: 40050952835-kujdq0l8k0nfdhc6ufed46nbf1a451so.apps.googleusercontent.com
+            client-secret: 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
+            scope:
+            - email
+            - profile  
+          facebook: # Add the Facebook registration
+            clientId: 3505672179673320
+            clientSecret: a85b498d95f3b91efebb3452f86c7296
+            scope:
+            - email
+            - public_profile # You can specify additional scopes if needed      

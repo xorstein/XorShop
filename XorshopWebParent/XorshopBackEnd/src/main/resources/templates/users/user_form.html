@@ -1,0 +1,266 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<th th:replace="fragments ::page_Head('Gestion des utilisateurs')" />
+
+<body>
+  <!-- Page Container -->
+  <!--
+      Available classes for #page-container:
+      GENERIC
+        'remember-theme'                            Remembers active color theme and dark mode between pages using localStorage when set through
+                                                    - Theme helper buttons [data-toggle="theme"],
+                                                    - Layout helper buttons [data-toggle="layout" data-action="dark_mode_[on/off/toggle]"]
+                                                    - ..and/or One.layout('dark_mode_[on/off/toggle]')
+         SIDEBAR & SIDE OVERLAY
+        'sidebar-r'                                 Right Sidebar and left Side Overlay (default is left Sidebar and right Side Overlay)
+        'sidebar-mini'                              Mini hoverable Sidebar (screen width > 991px)
+        'sidebar-o'                                 Visible Sidebar by default (screen width > 991px)
+        'sidebar-o-xs'                              Visible Sidebar by default (screen width < 992px)
+        'sidebar-dark'                              Dark themed sidebar
+        'side-overlay-hover'                        Hoverable Side Overlay (screen width > 991px)
+        'side-overlay-o'                            Visible Side Overlay by default
+        'enable-page-overlay'                       Enables a visible clickable Page Overlay (closes Side Overlay on click) when Side Overlay opens
+        'side-scroll'                               Enables custom scrolling on Sidebar and Side Overlay instead of native scrolling (screen width > 991px)
+         HEADER
+        ''                                          Static Header if no class is added
+        'page-header-fixed'                         Fixed Header
+         HEADER STYLE
+        ''                                          Light themed Header
+        'page-header-dark'                          Dark themed Header
+        MAIN CONTENT LAYOUT
+        ''                                          Full width Main Content if no class is added
+        'main-content-boxed'                        Full width Main Content with a specific maximum width (screen width > 1200px)
+        'main-content-narrow'                       Full width Main Content with a percentage width (screen width > 1200px)
+         DARK MODE
+        'sidebar-dark page-header-dark dark-mode'   Enable dark mode (light sidebar/header is not supported with dark mode)
+    -->
+  <div id="page-container"
+    class="sidebar-o sidebar-dark enable-page-overlay side-scroll page-header-fixed main-content-boxed">
+    <!-- Side Overlay-->
+    <aside th:replace="navigation ::Aside" />
+    <!-- END Side Overlay -->
+    <!-- Sidebar -->
+    <!--
+          Sidebar Mini Mode - Display Helper classes
+
+          Adding 'smini-hide' class to an element will make it invisible (opacity: 0) when the sidebar is in mini mode
+          Adding 'smini-show' class to an element will make it visible (opacity: 1) when the sidebar is in mini mode
+              If you would like to disable the transition animation, make sure to also add the 'no-transition' class to your element
+
+          Adding 'smini-hidden' to an element will hide it when the sidebar is in mini mode
+          Adding 'smini-visible' to an element will show it (display: inline-block) only when the sidebar is in mini mode
+          Adding 'smini-visible-block' to an element will show it (display: block) only when the sidebar is in mini mode
+      -->
+    <nav th:replace="navigation ::Navigation" />
+    <!-- END Sidebar -->
+    <!-- Header -->
+    <header th:replace="navigation ::Header" />
+    <!-- END Header -->
+    <!-- Main Container -->
+    <main id="main-container">
+      <!-- Hero -->
+      <div class="bg-body-light">
+        <div class="content content-full">
+          <div class="d-flex flex-column flex-sm-row justify-content-sm-between align-items-sm-center py-2">
+            <div class="flex-grow-1">
+              <h1 class="h3 fw-bold mb-1">
+                Utilisateurs
+              </h1>
+              <h2 class="fs-base lh-base fw-medium text-muted mb-0">
+                [[${PageTitle}]]
+              </h2>
+            </div>
+            <nav class="flex-shrink-0 mt-3 mt-sm-0 ms-sm-3" aria-label="breadcrumb">
+              <ol class="breadcrumb breadcrumb-alt">
+                <li class="breadcrumb-item">
+                  <a class="link-fx" href="javascript:void(0)">Gestion des acc&eacute;es</a>
+                </li>
+                <li class="breadcrumb-item" aria-current="page">
+                  Utilisateurs <a class="font-w600" th:href="@{/users}"><i
+                      class="fas fa-arrow-alt-circle-left text-dark"></i></a>
+                </li>
+              </ol>
+            </nav>
+          </div>
+        </div>
+      </div>
+      <!-- END Hero -->
+      <!-- Page Content -->
+      <div class="content">
+        <div class="row">
+          <div class="col-12">
+            <!-- Dynamic Table with Export Buttons -->
+            <div class="block block-rounded">
+              <div class="block-header block-header-default">
+                <h3 class="block-title">Nouvel utilisateur <a class="font-w600"
+                    th:href="@{/users}"><small>Retour</small></a> </h3>
+              </div>
+              <div class="block-content block-content-full">
+
+                <div class="row push">
+                  <div class="col-lg-4">
+                    <p class="fs-sm text-muted">
+                      Pour créer un nouvel utilisateur, veuillez remplir tous les champs.
+                    </p>
+                  </div>
+                  <div class="col-lg-8 col-xl-5">
+                    <form role="form" method="post" onsubmit="return CheckEmailUnique(this);"
+                      enctype="multipart/form-data" style="max-width: 700px; margin: 0 auto" th:action="@{/users/save}"
+                      th:object="${user}">
+                      <input type="hidden" th:field="*{id}">
+                      <div class="mb-4">
+                        <label class="form-label" for="example-lastname-input">Nom:</label>
+                        <input type="text" class="form-control" placeholder="Nom" th:field="*{lastname}" required
+                          minlenght="3" />
+                      </div>
+                      <div class="mb-4">
+                        <label class="form-label" for="example-firstname-input">Pr&eacute;nom:</label>
+                        <input type="text" class="form-control" placeholder="Pr&eacute;nom" th:field="*{firstname}"
+                          required minlenght="3" />
+                      </div>
+                      <div class="mb-4">
+                        <label class="form-label" for="example-username-input">Nom
+                          d'ustilisateur:</label>
+                        <input type="text" class="form-control" placeholder="Nom d'ustilisateur" th:field="*{username}"
+                          required minlenght="5" maxlenght="120" />
+                      </div>
+                      <div class="mb-4">
+                        <label class="form-label" for="example-email-input">Addresse E-mail:</label>
+                        <input type="email" class="form-control" placeholder="E-mail" th:field="*{emailid}" required
+                          minlenght="8" maxlenght="128" />
+                      </div>
+                      <div class="mb-4">
+                        <label class="form-label" for="example-password-input">Mot de passe:</label>
+                        <input th:if="${user.id == null}" type="password" class="form-control"
+                          placeholder="Mot de passe" th:field="*{password}" required minlenght="8" maxlenght="20" />
+                        <input th:if="${user.id != null}" type="password" class="form-control"
+                          placeholder="Pour ignorer la modification, laissez le champ vide" th:field="*{password}"
+                          minlength="8" maxlength="20" />
+
+                      </div>
+                      <div class="mb-4">
+                        <label class="form-label" for="roles-input">Gestion des
+                          acc&eacute;es:</label>
+                        <th:block th:each="role : ${listRoles}">
+                          <div class="form-check text-left">
+                            <input th:if="${role.id==1}" id="checkall" class="form-check-input" type="checkbox"
+                              th:field="*{roles}" th:text="${role.name}" th:value="${role.id}">
+                            <input th:if="${role.id!=1}" class="form-check-input" type="checkbox" th:field="*{roles}"
+                              th:text="${role.name}" th:value="${role.id}">
+                          </div>
+                        </th:block>
+                      </div>
+                      <div class="mb-4">
+                        <label class="form-label" for="status-input">Status
+                          (Actif/Inactif):</label>
+                        <input type="checkbox" th:field="*{enabled}" class="m-2" />
+                      </div>
+                      <div class="mb-4">
+                        <label class="form-label" for="photo-input">Photo:</label>
+                        <input type="hidden" th:field="*{photo}" /> <input type="file" id="fileImage" name="image"
+                          accept="image/png,image/jpeg" class="mb-2" /> <img id="thumbnail"
+                          class="rounded-circle img-fluid" th:src="@{${user.photosImagePath}}" />
+                      </div>
+                      <div class="mb-4">
+                        <button type="submit" class="btn btn-success me-1 mb-3">
+                          <i class="fa fa-fw fa-check me-1"></i> Enregistrer
+                        </button>
+                        <button type="button" class="btn btn-info me-1 mb-3" id="buttonCancel">
+                          <i class="fa fa-undo me-1"></i> Annuler
+                        </button>
+                    </form>
+
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- END Dynamic Table with Export Buttons -->
+
+      <!-- END Page Content -->
+    </main>
+    <!-- END Main Container -->
+    <!-- Footer -->
+    <!-- Modal -->
+    <div th:replace="fragments ::modalDuplicate" />
+    <!-- END Modal -->
+    <!-- Footer -->
+    <footer th:replace="fragments ::footer" />
+    <!-- END Footer -->
+    <!-- END Footer -->
+    <!-- END Page Container -->
+    <!--
+        OneUI JS
+
+        Core libraries and functionality
+        webpack is putting everything together at assets/_js/main/app.js
+    -->
+    <script type="text/javascript" th:src="@{/assets/js/oneui.app.min.js}"></script>
+    <!-- jQuery (required for DataTables plugin) -->
+    <script type="text/javascript" th:src="@{/assets/js/lib/jquery.min.js}"></script>
+    <script type="text/javascript">
+       MAX_FILE_SIZE = 102400; // 100KB
+	
+	   moduleURL = "[[@{/users}]]";
+       
+      function CheckEmailUnique(form) {
+        url = "[[@{/users/check_email}]]";
+        userEmail = $("#emailid").val();
+        userID = $("#id").val();
+        csrfValue = $("input[name='_csrf']").val();
+        params = { id: userID, emailid: userEmail, _csrf: csrfValue };
+        $.post(url, params, function (response) {
+          if (response == "ok") {
+            form.submit();
+          }
+          else if (response == "Duplicated") {
+            ShowModalDialog("Attention", "L'adresse mail " + userEmail + " est déjà utilisée!");
+          }
+          else {
+            ShowModalDialog("Erreur", "Une erreur inconnue s’est produite lors du traitement de la requete!");
+          }
+        }).fail(function () {
+          ShowModalDialog("Erreur", "Impossible de se connecter au serveur!");
+        });
+        return false;
+      }
+      $(document).ready(function () {
+        // Check or Uncheck All checkboxes
+        $("#checkall").change(function () {
+          var checked = $(this).is(':checked');
+          if (checked) {
+            $(".form-check-input").each(function () {
+              $(this).prop("checked", true);
+              if ($(this).val() != '1')
+                $(this).attr("disabled", "disabled");
+            });
+          }
+          else {
+            $(".form-check-input").each(function () {
+              $(this).prop("checked", false);
+              if ($(this).val() != '1')
+                $(this).attr("disabled", false);
+              // $("#checkall").removeAttr("checked");
+            });
+          }
+        });
+        // Changing state of CheckAll checkbox 
+        $(".form-check-input").click(function () {
+
+          if ($(".form-check-input").length == $(".form-check-input:checked").length) {
+            $("#checkall").prop("checked", true);
+          } else {
+            $("#checkall").removeAttr("checked");
+          }
+
+        });
+      });
+    </script>
+    <script th:src="@{/assets/js/common_form.js}"></script>
+</body>
+</html>

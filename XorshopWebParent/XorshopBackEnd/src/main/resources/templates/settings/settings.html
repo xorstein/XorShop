@@ -1,0 +1,288 @@
+<!doctype html>
+<th th:replace="fragments ::page_Head('Param&eacute;trages et r&eacute;glages')" />
+<link rel="stylesheet" th:href="@{/assets/richtext/richtext.min.css}" />
+<script th:src="@{/assets/richtext/jquery.richtext.min.js}"></script>
+
+<body>
+	<!-- Page Container -->
+	<!--
+      Available classes for #page-container:
+
+      GENERIC
+
+        'remember-theme'                            Remembers active color theme and dark mode between pages using localStorage when set through
+                                                    - Theme helper buttons [data-toggle="theme"],
+                                                    - Layout helper buttons [data-toggle="layout" data-action="dark_mode_[on/off/toggle]"]
+                                                    - ..and/or One.layout('dark_mode_[on/off/toggle]')
+
+      SIDEBAR & SIDE OVERLAY
+
+        'sidebar-r'                                 Right Sidebar and left Side Overlay (default is left Sidebar and right Side Overlay)
+        'sidebar-mini'                              Mini hoverable Sidebar (screen width > 991px)
+        'sidebar-o'                                 Visible Sidebar by default (screen width > 991px)
+        'sidebar-o-xs'                              Visible Sidebar by default (screen width < 992px)
+        'sidebar-dark'                              Dark themed sidebar
+
+        'side-overlay-hover'                        Hoverable Side Overlay (screen width > 991px)
+        'side-overlay-o'                            Visible Side Overlay by default
+
+        'enable-page-overlay'                       Enables a visible clickable Page Overlay (closes Side Overlay on click) when Side Overlay opens
+
+        'side-scroll'                               Enables custom scrolling on Sidebar and Side Overlay instead of native scrolling (screen width > 991px)
+
+      HEADER
+
+        ''                                          Static Header if no class is added
+        'page-header-fixed'                         Fixed Header
+
+      HEADER STYLE
+
+        ''                                          Light themed Header
+        'page-header-dark'                          Dark themed Header
+
+      MAIN CONTENT LAYOUT
+
+        ''                                          Full width Main Content if no class is added
+        'main-content-boxed'                        Full width Main Content with a specific maximum width (screen width > 1200px)
+        'main-content-narrow'                       Full width Main Content with a percentage width (screen width > 1200px)
+
+      DARK MODE
+
+        'sidebar-dark page-header-dark dark-mode'   Enable dark mode (light sidebar/header is not supported with dark mode)
+    -->
+	<div id="page-container"
+		class="sidebar-o sidebar-dark enable-page-overlay side-scroll page-header-fixed main-content-narrow">
+		<!-- Side Overlay-->
+		<aside th:replace="navigation ::Aside" />
+		<!-- END Side Overlay -->
+
+		<!-- Sidebar -->
+		<!--
+          Sidebar Mini Mode - Display Helper classes
+
+          Adding 'smini-hide' class to an element will make it invisible (opacity: 0) when the sidebar is in mini mode
+          Adding 'smini-show' class to an element will make it visible (opacity: 1) when the sidebar is in mini mode
+              If you would like to disable the transition animation, make sure to also add the 'no-transition' class to your element
+
+          Adding 'smini-hidden' to an element will hide it when the sidebar is in mini mode
+          Adding 'smini-visible' to an element will show it (display: inline-block) only when the sidebar is in mini mode
+          Adding 'smini-visible-block' to an element will show it (display: block) only when the sidebar is in mini mode
+      -->
+		<nav th:replace="navigation ::Navigation" />
+		<!-- END Sidebar -->
+
+		<!-- Header -->
+		<header th:replace="navigation ::Header" />
+		<!-- END Header -->
+
+		<!-- Main Container -->
+		<main id="main-container">
+			<!-- Hero -->
+			<div class="bg-body-light">
+				<div class="content content-full">
+					<div class="d-flex flex-column flex-sm-row justify-content-sm-between align-items-sm-center py-2">
+						<div class="flex-grow-1">
+							<h1 class="h3 fw-bold mb-1">
+								Param&eacute;trages et r&eacute;glages
+							</h1>
+							<h2 class="fs-base lh-base fw-medium text-muted mb-0">
+								[[${PageTitle}]]
+							</h2>
+						</div>
+						<nav class="flex-shrink-0 mt-3 mt-sm-0 ms-sm-3" aria-label="breadcrumb">
+							<ol class="breadcrumb breadcrumb-alt">
+								<li class="breadcrumb-item">
+									<a class="link-fx" th:href="@{/settings}">Param&eacute;trages et r&eacute;glages</a>
+								</li>
+								<li class="breadcrumb-item" aria-current="page">
+									<a class="font-w600" th:href="@{/settings}"> <i
+											class="fa fa-house-lock fa-1x text-primary"></i></a>
+								</li>
+							</ol>
+						</nav>
+					</div>
+				</div>
+			</div>
+			<!-- END Hero -->
+			<!-- Page Content -->
+			<div class="content">
+				<div class="row">
+					<div class="flex-fill ml-3">
+						<div th:if="${message!=null}" class="alert alert-success text-center">[[${message}]]</div>
+					</div>
+					<div class="col-12">
+						<!-- Dynamic Table with Export Buttons -->
+						<div class="block block-rounded">
+							<div class="block-header block-header-default">
+								<h3 class="block-title"> [[${PageTitle}]] <a class="font-w600"
+										th:href="@{/}"><small>Retour</small></a>
+								</h3>
+							</div>
+							<div class="block-content block-content-full">
+
+								<div class="row">
+									<input type="hidden" name="TabOpned" id="TabOpned" th:value="${TabOpned}" />
+									<!-- Nav tabs -->
+									<ul class="nav nav-tabs nav-tabs-block" id="myTab" role="tablist">
+										<li class="nav-item" role="presentation">
+											<button class="nav-link active" id="overview-tab" data-bs-toggle="tab"
+												data-bs-target="#overview" type="button" role="tab"
+												aria-controls="overview"
+												aria-selected="true">G&eacute;n&eacute;ral</button>
+										</li>
+										<li class="nav-item" role="presentation">
+											<button class="nav-link" id="logo-tab" data-bs-toggle="tab"
+												data-bs-target="#logo" type="button" role="tab" aria-controls="logo"
+												aria-selected="false">Logos</button>
+										</li>
+
+										<li class="nav-item" role="presentation">
+											<button class="nav-link" id="countries-tab" data-bs-toggle="tab"
+												data-bs-target="#countries" type="button" role="tab"
+												aria-controls="countries" aria-selected="false">Pays</button>
+										</li>
+										<li class="nav-item" role="presentation">
+											<button class="nav-link" id="states-tab" data-bs-toggle="tab"
+												data-bs-target="#states" type="button" role="tab" aria-controls="states"
+												aria-selected="false">R&eacute;gions &
+												&eacute;tats</button>
+										</li>
+										<li class="nav-item" role="presentation">
+											<button class="nav-link" id="mailServer-tab" data-bs-toggle="tab"
+												data-bs-target="#mailServer" type="button" role="tab"
+												aria-controls="mailServer" aria-selected="false">Serveur de
+												messagerie</button>
+										</li>
+										<li class="nav-item" role="presentation">
+											<button class="nav-link" id="reCAPTCHA-tab" data-bs-toggle="tab"
+												data-bs-target="#reCAPTCHA" type="button" role="tab"
+												aria-controls="reCAPTCHA" aria-selected="false">reCAPTCHA</button>
+										</li>
+										<li class="nav-item" role="presentation">
+											<button class="nav-link" id="mailTemplates-tab" data-bs-toggle="tab"
+												data-bs-target="#mailTemplates" type="button" role="tab"
+												aria-controls="mailTemplates" aria-selected="false">Mod&eacute;le de
+												courrier</button>
+										</li>
+										<li class="nav-item" role="presentation">
+											<button class="nav-link" id="payment-tab" data-bs-toggle="tab"
+												data-bs-target="#payment" type="button" role="tab"
+												aria-controls="payment" aria-selected="false">M&eacute;thode de
+												paiement</button>
+										</li>
+
+									</ul>
+									<!-- Tab panes -->
+									<div class="tab-content">
+										<div class="tab-pane active" id="overview" role="tabpanel"
+											aria-labelledby="overview-tab">
+											<div th:replace="settings/general :: content" />
+										</div>
+										<div class="tab-pane" id="logo" role="tabpanel" aria-labelledby="logo-tab">
+											<div th:replace="settings/logo :: content" />
+										</div>
+										<div class="tab-pane" id="countries" role="tabpanel"
+											aria-labelledby="countries-tab">
+											<div th:replace="settings/countries :: content" />
+										</div>
+										<div class="tab-pane" id="states" role="tabpanel" aria-labelledby="states-tab">
+											<div th:replace="settings/states :: content" />
+										</div>
+										<div class="tab-pane" id="mailServer" role="tabpanel"
+											aria-labelledby="mailServer-tab">
+											<div th:replace="settings/mail_server :: content" />
+
+										</div>
+										<div class="tab-pane" id="reCAPTCHA" role="tabpanel"
+											aria-labelledby="reCAPTCHA-tab">
+											<div th:replace="settings/recaptcha :: content" />
+
+										</div>
+										<div class="tab-pane" id="mailTemplates" role="tabpanel"
+											aria-labelledby="mailTemplates-tab">
+											<div th:replace="settings/mail_templates/mail_templates :: content" />
+
+										</div>
+										<div class="tab-pane" id="payment" role="tabpanel"
+											aria-labelledby="payment-tab">
+											<div th:replace="settings/payment :: content"></div>
+
+										</div>
+
+									</div>
+
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+			<!-- END Dynamic Table with Export Buttons -->
+
+			<!-- END Page Content -->
+		</main>
+		<!-- END Main Container -->
+		<!-- Modal -->
+		<div th:replace="fragments ::modalDuplicate" />
+		<!-- END Modal -->
+		<!-- Footer -->
+		<!-- Footer -->
+		<footer th:replace="fragments ::footer" />
+		<!-- END Footer -->
+		<!-- END Footer -->
+	</div>
+	<!-- END Page Container -->
+
+	<!--
+        OneUI JS
+
+        Core libraries and functionality
+        webpack is putting everything together at assets/_js/main/app.js
+    -->
+	<script stype="text/javascript" th:src="@{/assets/js/oneui.app.min.js}"></script>
+	<script th:src="@{/assets/js/logo_form.js}"></script>
+
+	<!-- Page JS Plugins -->
+	<!--<script type="text/javascript" th:src="@{/assets/js/plugins/ckeditor/ckeditor1.js}"></script>-->
+	<!--<script type="text/javascript" th:src="@{/assets/js/plugins/simplemde/simplemde.min.js}"></script>-->
+
+
+	<!-- Page JS Helpers (CKEditor + SimpleMDE plugins) -->
+
+	<!-- jQuery (required for DataTables plugin) -->
+	<script type="text/javascript">
+		MAX_FILE_SIZE = 102400 //500KB 
+		moduleURL = "[[@{/}]]";
+		contextPath = "[[@{/}]]";
+		defaultImageThumbnailSrc = "[[@{/assets/media/images/image-thumbnail.png}]]";
+		csrfHeaderName = "[[${_csrf.headerName}]]";
+		csrfValue = "[[${_csrf.token}]]";
+		$(document).ready(function () {
+			$("#customerVerificationContent").richText();
+			$("#orderConfirmationContent").richText({height: 400})
+			var tabOpened = $("#TabOpned").val();
+			if ($("#TabOpned").val() === null || $("#TabOpned").val() === "") {
+				tabOpened = "overview-tab";
+			}
+
+			var descriptionTabButton = $("#" + tabOpened);
+			if (descriptionTabButton.length > 0) {
+				descriptionTabButton.click();
+			}
+			else {
+				console.log("Element with ID '" + tabOpened + "' not found.");
+			}
+		});
+		$('#btabs-vertical-home-tab, #btabs-vertical-settings-tab').click(function (event) {
+			event.preventDefault();
+		});
+	</script>
+	<script th:src="@{/assets/js/countries_setting.js}"></script>
+	<script th:src="@{/assets/js/states_setting.js}"></script>
+	<script th:src="@{/assets/js/plugins/bootstrap-notify/bootstrap-notify.min.js}"></script>
+	<script>One.helpersOnLoad(['jq-notify']);</script>
+
+</body>
+
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+	<head th:replace="fragments :: page_head('Xorshop', 'tag')" />
+</head>
+
+<body>
+	<header th:replace="navigation ::Navigation" />
+	<div class="container-page p-5 mt-5">
+		<div th:replace="breadcrumb :: content1(${pageTitle})"></div>
+
+		<div class="text-center">
+			<h2 class="custom-color"> Liste de cat&eacute;gorie</h2>
+		</div>
+
+		<!------------------ featured categories --------------->
+		<div class="container categories">
+			<div class="row">
+				<div class="col-md-3 mt-3" th:each="cat : ${listCategories}">
+					<div class="text-center">
+						<img th:src="@{${cat.CategoryImagePath}}" width="80" />
+					</div>
+					<div class="text-center breadcrumb-item">
+						<a th:href="@{'/c/' + ${cat.alias}}" th:text="${cat.name}"></a>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+	<!----------Footer--------------->
+	<!-- Footer -->
+	<footer th:replace="fragments ::footer" />
+	<!-- END Footer -->
+	<div th:replace="fragments ::LoadTotalCountProduct" />
+</body>
+
+</html>

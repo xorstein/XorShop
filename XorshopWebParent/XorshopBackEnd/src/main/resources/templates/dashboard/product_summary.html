@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+	<div th:fragment="content" th:remove="tag">
+		<div class="col-6 col-md-4 col-xxl-2">
+			<!-- Pending Orders -->
+			<div class="block block-rounded d-flex flex-column h-100 mb-0">
+				<div
+					class="block-content block-content-full flex-grow-1 d-flex justify-content-between align-items-center">
+					<dl class="mb-0">
+						<h5 class="fw-bold">Produits</h5>
+
+						<dt class="fs-3 fw-bold">[[${summary.totalProducts}]]</dt>
+						<div>
+							<th:block sec:authorize="hasAnyAuthority('Admin', 'Editeur')">
+								<div><a th:href="@{/products/new}">Add Product</a></div>
+							</th:block>
+						</div>
+						<div>Activ&eacute;: <b>[[${summary.enabledProductsCount}]]</b></div>
+						<div>D&eacute;sactiv&eacute;: <b>[[${summary.disabledProductsCount}]]</b></div>
+						<div>En Stock: <b>[[${summary.inStockProductsCount}]]</b></div>
+						<div>En rupture de stock: <b>[[${summary.outOfStockProductsCount}]]</b></div>
+					</dl>
+					<div class="item item-rounded-lg bg-body-light">
+						<i class="fab fa-product-hunt fs-3 text-primary"></i>
+					</div>
+				</div>
+				<div class="bg-body-light rounded-bottom">
+					<a class="block-content block-content-full block-content-sm fs-sm fw-medium d-flex align-items-center justify-content-between"
+						th:href="@{/products}">
+						<span>Plus de d&eacute;tails</span>
+						<i class="fa fa-arrow-alt-circle-right ms-1 opacity-25 fs-base"></i>
+					</a>
+				</div>
+			</div>
+			<!-- END Pending Orders -->
+		</div>
+	</div>
+</body>
+
+</html>

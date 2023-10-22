@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+  <div th:fragment="content" th:remove="tag">
+    <h4 class="content-heading">Mod&eacute;le de courrier</h4>
+    <form th:action="@{/settings/save_mail_templates}" method="post">
+		 <div class="block block-rounded row g-0">
+        <ul class="nav nav-tabs nav-tabs-block flex-md-column col-md-2" role="tablist">
+          <li class="nav-item d-md-flex flex-md-column">
+            <button class="nav-link text-md-start active" id="btabs-vertical-home-tab" data-bs-toggle="tab"
+              data-bs-target="#btabs-vertical-home" role="tab" aria-controls="btabs-vertical-home" aria-selected="true">
+              <i class="fa fa-envelope-circle-check opacity-50 me-1 d-none d-sm-inline-block"></i> Vérification du
+              client
+            </button>
+          </li>
+          <li class="nav-item d-md-flex flex-md-column">
+            <button class="nav-link text-md-start" id="btabs-vertical-settings-tab" data-bs-toggle="tab"
+              data-bs-target="#btabs-vertical-settings" role="tab" aria-controls="btabs-vertical-settings"
+              aria-selected="false">
+              <i class="fa fa-user-check opacity-50 me-1 d-none d-sm-inline-block"></i> Confirmation de commande
+            </button>
+          </li>
+        </ul>
+         <div class="tab-content col-md-10">
+          <div class="block-content tab-pane active" id="btabs-vertical-home" role="tabpanel"
+            aria-labelledby="btabs-vertical-home-tab" tabindex="0">
+            <h4 class="fw-semibold">Vérification du client</h4>
+            <div th:replace="settings/mail_templates/customer_verification:: content"></div>
+          </div>
+          <div class="block-content tab-pane" id="btabs-vertical-settings" role="tabpanel"
+            aria-labelledby="btabs-vertical-settings-tab" tabindex="0">
+            <h4 class="fw-semibold">Confirmation de commande</h4>
+             <div th:replace="settings/mail_templates/order_confirmation:: content"></div>
+          </div>
+           <div class="col-md-6 offset-md-5 mt-4">
+            <button type="submit" class="btn btn-success me-1 mb-3">
+              <i class="fa fa-fw fa-check me-1"></i> Enregistrer
+            </button>
+            <button type="button" class="btn btn-info me-1 mb-3 buttonCancel">
+              <i class="fa fa-undo me-1"></i> Annuler
+            </button>
+          </div>
+        </div>
+		 </div>
+    </form>
+  </div>
+</body>
+
+</html>

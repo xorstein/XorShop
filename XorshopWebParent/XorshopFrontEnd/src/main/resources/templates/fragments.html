@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:fragment="page_head(title, remove)" th:remove="${remove}">
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0">
+	<title>[[${title}]] - [[${SITE_NAME}]]</title>
+	<meta name="description" content="Xorshop - Panneau d&#146;administration de contr&ocirc;le">
+	<meta name="author" content="pixelcave">
+	<meta name="robots" content="noindex, nofollow">
+	<!-- Open Graph Meta -->
+	<meta property="og:title" content="Xorshop - Site E-commerce &amp;">
+	<meta property="og:site_name" content="Xorshop">
+	<meta property="og:description" content="Xorshop - Bienvenue dans le monde de vos rêves shopping !">
+	<meta property="og:type" content="website">
+	<meta property="og:url" content="">
+	<meta property="og:image" content="">
+	<!-- Icons -->
+	<!-- The following icons can be replaced with your own, they are used by desktop and mobile browsers -->
+	<link rel="shortcut icon" th:href="@{/assets/media/favicons/favicon.png}" />
+	<link rel="icon" type="image/png" sizes="192x192" th:href="@{/assets/media/favicons/favicon-192x192.png}" />
+	<link rel="apple-touch-icon" sizes="180x180" th:href="@{/assets/media/favicons/apple-touch-icon-180x180.png}" />
+	<!-- END Icons -->
+	<!-- Stylesheets -->
+	<link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" />
+	<link rel="stylesheet" type="text/css" th:href="@{/assets/fontawesome/all.css}" />
+	<link rel="stylesheet" type="text/css" th:href="@{/assets/css/style.css}" />
+	<script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
+	<script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}"></script>
+
+</head>
+
+<body>
+
+	<!-- Pagination Products -->
+	<div th:fragment="pagination(moduleURL, entityName)" th:remove="tag">
+		<div class="text-center m-1 page-btn" th:if="${totalPages == 1}">
+			<span class="disabled">1</span>
+
+		</div>
+		<div class="text-center m-1" th:if="${totalItems > 0}">
+			</br>
+			<p class="p-2">Liste de [[${entityName}]] # [[${startCount}]] | [[${endCount}]] sur [[${totalItems}]]</p>
+
+		</div>
+		<div class="text-center mt-3" th:unless="${totalItems > 0}">
+			<span>Aucun [[${entityName}]] trouv&eacute;</span>
+		</div>
+
+		<div th:if="${totalPages > 1}">
+			<nav>
+				<ul class="pagination justify-content-center flex-wrap">
+					<li th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'}">
+						<a th:replace="fragments :: page_linkCSS(${moduleURL}, 1, 'fa fa-angle-double-left')"></a>
+					</li>
+					<li th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'}">
+						<a
+							th:replace="fragments :: page_linkCSS(${moduleURL}, ${currentPage - 1}, 'fa fa-angle-left')"></a>
+					</li>
+					<li th:class="${currentPage != i ? 'page-item': 'page-item active'}"
+						th:each="i : ${#numbers.sequence(1, totalPages)}">
+						<th:block th:if="${currentPage == i}">
+							<a th:replace="fragments :: page_link(${moduleURL}, ${i}, ${i})"></a>
+						</th:block>
+					</li>
+					<li th:class="${currentPage < totalPages ? 'page-item' : 'page-item disabled'}">
+						<a
+							th:replace="fragments :: page_linkCSS(${moduleURL}, ${currentPage + 1}, 'fa fa-angle-right')"></a>
+					</li>
+
+					<li th:class="${currentPage < totalPages ? 'page-item' : 'page-item disabled'}">
+						<a
+							th:replace="fragments :: page_linkCSS(${moduleURL}, ${totalPages}, 'fa fa-angle-double-right')"></a>
+					</li>
+				</ul>
+			</nav>
+		</div>
+	</div>
+	<!-- Pagination page_link -->
+
+	<a th:fragment="page_link(moduleURL, pageNum, label)" class="page-link"
+		th:href="@{${moduleURL} + '/page/' + ${pageNum} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + ${keyword != null ? '&keyword=' + keyword : ''}}">
+		[[${label}]]
+	</a>
+	<!-- Pagination pageCSS -->
+	<a th:fragment="page_linkCSS(moduleURL, pageNum, classfont)" class="page-link"
+		th:href="@{${moduleURL} + '/page/' + ${pageNum} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + ${keyword != null ? '&keyword=' + keyword : ''}}">
+		<i th:class="${classfont}"></i>
+	</a>
+
+	<div th:fragment="modal_dialog" class="modal fade" id="modalDialog" tabindex="-1"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="modalTitle">Modal title</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<span id="modalBody"></span>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+
+				</div>
+			</div>
+		</div>
+	</div>
+	<div th:fragment="confirm_modal" class="modal fade" id="confirmModal" tabindex="-1"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="modalTitleConfirme">Modal title</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<span id="modalBodyConfirme"></span>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-warning" id="yesButton">Confirmer</button>
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+	<div th:fragment="format_currency(amount)" th:remove="tag">
+
+		<span th:if="${CURRENCY_SYMBOL_POSITION == 'Before price'}" th:remove="tag">
+			[[${CURRENCY_SYMBOL}]]
+		</span>
+		[[${#numbers.formatDecimal(amount, 1, THOUSANDS_POINT_TYPE, DECIMAL_DIGITS, DECIMAL_POINT_TYPE)}]]
+		<span th:if="${CURRENCY_SYMBOL_POSITION == 'After price'}" th:remove="tag">
+			[[${CURRENCY_SYMBOL}]]
+		</span>
+
+	</div>
+
+	<th th:fragment="column_link(fieldName, columnLabel, removeTag)" th:remove="${removeTag}">
+		<a class="text-white"
+			th:href="@{${moduleURL} + '/page/' + ${currentPage} + '?sortField=' + ${fieldName}  +'&sortDir=' + ${sortField != fieldName ? sortDir : reverseSortDir} + ${keyword != null ? '&keyword=' + keyword : ''} + ${categoryId != null ? '&categoryId=' + categoryId : ''}}">
+			[[${columnLabel}]]
+		</a>
+		<span th:if="${sortField == fieldName}"
+			th:class="${sortDir == 'asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}"></span>
+	</th>
+
+	<div th:fragment="format_time(dateTime)" th:remove="tag">
+		<span th:text="${#dates.format(dateTime, 'yyyy-MM-dd HH:mm:ss')}"></span>
+	</div>
+
+	<div th:fragment="currency_input(amount)" th:remove="tag">
+		<input type="text" readonly class="form-control"
+			th:value="${(CURRENCY_SYMBOL_POSITION == 'Before price' ? CURRENCY_SYMBOL : '') + #numbers.formatDecimal(amount, 1, THOUSANDS_POINT_TYPE, DECIMAL_DIGITS, DECIMAL_POINT_TYPE) + (CURRENCY_SYMBOL_POSITION == 'After price' ? CURRENCY_SYMBOL : '')}">
+	</div>
+
+	<div th:fragment="search_form()" th:remove="tag">
+		<form id="searchForm" class="js-form-icon-search push mt-4" th:action="@{${moduleURL} + '/page/1'}"
+			name="keyword" th:value="${keyword}">
+			<input type="hidden" name="sortField" th:value="${sortField}" />
+			<input type="hidden" name="sortDir" th:value="${sortDir}" />
+			<div class="input-group input-group-lg">
+				<input type="search" class="js-icon-search form-control fs-base"
+					placeholder="insérez votre mot-clé ici.." id="keyword" name="keyword" th:value="${keyword}"
+					required>
+				<span class="input-group-text">
+					<i class="fa fa-search custom-color" onclick="SearchIconSubmit()"></i>
+				</span>
+				<span class="input-group-text">
+					<i class="fas fa-eraser custom-color" onclick="clearFilter()"></i>
+				</span>
+			</div>
+		</form>
+
+	</div>
+	<div th:fragment="search_form_header()" th:remove="tag">
+		<form th:action="@{/search}" method="get">
+			<div class="input-group">
+				<span class="border-warning input-group-text bg-warning text-white"><i
+						class="fa-solid fa-magnifying-glass"></i></span>
+				<input type="text" name="keyword" th:value="${searchKeyword}" class="form-control border-warning"
+					style="color:#7a7a7a">
+				<button class="btn btn-warning text-white">Rechercher</button>
+			</div>
+		</form>
+	</div>
+	<!-- Footer -->
+	<div th:fragment="footer" class="footer">
+		<div class="container">
+			<div class="row">
+				<div class="footer-col1">
+					<h3>Téléchargez Notre Application</h3>
+					<p>Téléchargez l'application pour téléphone mobile Android et iOS.</p>
+					<div class="app-logo">
+						<img th:src="@{/assets/media/images/play-store.png}">
+						<img th:src="@{/assets/media/images/app-store.png}">
+					</div>
+				</div>
+				<div class="footer-col2 text-left">
+					<img  th:src="@{${S3_BASE_URI + SITE_FOOTER_LOGO}}"  />
+					<p>[[@{${SITE_FOOTER_TEXT}}]]
+					</p>
+				</div>
+				<div class="footer-col3">
+					<h3>Liens Utiles</h3>
+					<ul>
+						<th:block th:each="footerMenu : ${footerMenuItems}">
+							<li class="nav-item">
+								<a class="nav-link" th:href="@{'/m/' + ${footerMenu.alias}}">
+									[[${footerMenu.title}]]
+								</a>
+							</li>
+						</th:block>
+
+					</ul>
+				</div>
+				<div class="footer-col4">
+					<h3>Suivez-nous</h3>
+					<!-- Facebook -->
+					<a class="btn text-white btn-floating m-1" style="background-color: #3b5998;" th:href="${SITE_URL_FACEBOOK}" target="_blank"
+						role="button"><i class="fab fa-facebook-f"></i></a>
+					<!-- Instagram -->
+					<a class="btn text-white btn-floating m-1" style="background-color: #ac2bac;" th:href="${SITE_URL_INSTAGRAM}" target="_blank"
+						role="button"><i class="fab fa-instagram"></i></a>
+					<!-- Twitter -->
+					<a class="btn text-white btn-floating m-1" style="background-color: #55acee;" th:href="${SITE_URL_TWITTER}" target="_blank"
+						role="button"><i class="fab fa-twitter"></i></a>
+
+					<!-- Google -->
+					<!--<a class="btn text-white btn-floating m-1" style="background-color: #dd4b39;" href="#!"
+						role="button"><i class="fab fa-google"></i></a>-->
+
+					<!-- Linkedin -->
+					<!--<a class="btn text-white btn-floating m-1" style="background-color: #0082ca;" href="#!"
+						role="button"><i class="fab fa-linkedin-in"></i></a>-->
+					<!-- Github -->
+					<!--<a class="btn text-white btn-floating m-1" style="background-color: #333333;" href="#!"
+						role="button"><i class="fab fa-github"></i></a>-->
+				</div>
+			</div>
+			<hr>
+			<div class="col-sm-6 order-sm-2 py-1 text-center text-sm-end">
+				[[${COPYRIGHT}]]
+			</div>
+		</div>
+	</div>
+	<!-- SPAN STATUS -->
+	<div th:fragment="OrderStatus(status)" th:remove="tag">
+		<span th:if="${status.toString() == 'NEW'}">
+			<p class="text-uppercase">Nouvelle</p> <!-- Text for 'NEW' in French -->
+		</span>
+		<span th:if="${status.toString() == 'PROCESSING'}">
+			<p class="text-uppercase">En cours de traitement</p> <!-- Text for 'NEW' in French -->
+		</span>
+		<span th:if="${status.toString() == 'PICKED'}">
+			<p class="text-uppercase">Récupérée</p> <!-- Text for 'NEW' in French -->
+		</span>
+		<span th:if="${status.toString() == 'SHIPPING'}">
+			<p class="text-uppercase">Expédiée</p> <!-- Text for 'NEW' in French -->
+		</span>
+		<span th:if="${status.toString() == 'DELIVERED'}">
+			<p class="text-uppercase">Livrée</p> <!-- Text for 'NEW' in French -->
+		</span>
+		<span th:if="${status.toString() == 'PACKAGED'}">
+			<p class="text-uppercase">Emballée</p> <!-- Text for 'NEW' in French -->
+		</span>
+		<span th:if="${status.toString() == 'PAID'}">
+			<p class="text-uppercase">Payée</p> <!-- Text for 'NEW' in French -->
+		</span>
+		<span th:if="${status.toString() == 'RETURN_REQUESTED'}">
+			<p class="text-uppercase">En cours de traitement</p> <!-- Text for 'NEW' in French -->
+		</span>
+		<span th:if="${status.toString() == 'RETURNED'}">
+			<p class="text-uppercase">retournée</p> <!-- Text for 'NEW' in French -->
+		</span>
+		<span th:if="${status.toString() == 'REFUNDED'}">
+			<p class="text-uppercase">remboursée</p> <!-- Text for 'NEW' in French -->
+		</span>
+		<span th:if="${status.toString() == 'CANCELLED'}">
+			<p class="text-uppercase">rejetée</p> <!-- Text for 'NEW' in French -->
+		</span>
+
+
+	</div>
+    <div th:fragment="send_email()" th:remove="tag">
+
+		<form id="contact-form" th:action="@{/send_email}" method="post" th:object="${sender}" role="form">
+			<div class="messages"></div>
+
+			<div class="controls">
+				<div class="row">
+					<div class="col-lg-6">
+						<div class="form-group">
+							<label for="form_name" class="pb-2">Nom <span class="text-danger">*</span></label>
+							<input id="form_name" type="text" name="lastname" class="form-control"
+								placeholder="Veuillez entrer votre nom de famille *" required="required"
+								data-error="Le nom est requis.">
+							<div class="help-block with-errors"></div>
+						</div>
+					</div>
+					<div class="col-lg-6">
+						<div class="form-group">
+							<label for="form_lastname" class="pb-2">Prénom <span class="text-danger">*</span></label>
+							<input id="form_lastname" type="text" name="firstname" class="form-control"
+								placeholder="Entrez votre prénom s'il vous plait *" required="required"
+								data-error="Le prénom est requis.">
+							<div class="help-block with-errors"></div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-6">
+						<div class="form-group">
+							<label for="form_email" class="pb-2">E-mail <span class="text-danger">*</span></label>
+							<input id="form_email" type="email" name="email" class="form-control"
+								placeholder="Veuillez entrer votre email *" required="required"
+								data-error="L'adresse email est requis.">
+							<div class="help-block with-errors"></div>
+						</div>
+					</div>
+					<div class="col-lg-6">
+						<div class="form-group">
+							<label for="form_phone" class="pb-3">Téléphone</label>
+							<input id="form_phone" type="tel" name="phone" class="form-control"
+								placeholder="Veuillez entrer votre téléphone">
+							<div class="help-block with-errors"></div>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="form_message" class="pb-3">Message <span class="text-danger">*</span></label>
+					<textarea id="form_message" name="message" class="form-control" placeholder="Message*"
+						rows="4" required="required" data-error="S'il vous plaît, laissez-nous un message."></textarea>
+					<div class="help-block with-errors"></div>
+				</div>
+
+
+				<div class="form-group mt-4">
+					<div class="g-recaptcha" data-sitekey="6LdYWJYoAAAAAOyGeGRuL7DpWQA4caV99aZNZQiw"
+						data-callback="verifyRecaptchaCallback" data-expired-callback="expiredRecaptchaCallback"></div>
+					<input class="form-control d-none" data-recaptcha="true" required
+						data-error="Veuillez compléter le Captcha">
+					<div class="help-block with-errors"></div>
+				</div>
+				<button type="submit" class="lg-btn mt-2">
+					<i class="fas fa-paper-plane mt-1" id="SendMail"></i> Envoyer
+				</button>
+
+
+			</div>
+
+		</form>
+
+
+	</div>
+
+	<!-- SPAN STATUS -->
+	<div th:fragment="LoadTotalCountProduct" th:remove="tag">
+		<th:block sec:authorize="isAuthenticated()">
+			<script type="text/javascript" th:src="@{/assets/js/jquery.number.min.js}"></script>
+			<script type="text/javascript">
+				contextPath = "[[@{/}]]";
+				var countProduct = 0;
+
+				// Request to get the count of products
+				$.ajax({
+					type: "GET",
+					url: contextPath + "cart/count_products",
+				}).done(function (response) {
+					countProduct = response;
+					$("#total_number_product").text(countProduct);
+
+				}).fail(function () {
+					console.log("Erreur lors de la récupération du nombre de produits.");
+				});
+			</script>
+		</th:block>
+	</div>
+</body>
+
+</html>

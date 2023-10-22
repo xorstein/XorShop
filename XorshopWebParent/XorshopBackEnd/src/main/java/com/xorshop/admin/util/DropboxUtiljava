@@ -1,0 +1,102 @@
+package com.xorshop.admin.util;
+
+import com.dropbox.core.DbxException;
+import com.dropbox.core.DbxRequestConfig;
+import com.dropbox.core.v2.DbxClientV2;
+import com.dropbox.core.v2.files.DeleteErrorException;
+import com.dropbox.core.v2.files.FileMetadata;
+
+import com.dropbox.core.v2.files.ListFolderErrorException;
+import com.dropbox.core.v2.files.ListFolderResult;
+import com.dropbox.core.v2.files.Metadata;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import com.dropbox.core.v2.sharing.ListSharedLinksResult;
+import com.dropbox.core.v2.sharing.SharedLinkMetadata;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+
+public class DropboxUtil {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(DropboxUtil.class);
+    private static final String ACCESS_TOKEN = "sl.BoF06IjVOn2BF-ueBHhyWiI3UBjSMjHMEvt5qJmIlShOSo_WwxickUtVAWZixPq4OkzuFrS_lHFOmkTlRVmT4QQPb-nVxzCMXe5UMbcPMS6XVS408K1xb4oJVxYQVxfc2rWR7LBfcXoQD8WML_sHaZk"; // Replace with your actual access token
+
+    private static DbxClientV2 getClient() {
+        DbxRequestConfig config = DbxRequestConfig.newBuilder("dropbox/xorshop").build();
+        return new DbxClientV2(config, ACCESS_TOKEN);
+    }
+
+    public static void uploadFile(String folderName, String fileName, InputStream inputStream) {
+        try {
+            DbxClientV2 client = getClient();
+            client.files().uploadBuilder("/" + folderName + "/" + fileName)
+                    .uploadAndFinish(inputStream);
+            LOGGER.info("File uploaded successfully: " + fileName);
+        } catch (IOException | DbxException e) {
+            LOGGER.error("Error uploading file to Dropbox: " + e.getMessage());
+        }
+    }
+
+    public static List<String> listFolder(String folderName) {
+        List<String> listKeys = new ArrayList<>();
+        try {
+            DbxClientV2 client = getClient();
+            ListFolderResult result = client.files().listFolder("/" + folderName);
+            while (true) {
+                for (Metadata metadata : result.getEntries()) {
+                    listKeys.add(metadata.getPathDisplay());
+                }
+                if (!result.getHasMore()) {
+                    break;
+                }
+                result = client.files().listFolderContinue(result.getCursor());
+            }
+        } catch (Exception e) {
+            LOGGER.error("Error listing files in Dropbox folder: " + e.getMessage());
+        }
+        return listKeys;
+    }
+
+    public static void deleteFile(String fileName) {
+        try {
+            DbxClientV2 client = getClient();
+            client.files().deleteV2("/" + fileName);
+            LOGGER.info("File deleted successfully: " + fileName);
+        } catch (DbxException e) {
+            LOGGER.error("Error deleting file from Dropbox: " + e.getMessage());
+        }
+    }
+
+    public static void removeFolder(String folderName) {
+        try {
+            DbxClientV2 client = getClient();
+            ListFolderResult result = client.files().listFolder("/" + folderName);
+            while (true) {
+                for (Metadata metadata : result.getEntries()) {
+                    if (metadata instanceof FileMetadata) {
+                        client.files().deleteV2(metadata.getPathDisplay());
+                    }
+                }
+                if (!result.getHasMore()) {
+                    break;
+                }
+                result = client.files().listFolderContinue(result.getCursor());
+            }
+            client.files().deleteV2("/" + folderName);
+            LOGGER.info("Folder removed successfully: " + folderName);
+        } catch (DbxException e) {
+            LOGGER.error("Error removing folder from Dropbox: " + e.getMessage());
+        }
+    }
+    
+    
+    	       
+    
+ 
+
+}

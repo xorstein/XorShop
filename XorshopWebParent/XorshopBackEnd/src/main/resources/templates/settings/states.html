@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+  <div th:fragment="content" th:remove="tag">
+    <h4 class="content-heading">r&eacute;gions et etats</h4>
+       <div>
+		<p>
+			Utilisez cette page pour gérer les états/provinces qui pourront être choisis par l'utilisateur dans le formulaire d'inscription du client. Cliquez d'abord sur Charger les pays de la liste
+		</p>
+	  </div>
+	  <div>
+	
+		<button type="button" class="btn btn-lg btn-alt-warning me-1 mb-3" id="buttonLoadCountriesForStates" >
+                <i class="si si-globe-alt me-1"></i> Charger la liste des pays
+              </button>
+	</div>
+	<div class="form-group row">
+		<label class="col-sm-2 col-form-label">Pays sélectionné</label>
+		<div class="col-sm-10">
+			<select class="form-control m-2" id="dropDownCountriesForStates">
+			</select>
+		</div>
+	</div>
+	<div class="form-group row">
+		<label class="col-sm-2 col-form-label">Tous les états/provinces</label>
+		<div class="col-sm-10">
+			<select class="form-control m-2" style="height: 300px" size="3" id="dropDownStates">
+			</select>
+		</div>
+	</div>	
+	
+	<form id="formState">
+		
+		<div class="form-group row">
+			<label class="col-sm-2 col-form-label mt-2" id="labelStateName">&Eacute;tat sélectionné</label>
+			<div class="col-md">
+				<input type="text" class="form-control mt-2" id="fieldStateName"
+				required minlength="3" maxlength="45" />
+			</div>	
+		
+			<div class="col-md-6 offset-md-5 mt-4 text-center">
+				   <button type="button" class="btn btn-sm btn-alt-secondary" id="buttonAddState" disabled="disabled">
+            <i class="si si-globe fa-1x text-primary"></i> Nouveau
+        </button>
+        <button type="button" class="btn btn-sm btn-alt-warning" id="buttonUpdateState" disabled="disabled">
+            <i class="fa fa-fw fa-pencil-alt text-warning"></i> Modifier
+        </button>
+        <button type="button" class="btn btn-sm btn-alt-danger" id="buttonDeleteState" disabled="disabled">
+            <i class="fa fa-fw fa-times fa-1x text-danger"></i> Supprimer
+        </button>
+			</div>	
+		</div>
+	</form>
+  </div>
+</body>
+
+</html>

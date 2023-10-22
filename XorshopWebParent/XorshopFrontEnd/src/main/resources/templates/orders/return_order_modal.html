@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="content" class="modal fade" id="returnOrderModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">RETOUR COMMANDE</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form onsubmit="return submitReturnOrderForm();">
+			<div class="modal-body">
+				<div id="divReason">
+					<div>Raison:</div>
+					<div>
+						<input type="radio" name="returnReason" value="I bought the wrong items" required />
+						J'ai achet&eacute; les mauvais articles
+					</div>
+					<div>
+						<input type="radio" name="returnReason" value="I received the wrong items" />
+						J'ai reçu les mauvais articles
+					</div>
+					<div>
+						<input type="radio" name="returnReason" value="The product was damaged/defective" />
+						Le produit &eacute;tait endommagé/d&eacute;fectueux
+					</div>
+					<div>
+						<input type="radio" name="returnReason" value="The product arrived too late" />
+						Le produit est arriv&eacute; trop tard
+					</div>	
+					<div class="m-1">
+						<textarea class="form-control" id="returnNote" rows="3" maxlength="120"
+							placeholder="Informations Compl&eacute;mentaires"></textarea>
+					</div>														
+				</div>
+				<div id="divMessage" class="text-center"></div>
+			</div>
+      <div class="modal-footer">
+		<button type="submit" class="btn btn-success" id="firstButton">Envoyer la demande</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+      </div>
+    </div>
+  </div>
+</div>

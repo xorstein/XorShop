@@ -1,0 +1,118 @@
+ <div class="block-header block-header-default">
+                    <h3 class="block-title">D&eacute;tails du client</h3>
+                    <div class="block-options">
+                      <button type="button" class="btn-block-option" data-bs-dismiss="modal" aria-label="Close">
+                        <i class="fa fa-fw fa-times"></i>
+                      </button>
+                    </div>
+                  </div>
+<div class="block block-rounded block-transparent mb-0">
+  <ul class="nav nav-tabs nav-tabs-alt" role="tablist">
+    <li class="nav-item">
+      <button type="button" class="nav-link active" id="btabs-static-home-tab" data-bs-toggle="tab"
+        data-bs-target="#btabs-static-home" role="tab" aria-controls="btabs-static-home"
+        aria-selected="true">G&eacute;neral</button>
+    </li>
+    <li class="nav-item">
+      <button type="button" class="nav-link" id="btabs-static-profile-tab" data-bs-toggle="tab"
+        data-bs-target="#btabs-static-profile" role="tab" aria-controls="btabs-static-profile"
+        aria-selected="false">Adresse</button>
+    </li>
+  </ul>
+  <div class="block-content tab-content">
+    <div class="tab-pane active" id="btabs-static-home" role="tabpanel" aria-labelledby="btabs-static-home-tab"
+      tabindex="0">
+      <h4 class="fw-normal mt-2">G&eacute;neral</h4>
+      <div class="form-group row text-left mt-4">
+        <label for="id" class="col-sm-2 col-form-label">Identfiant du client</label>
+        <div class="col-sm-10">
+          <input type="text" disabled class="form-control" th:value="${customer.id}" />
+        </div>
+      </div>
+      <div class="form-group row mt-4">
+        <label for="name" class="col-sm-2 col-form-label">Client</label>
+        <div class="col-sm-10">
+          <input type="text" disabled class="form-control" th:value="${customer.fullName}" />
+        </div>
+      </div>
+
+      <div class="form-group row mt-4">
+        <label for="email" class="col-sm-2 col-form-label">E-mail</label>
+        <div class="col-sm-10">
+          <input type="text" disabled class="form-control" th:value="${customer.email}" />
+        </div>
+      </div>
+
+      <div class="form-group row mt-4">
+        <label for="phone" class="col-sm-2 col-form-label">T&eacute;l&eacute;phone</label>
+        <div class="col-sm-10">
+          <input type="text" disabled class="form-control" th:value="${customer.phoneNumber}" />
+        </div>
+      </div>
+
+      <div class="form-group row mt-4">
+        <label for="enabled" class="col-sm-2 col-form-label">Status</label>
+        <div class="col-sm-10">
+          <input type="checkbox" th:checked="${customer.enabled}" onclick="return false;" /> 
+        </div>
+      </div>
+
+      <div class="form-group row mt-4">
+        <label for="createdTime" class="col-sm-2 col-form-label">Date de cr&eacute;ation</label>
+        <div class="col-sm-10">
+          <span th:text="${#dates.format(customer.createdTime, 'yyyy-MM-dd HH:mm:ss')}"></span>
+        </div>
+      </div>
+      &nbsp;
+    </div>
+    <div class="tab-pane" id="btabs-static-profile" role="tabpanel" aria-labelledby="btabs-static-profile-tab"
+      tabindex="0">
+      <h4 class="fw-normal">Adresse</h4>
+    <div class="form-group row">
+		    <label for="address1" class="col-sm-2 col-form-label">Adresse 01 </label>
+		    <div class="col-sm-10">
+		      <input type="text" disabled class="form-control" th:value="${customer.addressLine1}" />
+		    </div>
+		  </div>
+
+		  <div class="form-group row mt-4">
+		    <label for="address2" class="col-sm-2 col-form-label">Adresse 02</label>
+		    <div class="col-sm-10">
+		      <input type="text" disabled class="form-control" th:value="${customer.addressLine2}" />
+		    </div>
+		  </div>
+
+		  <div class="form-group row mt-4">
+		    <label for="city" class="col-sm-2 col-form-label">Ville</label>
+		    <div class="col-sm-10">
+		      <input type="text" disabled class="form-control" th:value="${customer.city}" />
+		    </div>
+		  </div>
+           <div class="form-group row mt-4">
+		    <label for="postal" class="col-sm-2 col-form-label">Code postale</label>
+		    <div class="col-sm-10">
+		      <input type="text" disabled class="form-control" th:value="${customer.postalCode}" />
+		    </div>
+		  </div>
+		  <div class="form-group row mt-4">
+		    <label for="state" class="col-sm-2 col-form-label">Etat/Province</label>
+		    <div class="col-sm-10">
+		      <input type="text" disabled class="form-control" th:value="${customer.state}" />
+		    </div>
+		  </div>
+
+		  <div class="form-group row mt-4">
+		    <label for="country" class="col-sm-2 col-form-label">Pays</label>
+		    <div class="col-sm-10">
+		      <input type="text" disabled class="form-control" th:value="${customer.country.name}" />
+		    </div>
+		  </div>        
+        &nbsp;
+		 	  
+    </div>
+  </div>
+  <div class="block-content block-content-full text-end bg-body">
+    <button type="button" class="btn btn-sm btn-alt-secondary me-1" data-bs-dismiss="modal">Fermer</button>
+    <button type="button" class="btn btn-sm btn-primary" data-bs-dismiss="modal">Ok</button>
+  </div>
+</div>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+  <div th:fragment="content" th:remove="tag">
+    <div class="block-content block-content-full">
+      <h4 class="content-heading">DÉTAILS D'EXPÉDITIONS</h4>
+      <div class="block block-rounded">
+        <div class="block-header block-header-default">
+          <h3 class="block-title mx-mb-n5">Longueur </h3>
+        </div>
+        <div class="block-content">
+          <div class="mb-12">
+            <input type="number" class="form-control" th:value="${product.length}" disabled />
+          </div>
+        </div>
+        <br />
+        <div class="block-header block-header-default">
+          <h3 class="block-title mx-mb-n5">Largeur</h3>
+        </div>
+        <div class="block-content">
+          <div class="mb-12">
+            <input type="number" class="form-control" th:value="${product.width}" disabled />
+          </div>
+        </div>
+        <br />
+        <div class="block-header block-header-default">
+          <h3 class="block-title mx-mb-n5">Hauteur</h3>
+        </div>
+        <div class="block-content">
+          <div class="mb-12">
+            <input type="number" class="form-control" th:value="${product.height}" disabled />
+          </div>
+        </div>
+        <br />
+        <div class="block-header block-header-default">
+          <h3 class="block-title mx-mb-n5">Poids</h3>
+        </div>
+        <div class="block-content">
+          <div class="mb-12">
+            <input type="number" class="form-control" th:value="${product.weight}" disabled />
+          </div>
+        </div>
+        <br />
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

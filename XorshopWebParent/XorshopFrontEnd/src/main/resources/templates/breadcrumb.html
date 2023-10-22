@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+  <div th:fragment="content" th:remove="tag">
+    <div th:if="${listCategoryParents != null && !listCategoryParents.empty}">
+      <div class="row">
+        <div class="col">
+          <nav aria-label="breadcrumb" class="bg-light mt-5">
+            <ol class="text-light">
+              <li class="breadcrumb-item d-inline">
+                <a th:href="@{/}">Accueil <span class="text-dark">| </span></a>
+              </li>
+              <th:block th:each="parent, iterStat : ${listCategoryParents}">
+                <li th:class="${iterStat.last} ? 'breadcrumb-item active d-inline' : 'breadcrumb-item d-inline'">
+                  <a th:href="@{'/c/' + ${parent.alias}}"
+                    th:classappend="${iterStat.last} ? 'custom-color' : 'text-dark'">[[${parent.name}]]</a>
+                  <span class="text-dark" th:if="${not iterStat.last}"> | </span>
+                </li>
+              </th:block>
+              <li class="breadcrumb-item d-inline" th:if="${product != null}">
+                <span>[[${product.shortName}]]</span>
+              </li>
+            </ol>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div th:fragment="content1(pageTitle)" th:remove="tag">
+
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb p-2">
+        <li class="breadcrumb-item d-inline"> <a class="custom-color" th:href="@{/}">Accueil</a></li>
+        <li class="breadcrumb-item active d-inline" aria-current="page">[[${pageTitle}]]</li>
+      </ol>
+    </nav>
+
+  </div>
+</body>
+
+</html>
